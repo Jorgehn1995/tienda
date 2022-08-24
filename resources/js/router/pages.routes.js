@@ -26,4 +26,12 @@ export default [
             layout: "autorizado",
         },
     },
+    {
+        path: "/tienda/clientes/editar",
+        name: "",
+        component: () => import("@/pages/tienda/clientes/editar.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
 ];

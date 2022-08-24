@@ -98,9 +98,7 @@
       >
         <template v-slot:titulo> Error </template>
         <template v-slot:descripcion>
-          <ul v-for="er in error.msg.errors">
-            <li v-for="err in er">{{ err }}</li>
-          </ul>
+          <div v-html="error.msg"></div>
         </template>
         <template v-slot:btn> Ok, entendido </template>
       </v-nice-modal>
@@ -139,12 +137,20 @@ export default {
     },
   }),
   methods: {
+    async solicitar() {
+      this.isLoading = true;
+
+      this.$axios
+        .get("/clientes/" + this.id)
+        .then((result) => {})
+        .catch((err) => {});
+    },
     confirmar() {
       if (this.$refs.form.validate()) {
-        this.guardar();
+        this.procesar();
       }
     },
-    async guardar() {
+    async procesar() {
       this.isLoading = true;
 
       await this.$axios
@@ -154,7 +160,13 @@ export default {
           this.saved = true;
         })
         .catch((err) => {
-          this.error.msg = err.response.data;
+          let errores = err.response.data.errors;
+          for (const key in errores) {
+            for (const error in errores[key]) {
+              this.error.msg = "• " + errores[key][error] + "<br>";
+            }
+          }
+
           this.error.status = true;
         });
 
@@ -162,6 +174,11 @@ export default {
     },
     confirmado() {
       this.$router.go(-1);
+    },
+  },
+  computed: {
+    id() {
+      return this.$route.query.id || 0;
     },
   },
 };

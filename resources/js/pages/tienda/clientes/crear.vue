@@ -98,9 +98,7 @@
       >
         <template v-slot:titulo> Error </template>
         <template v-slot:descripcion>
-          <ul v-for="er in error.msg.errors">
-            <li v-for="err in er">{{ err }}</li>
-          </ul>
+          <div v-html="error.msg"></div>
         </template>
         <template v-slot:btn> Ok, entendido </template>
       </v-nice-modal>
@@ -154,7 +152,13 @@ export default {
           this.saved = true;
         })
         .catch((err) => {
-          this.error.msg = err.response.data;
+          let errores = err.response.data.errors;
+          for (const key in errores) {
+            for (const error in errores[key]) {
+              this.error.msg = "• " + errores[key][error] + "<br>";
+            }
+          }
+
           this.error.status = true;
         });
 
