@@ -5,22 +5,9 @@
         <v-col cols="12" sm="8" md="4" offset-sm="2" offset-md="4">
           <v-form ref="form">
             <v-card outlined elevation="3">
-              <v-card-title> Editar Cliente </v-card-title>
+              <v-card-title> Editar Usuario </v-card-title>
               <v-card-text class="py-2">
                 <v-row>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle">
-                      NIT <span class="red--text">*</span>
-                    </span>
-                    <v-text-field
-                      v-model="data.nit"
-                      :rules="[rules.requerido, rules.min40]"
-                      dense
-                      outlined
-                      prepend-icon="mdi-barcode"
-                      placeholder="NIT"
-                    ></v-text-field>
-                  </v-col>
                   <v-col cols="12" class="py-0">
                     <span class="subtitle">
                       Nombre <span class="red--text">*</span>
@@ -35,12 +22,9 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" class="py-0">
-                    <span class="subtitle">
-                      Telefono <span class="red--text">*</span>
-                    </span>
+                    <span class="subtitle"> Telefono </span>
                     <v-text-field
                       v-model="data.telefono"
-                      :rules="[rules.requerido, rules.min200]"
                       dense
                       outlined
                       prepend-icon="mdi-phone-outline"
@@ -49,17 +33,55 @@
                   </v-col>
                   <v-col cols="12" class="py-0">
                     <span class="subtitle">
-                      Dirección <span class="red--text">*</span>
+                      Tipo <span class="red--text">*</span>
                     </span>
-                    <v-textarea
-                      v-model="data.direccion"
-                      :rules="[rules.requerido, rules.min200]"
+                    <v-select
+                      :items="[
+                        { value: 1, text: 'Administrador' },
+                        { value: 2, text: 'Vendedor' },
+                      ]"
+                      item-text="text"
+                      item-value="value"
+                      v-model="data.tipo"
+                      :rules="[rules.requerido]"
                       dense
                       outlined
-                      prepend-icon="mdi-map-marker-outline"
-                      placeholder="NIT"
-                    ></v-textarea>
+                      prepend-icon="mdi-store"
+                      placeholder="Usuario"
+                    ></v-select>
                   </v-col>
+                  <v-col cols="12" class="py-0">
+                    <span class="subtitle">
+                      Usuario <span class="red--text">*</span>
+                    </span>
+                    <v-text-field
+                      v-model="data.usuario"
+                      :rules="[rules.requerido, rules.min40]"
+                      dense
+                      outlined
+                      prepend-icon="mdi-account-circle-outline"
+                      placeholder="Usuario"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="py-0">
+                    <p>
+                        <Strong>NOTA:</Strong>
+                        Si desea cambiar la contraseña agreguela a continuación, de lo contrario deje el campo en blanco
+                    </p>
+
+                    <span class="subtitle">
+                      Contraseña <span class="red--text">*</span>
+                    </span>
+                    <v-text-field
+                      v-model="data.password"
+
+                      dense
+                      outlined
+                      prepend-icon="mdi-key"
+                      placeholder="Usuario"
+                    ></v-text-field>
+                  </v-col>
+
                 </v-row>
               </v-card-text>
               <v-card-actions>
@@ -143,7 +165,7 @@ export default {
       this.isLoading = true;
 
       this.$axios
-        .get("/clientes/" + this.id)
+        .get("/usuarios/" + this.id)
         .then((result) => {
           this.isLoading = false;
           this.data = result.data;
@@ -165,7 +187,7 @@ export default {
       this.isLoading = true;
 
       await this.$axios
-        .put("/clientes/"+this.id, this.data)
+        .put("/usuarios/"+this.id, this.data)
         .then((result) => {
           console.log(result.data);
           this.saved = true;

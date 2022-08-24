@@ -7,7 +7,7 @@
             <t-listar
               ref="tabla"
               tableID="actividades.profesores"
-              prefix="clientes_"
+              prefix="usuarios_"
               show-select
               show-expand
               toggle-columns
@@ -24,8 +24,12 @@
             >
               <template v-slot:toolbar.name="{ reload, isReloading }">
                 <div class="d-flex d-flex-column align-center">
-                  <div class="mr-1">Clientes</div>
-                  <v-btn color="primary" class="ml-2" to="/tienda/clientes/crear">
+                  <div class="mr-1">Usuarios</div>
+                  <v-btn
+                    color="primary"
+                    class="ml-2"
+                    to="/tienda/usuarios/crear"
+                  >
                     <v-icon left>mdi-plus</v-icon>
                     Crear
                   </v-btn>
@@ -49,13 +53,13 @@
                   <v-options :title="item.nombre">
                     <template v-slot:options>
                       <v-list-item
-                        :to="'/tienda/clientes/editar?id=' + item.idcliente"
+                        :to="'/tienda/usuarios/editar?id=' + item.idusuario"
                       >
                         <v-list-item-title>Editar</v-list-item-title>
                       </v-list-item>
                       <v-divider></v-divider>
                       <v-list-item
-                        :to="'/tienda/clientes/eliminar?id=' + item.idcliente"
+                        :to="'/tienda/usuarios/eliminar?id=' + item.idusuario"
                       >
                         <v-list-item-title class="red--text">
                           Eliminar
@@ -67,24 +71,29 @@
                 <v-card
                   elevation="0"
                   class="rounded-lg"
-                  :to="'tienda/clientes/' + item.idcliente"
+                  :to="'tienda/usuarios/' + item.idcliente"
                   :ripple="false"
                 >
                   <v-list class="pt-0">
                     <v-list-item>
                       <v-list-item-content class="pt-0">
                         <v-list-item-subtitle>
-                          <v-icon left small>mdi-barcode</v-icon>
-                          NIT: {{ item.nit }}
+                          <v-icon left small>mdi-account-circle-outline</v-icon>
+                          {{ item.usuario }}
                         </v-list-item-subtitle>
-
                         <v-list-item-subtitle>
                           <v-icon left small>mdi-phone-outline</v-icon>
                           {{ item.telefono }}
                         </v-list-item-subtitle>
                         <v-list-item-subtitle>
-                          <v-icon left small>mdi-book-open-outline</v-icon>
-                          {{ item.direccion }}
+                          <v-chip color="green--text" class="v-chip--active" small v-if="item.tipo==1">
+                            <v-icon small left>mdi-shield-key-outline</v-icon>
+                            Administrador
+                          </v-chip>
+                          <v-chip color="blue--text" class="v-chip--active" small v-else>
+                            <v-icon small left>mdi-shield-key-outline</v-icon>
+                            Vendedor
+                          </v-chip>
                         </v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
@@ -114,32 +123,12 @@ export default {
     isLoading: false,
     seleccion: [],
     ajustes: {
-      id: "idnota",
-      ruta: "/clientes",
+      id: "idusuario",
+      ruta: "/usuarios",
       buscar: "",
     },
   }),
-  methods: {
-    ...mapActions({ solicitar: "datos/solicitar" }),
-    async init() {
-      this.solicitar("/clientes");
-    },
-    actualizarRuta(parametro, nuevoValor, del = false) {
-      let query = this.$route.query;
-
-      if (del) {
-        delete query[parametro];
-      } else {
-        query[parametro] = nuevoValor;
-      }
-
-      this.$router
-        .replace({
-          query: { ...query, t: this.updates++ },
-        })
-        .catch(() => {});
-    },
-  },
+  methods: {},
   computed: {
     extraQuery() {
       return "";

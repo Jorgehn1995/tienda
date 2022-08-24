@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\UsuariosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,4 +38,13 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/clientes', [ClientesController::class, 'crear'])->name('api.clientes.crear');
     Route::put('/clientes/{idcliente}', [ClientesController::class, 'editar'])->name('api.clientes.editar');
     Route::delete('/clientes/{idcliente}', [ClientesController::class, 'eliminar'])->name('api.clientes.eliminar');
+
+    /**
+     * USUARIOS
+     */
+    Route::get('/usuarios', [UsuariosController::class, 'index'])->name('api.usuarios.index');
+    Route::get('/usuarios/{idusuario}', [UsuariosController::class, 'ver'])->name('api.usuarios.ver');
+    Route::post('/usuarios', [UsuariosController::class, 'crear'])->name('api.usuarios.crear');
+    Route::put('/usuarios/{idusuario}', [UsuariosController::class, 'editar'])->name('api.usuarios.editar');
+    Route::delete('/usuarios/{idusuario}', [UsuariosController::class, 'eliminar'])->name('api.usuarios.eliminar');
 });

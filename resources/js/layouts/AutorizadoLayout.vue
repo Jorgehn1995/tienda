@@ -33,7 +33,9 @@
 
           <div v-else class="d-flex flex-grow-1 align-center">
             <v-app-bar-nav-icon v-if="false" @click.stop="drawer = !drawer" class="primary"></v-app-bar-nav-icon>
-            <div class="title font-weight-bold text-uppercase primary--text">{{ product.name }}</div>
+            <v-card elevation="0"  to="/tienda" :ripple="false">
+                <div class="title font-weight-bold text-uppercase primary--text">{{ product.name }}</div>
+            </v-card>
 
             <v-spacer class="d-none d-lg-block"></v-spacer>
 
