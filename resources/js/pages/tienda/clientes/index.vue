@@ -25,6 +25,10 @@
               <template v-slot:toolbar.name="{ reload, isReloading }">
                 <div class="d-flex d-flex-column align-center">
                   <div class="mr-1">Clientes</div>
+                  <v-btn color="primary" class="ml-2" to="/tienda/clientes/crear">
+                    <v-icon left>mdi-plus</v-icon>
+                    Crear
+                  </v-btn>
                 </div>
               </template>
 
