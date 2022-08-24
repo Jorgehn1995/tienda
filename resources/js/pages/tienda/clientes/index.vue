@@ -43,7 +43,21 @@
                   <v-spacer></v-spacer>
 
                   <v-options :title="item.nombre">
-                    <template v-slot:options> hola </template>
+                    <template v-slot:options>
+                      <v-list-item
+                        :to="'/tienda/clientes/editar?id=' + item.idcliente"
+                      >
+                        <v-list-item-title>Editar</v-list-item-title>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                      <v-list-item
+                        :to="'/tienda/clientes/eliminar?id=' + item.idcliente"
+                      >
+                        <v-list-item-title class="red--text">
+                          Eliminar
+                        </v-list-item-title>
+                      </v-list-item>
+                    </template>
                   </v-options>
                 </v-card-actions>
                 <v-card
@@ -82,13 +96,12 @@
 </template>
 
 <script>
-import VOptions from '../../../components/tienda/generales/v-options.vue'
-import TListar from '../../../components/tienda/generales/t-listar.vue'
-
+import VOptions from "../../../components/tienda/generales/v-options.vue";
+import TListar from "../../../components/tienda/generales/t-listar.vue";
 
 import { mapActions } from "vuex";
 export default {
-  components: { TListar, VOptions},
+  components: { TListar, VOptions },
 
   mounted() {
     //this.init();

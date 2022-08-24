@@ -34,4 +34,12 @@ export default [
             layout: "autorizado",
         },
     },
+    {
+        path: "/tienda/clientes/eliminar",
+        name: "",
+        component: () => import("@/pages/tienda/clientes/eliminar.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
 ];

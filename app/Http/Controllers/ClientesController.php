@@ -57,6 +57,42 @@ class ClientesController extends Controller
         $cliente->telefono = $request->telefono;
         $cliente->direccion = $request->direccion;
         $cliente->save();
-        return "Cliente Guardado";
+        return "Guardado";
+    }
+    public function editar(Request $request, $idcliente)
+    {
+        $request->validate([
+            'idcliente' => 'bail|required',
+            'nit' => 'bail|required|unique:clientes,nit,' . $request->idcliente . ',idcliente|max:40',
+            'nombre' => 'bail|required|max:200',
+            'telefono' => 'bail|required|max:200',
+            'direccion' => 'bail|required|max:200',
+        ]);
+
+        $cliente = Cliente::find($request->idcliente);
+        if (!$cliente) {
+            return response("Cliente no encontrado");
+        }
+        $cliente->nit = $request->nit;
+        $cliente->nombre = $request->nombre;
+        $cliente->telefono = $request->telefono;
+        $cliente->direccion = $request->direccion;
+        $cliente->save();
+        return "Mdificado";
+    }
+    public function eliminar(Request $request, $idcliente)
+    {
+        $request->validate([
+            'idcliente' => 'bail|required',
+
+        ]);
+
+        $cliente = Cliente::find($request->idcliente);
+        if (!$cliente) {
+            return response("Cliente no encontrado");
+        }
+
+        $cliente->delete();
+        return "Eliminado";
     }
 }

@@ -5,7 +5,7 @@
         <v-col cols="12" sm="8" md="4" offset-sm="2" offset-md="4">
           <v-form ref="form">
             <v-card outlined elevation="3">
-              <v-card-title> Agregar Cliente </v-card-title>
+              <v-card-title> Editar Cliente </v-card-title>
               <v-card-text class="py-2">
                 <v-row>
                   <v-col cols="12" class="py-0">
@@ -83,7 +83,7 @@
       </v-row>
 
       <v-nice-modal v-model="saved" @go="confirmado()">
-        <template v-slot:titulo> Registro Guardado </template>
+        <template v-slot:titulo> Registro Editado </template>
         <template v-slot:descripcion> El registro ha sido guardado </template>
         <template v-slot:btn>
           <v-icon left>mdi-check</v-icon>
@@ -110,10 +110,12 @@
 import VNiceModal from "../../../components/tienda/generales/v-nice-modal.vue";
 export default {
   components: { VNiceModal },
-  mounted() {},
+  mounted() {
+    this.solicitar();
+  },
   data: () => ({
     isLoading: false,
-
+    isLost:false,
     saved: false,
     data: {
       idcliente: 0,
@@ -142,8 +144,17 @@ export default {
 
       this.$axios
         .get("/clientes/" + this.id)
-        .then((result) => {})
-        .catch((err) => {});
+        .then((result) => {
+          this.isLoading = false;
+          this.data = result.data;
+        })
+        .catch((err) => {
+          this.error.msg = "Usuario no encontrado";
+          this.error.status=true;
+          setTimeout(() => {
+            this.$router.go(-1);
+          }, 3000);
+        });
     },
     confirmar() {
       if (this.$refs.form.validate()) {
@@ -154,7 +165,7 @@ export default {
       this.isLoading = true;
 
       await this.$axios
-        .post("/clientes", this.data)
+        .put("/clientes/"+this.id, this.data)
         .then((result) => {
           console.log(result.data);
           this.saved = true;
