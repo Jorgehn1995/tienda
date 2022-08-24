@@ -7,7 +7,7 @@
             <t-listar
               ref="tabla"
               tableID="actividades.profesores"
-              prefix="notas_"
+              prefix="clientes_"
               show-select
               show-expand
               toggle-columns
@@ -56,12 +56,12 @@
                     <v-list-item>
                       <v-list-item-content class="pt-0">
                         <v-list-item-subtitle>
-                          <v-icon left small>mdi-star-outline</v-icon>
+                          <v-icon left small>mdi-barcode</v-icon>
                           NIT: {{ item.nit }}
                         </v-list-item-subtitle>
 
                         <v-list-item-subtitle>
-                          <v-icon left small>mdi-chair-school</v-icon>
+                          <v-icon left small>mdi-phone-outline</v-icon>
                           {{ item.telefono }}
                         </v-list-item-subtitle>
                         <v-list-item-subtitle>
@@ -82,12 +82,14 @@
 </template>
 
 <script>
-import VOptions from "../../components/tienda/generales/v-options.vue";
-import TListar from "../../components/tienda/generales/t-listar.vue";
-import TLayout from "../../components/tienda/generales/t-layout.vue";
+import VOptions from '../../../components/tienda/generales/v-options.vue'
+import TListar from '../../../components/tienda/generales/t-listar.vue'
+
+
 import { mapActions } from "vuex";
 export default {
-  components: { TLayout, TListar, VOptions },
+  components: { TListar, VOptions},
+
   mounted() {
     //this.init();
   },

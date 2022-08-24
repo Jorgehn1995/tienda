@@ -42,4 +42,21 @@ class ClientesController extends Controller
         }
         return $cliente;
     }
+    public function crear(Request $request)
+    {
+        $request->validate([
+            'nit' => 'bail|required|unique:clientes,nit|max:40',
+            'nombre' => 'bail|required|max:200',
+            'telefono' => 'bail|required|max:200',
+            'direccion' => 'bail|required|max:200',
+        ]);
+
+        $cliente = new Cliente();
+        $cliente->nit = $request->nit;
+        $cliente->nombre = $request->nombre;
+        $cliente->telefono = $request->telefono;
+        $cliente->direccion = $request->direccion;
+        $cliente->save();
+        return "Cliente Guardado";
+    }
 }

@@ -1869,3 +1869,55 @@
 #50 D:\\PROGRAMACION\\tienda\\server.php(21): require_once('D:\\\\PROGRAMACION...')
 #51 {main}
 "} 
+[2022-08-24 14:27:30] local.ERROR: Class 'Laraveles\Spanish\SpanishServiceProvider' not found {"exception":"[object] (Error(code: 0): Class 'Laraveles\\Spanish\\SpanishServiceProvider' not found at D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php:208)
+[stacktrace]
+#0 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php(144): Illuminate\\Foundation\\ProviderRepository->createProvider('Laraveles\\\\Spani...')
+#1 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php(61): Illuminate\\Foundation\\ProviderRepository->compileManifest(Array)
+#2 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(604): Illuminate\\Foundation\\ProviderRepository->load(Array)
+#3 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\RegisterProviders.php(17): Illuminate\\Foundation\\Application->registerConfiguredProviders()
+#4 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(230): Illuminate\\Foundation\\Bootstrap\\RegisterProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(310): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(127): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2022-08-24 14:27:34] local.ERROR: Class 'Laraveles\Spanish\SpanishServiceProvider' not found {"exception":"[object] (Error(code: 0): Class 'Laraveles\\Spanish\\SpanishServiceProvider' not found at D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php:208)
+[stacktrace]
+#0 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php(144): Illuminate\\Foundation\\ProviderRepository->createProvider('Laraveles\\\\Spani...')
+#1 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php(61): Illuminate\\Foundation\\ProviderRepository->compileManifest(Array)
+#2 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(604): Illuminate\\Foundation\\ProviderRepository->load(Array)
+#3 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\RegisterProviders.php(17): Illuminate\\Foundation\\Application->registerConfiguredProviders()
+#4 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(230): Illuminate\\Foundation\\Bootstrap\\RegisterProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(310): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(127): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2022-08-24 14:27:34] local.ERROR: Class 'Laraveles\Spanish\SpanishServiceProvider' not found {"exception":"[object] (Error(code: 0): Class 'Laraveles\\Spanish\\SpanishServiceProvider' not found at D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php:208)
+[stacktrace]
+#0 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php(144): Illuminate\\Foundation\\ProviderRepository->createProvider('Laraveles\\\\Spani...')
+#1 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php(61): Illuminate\\Foundation\\ProviderRepository->compileManifest(Array)
+#2 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(604): Illuminate\\Foundation\\ProviderRepository->load(Array)
+#3 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\RegisterProviders.php(17): Illuminate\\Foundation\\Application->registerConfiguredProviders()
+#4 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(230): Illuminate\\Foundation\\Bootstrap\\RegisterProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(310): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(127): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2022-08-24 14:27:34] local.ERROR: Uncaught Illuminate\Contracts\Container\BindingResolutionException: Target [Illuminate\Contracts\Auth\Access\Gate] is not instantiable. in D:\PROGRAMACION\tienda\vendor\laravel\framework\src\Illuminate\Container\Container.php:1017
+Stack trace:
+#0 D:\PROGRAMACION\tienda\vendor\laravel\framework\src\Illuminate\Container\Container.php(818): Illuminate\Container\Container->notInstantiable('Illuminate\\Cont...')
+#1 D:\PROGRAMACION\tienda\vendor\laravel\framework\src\Illuminate\Container\Container.php(691): Illuminate\Container\Container->build('Illuminate\\Cont...')
+#2 D:\PROGRAMACION\tienda\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(796): Illuminate\Container\Container->resolve('Illuminate\\Cont...', Array, true)
+#3 D:\PROGRAMACION\tienda\vendor\laravel\framework\src\Illuminate\Container\Container.php(637): Illuminate\Foundation\Application->resolve('Illuminate\\Cont...', Array)
+#4 D:\PROGRAMACION\tienda\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(781): Illuminate\Co {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Uncaught Illuminate\\Contracts\\Container\\BindingResolutionException: Target [Illuminate\\Contracts\\Auth\\Access\\Gate] is not instantiable. in D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:1017
+Stack trace:
+#0 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(818): Illuminate\\Container\\Container->notInstantiable('Illuminate\\\\Cont...')
+#1 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(691): Illuminate\\Container\\Container->build('Illuminate\\\\Cont...')
+#2 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(796): Illuminate\\Container\\Container->resolve('Illuminate\\\\Cont...', Array, true)
+#3 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(637): Illuminate\\Foundation\\Application->resolve('Illuminate\\\\Cont...', Array)
+#4 D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(781): Illuminate\\Co at D:\\PROGRAMACION\\tienda\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:1017)
+[stacktrace]
+#0 {main}
+"} 

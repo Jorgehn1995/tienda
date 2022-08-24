@@ -54,7 +54,7 @@
       </v-bottom-sheet>
     </div>
     <div v-else>
-      <v-menu v-model="show" :position-x="x" :position-y="y" absolute offset-y max-width="250" >
+      <v-menu v-model="show" :position-x="x" :position-y="y" absolute offset-y max-width="200" min-width="200" >
         <v-list dense>
           <slot name="title">
             <v-list-item v-if="title || subtitle">
