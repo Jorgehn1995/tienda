@@ -16,8 +16,5 @@ class Cliente extends Model
     {
         return $this->belongsTo("App\Models\Institucion", "idinstitucion");
     }
-    public function grados()
-    {
-        return $this->hasMany("App\Models\Grado", "idcarrera");
-    }
+
 }
