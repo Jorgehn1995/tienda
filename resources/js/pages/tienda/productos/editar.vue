@@ -1,106 +1,135 @@
 <template>
   <v-container>
     <div>
-      <v-row>
-        <v-col cols="12" sm="8" md="4" offset-sm="2" offset-md="4">
-          <v-form ref="form">
+      <v-row dense>
+        <v-col cols="12">
+          <v-form ref="formCodigo" @submit="buscar">
             <v-card outlined elevation="3">
-              <v-card-title> Editar Usuario </v-card-title>
-              <v-card-text class="py-2">
-                <v-row>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle">
-                      Nombre <span class="red--text">*</span>
-                    </span>
+              <v-card-title> Codigo de Producto </v-card-title>
+              <v-card-text>
+                <v-row dense>
+                  <v-col cols="12" sm="10">
                     <v-text-field
-                      v-model="data.nombre"
-                      :rules="[rules.requerido, rules.min200]"
-                      dense
-                      outlined
-                      prepend-icon="mdi-account-circle-outline"
-                      placeholder="Nombre"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle"> Telefono </span>
-                    <v-text-field
-                      v-model="data.telefono"
-                      dense
-                      outlined
-                      prepend-icon="mdi-phone-outline"
-                      placeholder="Telefono"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle">
-                      Tipo <span class="red--text">*</span>
-                    </span>
-                    <v-select
-                      :items="[
-                        { value: 1, text: 'Administrador' },
-                        { value: 2, text: 'Vendedor' },
-                      ]"
-                      item-text="text"
-                      item-value="value"
-                      v-model="data.tipo"
+                      v-model="data.codigo"
                       :rules="[rules.requerido]"
-                      dense
-                      outlined
-                      prepend-icon="mdi-store"
-                      placeholder="Usuario"
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle">
-                      Usuario <span class="red--text">*</span>
-                    </span>
-                    <v-text-field
-                      v-model="data.usuario"
-                      :rules="[rules.requerido, rules.min40]"
-                      dense
-                      outlined
-                      prepend-icon="mdi-account-circle-outline"
-                      placeholder="Usuario"
+                      ref="buscarCodigo"
+                      prepend-icon="mdi-barcode"
+                      placeholder="Ingrese el Codigo"
+                      @keypress.enter="buscar"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" class="py-0">
-                    <p>
-                        <Strong>NOTA:</Strong>
-                        Si desea cambiar la contraseña agreguela a continuación, de lo contrario deje el campo en blanco
-                    </p>
-
-                    <span class="subtitle">
-                      Contraseña <span class="red--text">*</span>
-                    </span>
-                    <v-text-field
-                      v-model="data.password"
-
-                      dense
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="d-flex justify-center align-center"
+                  >
+                    <v-btn
                       outlined
-                      prepend-icon="mdi-key"
-                      placeholder="Usuario"
-                    ></v-text-field>
+                      block
+                      color="primary"
+                      @click="buscar"
+                      :loading="isLoading"
+                    >
+                      Buscar
+                      <v-icon right>mdi-cloud-search-outline</v-icon>
+                    </v-btn>
                   </v-col>
-
                 </v-row>
               </v-card-text>
-              <v-card-actions>
-                <v-btn>
-                  <v-icon left>mdi-chevron-left</v-icon>
-                  Regresar
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="primary"
-                  @click="confirmar()"
-                  :loading="isLoading"
-                >
-                  <v-icon left>mdi-content-save-outline</v-icon>
-                  Guardar
-                </v-btn>
-              </v-card-actions>
             </v-card>
           </v-form>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-card outlined elevation="3" v-if="isFound">
+            <v-card-title>
+              Producto
+              <v-chip color="green--text" class="v-chip--active" v-if="isNew">
+                Producto Nuevo
+              </v-chip>
+            </v-card-title>
+
+            <v-card-text class="py-2">
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <span class="subtitle">
+                    Codigo <span class="red--text">*</span>
+                  </span>
+                  <v-text-field
+                    v-model="data.codigo"
+                    ref="codigo"
+                    :rules="[rules.requerido]"
+                    dense
+                    outlined
+                    prepend-icon="mdi-barcode"
+                    placeholder="Nombre"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <span class="subtitle">
+                    Nombre <span class="red--text">*</span>
+                  </span>
+                  <v-text-field
+                    ref="nombre"
+                    v-model="data.nombre"
+                    :rules="[rules.requerido, rules.min200]"
+                    dense
+                    outlined
+                    prepend-icon="mdi-account-circle-outline"
+                    placeholder="Nombre"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <span class="subtitle"> Costo </span>
+                  <v-text-field
+                    ref="costo"
+                    v-model="data.costo"
+                    dense
+                    outlined
+                    prepend-icon="mdi-hand-coin-outline"
+                    placeholder="Telefono"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-card outlined elevation="3" v-if="isFound">
+            <v-card-title> Stock Actual {{ data.existencia }} </v-card-title>
+            <v-card-text class="py-2">
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <span class="subtitle">
+                    Caducidad <span class="red--text">*</span>
+                  </span>
+                  <v-text-field
+                    v-model="data.caducidad"
+                    ref="Fecha de vencimiento"
+                    type="date"
+                    :rules="[rules.requerido]"
+                    dense
+                    outlined
+                    prepend-icon="mdi-calendar-outline"
+                    placeholder="Nombre"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <span class="subtitle">
+                    Agregar Stock <span class="red--text">*</span>
+                  </span>
+                  <v-text-field
+                    ref="nombre"
+                    v-model="data.nombre"
+                    :rules="[rules.requerido, rules.min200]"
+                    dense
+                    outlined
+                    prepend-icon="mdi-package-variant-plus"
+                    placeholder="Agregar Existencias"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
 
@@ -133,18 +162,19 @@ import VNiceModal from "../../../components/tienda/generales/v-nice-modal.vue";
 export default {
   components: { VNiceModal },
   mounted() {
-    this.solicitar();
+    this.$refs.buscarCodigo.$refs.input.focus();
   },
   data: () => ({
     isLoading: false,
-    isLost:false,
+    isNew: false,
+    isFound: false,
     saved: false,
     data: {
-      idcliente: 0,
-      nit: "",
+      codigo: "",
       nombre: "",
-      telefono: "",
-      direccion: "",
+      costo: 0,
+      caducidad: "",
+      existencia: 0,
     },
     error: {
       status: false,
@@ -161,22 +191,26 @@ export default {
     },
   }),
   methods: {
-    async solicitar() {
-      this.isLoading = true;
-
-      this.$axios
-        .get("/usuarios/" + this.id)
-        .then((result) => {
-          this.isLoading = false;
-          this.data = result.data;
-        })
-        .catch((err) => {
-          this.error.msg = "Usuario no encontrado";
-          this.error.status=true;
-          setTimeout(() => {
-            this.$router.go(-1);
-          }, 3000);
-        });
+    async buscar(e) {
+      e.preventDefault();
+      if (this.$refs.formCodigo.validate()) {
+        this.isLoading = true;
+        this.$axios
+          .get("/productos/" + this.data.codigo)
+          .then((result) => {
+            this.isLoading = false;
+            this.data = result.data;
+            this.isNew = result.data.nombre == "";
+            this.isFound = true;
+          })
+          .catch((err) => {
+            //this.error.msg = "Usuario no encontrado";
+            //this.error.status = true;
+            //setTimeout(() => {
+            //  this.$router.go(-1);
+            //}, 3000);
+          });
+      }
     },
     confirmar() {
       if (this.$refs.form.validate()) {
@@ -187,7 +221,7 @@ export default {
       this.isLoading = true;
 
       await this.$axios
-        .put("/usuarios/"+this.id, this.data)
+        .put("/usuarios/" + this.id, this.data)
         .then((result) => {
           console.log(result.data);
           this.saved = true;

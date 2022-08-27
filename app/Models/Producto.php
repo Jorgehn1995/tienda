@@ -10,14 +10,11 @@ class Producto extends Model
     use HasFactory;
     protected $table      = "productos";
     protected $primaryKey = "idproducto";
-    protected $fillable   = ['codigo',  'nombre', 'existencia'];
+    protected $fillable   = ['codigo', 'nombre', 'costo', 'caducidad', 'existencia'];
     public $timestamps    = true;
     public function precios()
     {
         return $this->hasMany("App\Models\Precio", "idproducto");
     }
-    public function existencias()
-    {
-        return $this->hasMany("App\Models\Precio", "idproducto");
-    }
+
 }

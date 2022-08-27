@@ -78,4 +78,32 @@ export default [
             layout: "autorizado",
         },
     },
+    /**
+     * PRODUCTOS
+     */
+     {
+        path: "/tienda/productos",
+        name: "",
+        component: () => import("@/pages/tienda/productos/index.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
+
+    {
+        path: "/tienda/productos/editar",
+        name: "",
+        component: () => import("@/pages/tienda/productos/editar.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
+    {
+        path: "/tienda/productos/eliminar",
+        name: "",
+        component: () => import("@/pages/tienda/productos/eliminar.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
 ];

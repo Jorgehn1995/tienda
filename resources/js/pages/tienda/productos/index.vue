@@ -24,11 +24,11 @@
             >
               <template v-slot:toolbar.name="{ reload, isReloading }">
                 <div class="d-flex d-flex-column align-center">
-                  <div class="mr-1">Usuarios</div>
+                  <div class="mr-1">Productos</div>
                   <v-btn
                     color="primary"
                     class="ml-2"
-                    to="/tienda/usuarios/crear"
+                    to="/tienda/productos/editar"
                   >
                     <v-icon left>mdi-plus</v-icon>
                     Crear
@@ -53,13 +53,13 @@
                   <v-options :title="item.nombre">
                     <template v-slot:options>
                       <v-list-item
-                        :to="'/tienda/usuarios/editar?id=' + item.idusuario"
+                        :to="'/tienda/productos/editar?id=' + item.idusuario"
                       >
                         <v-list-item-title>Editar</v-list-item-title>
                       </v-list-item>
                       <v-divider></v-divider>
                       <v-list-item
-                        :to="'/tienda/usuarios/eliminar?id=' + item.idusuario"
+                        :to="'/tienda/productos/eliminar?id=' + item.idusuario"
                       >
                         <v-list-item-title class="red--text">
                           Eliminar
@@ -71,7 +71,7 @@
                 <v-card
                   elevation="0"
                   class="rounded-lg"
-                  :to="'tienda/usuarios/' + item.idcliente"
+                  :to="'tienda/productos/' + item.idcliente"
                   :ripple="false"
                 >
                   <v-list class="pt-0">
@@ -123,8 +123,8 @@ export default {
     isLoading: false,
     seleccion: [],
     ajustes: {
-      id: "idusuario",
-      ruta: "/usuarios",
+      id: "idproducto",
+      ruta: "/productos",
       buscar: "",
     },
   }),
