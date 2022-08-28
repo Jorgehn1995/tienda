@@ -114,7 +114,7 @@
                   </v-col>
                   <v-col cols="12" class="py-0">
                     <span class="subtitle">
-                      Nombre <span class="red--text">*</span>
+                      Producto <span class="red--text">*</span>
                     </span>
                     <v-textarea
                       v-shortkey="['ctrl', 'a']"
@@ -124,7 +124,7 @@
                       :rules="[rules.requerido, rules.min200]"
                       dense
                       outlined
-                      prepend-icon="mdi-account-circle-outline"
+                      prepend-icon="mdi-tag-outline"
                       placeholder="Nombre"
                     ></v-textarea>
                   </v-col>
@@ -137,6 +137,11 @@
               <v-card-title> Stock y Costo [CTRL+S]</v-card-title>
               <v-card-text class="py-2">
                 <v-row>
+                  <v-col cols="12" class="py-0">
+                    <span class="title"
+                      >Existencia Actual {{ data.existencia }}</span
+                    >
+                  </v-col>
                   <v-col cols="12" class="py-0">
                     <span class="subtitle"> Agregar Stock </span>
                     <v-text-field
@@ -177,11 +182,6 @@
                       prepend-icon="mdi-calendar-outline"
                       placeholder="Fecha de Vencimiento"
                     ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" class="pt-0">
-                    <span class="title"
-                      >Existencia Actual {{ data.existencia }}</span
-                    >
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -274,6 +274,7 @@ export default {
     isFound: false,
     saved: false,
     data: {
+      idproducto: 0,
       codigo: "",
       nombre: "",
       costo: 0,
@@ -318,7 +319,9 @@ export default {
                 this.$refs.nombre.$refs.input.focus();
               });
             } else {
-              this.$refs.existencia.$refs.input.focus();
+              this.$nextTick(() => {
+                this.$refs.existencia.$refs.input.focus();
+              });
             }
           })
           .catch((err) => {
@@ -353,8 +356,11 @@ export default {
         await this.$axios
           .post("/productos", this.data)
           .then((result) => {
-            console.log(result.data);
-            //this.saved = true;
+            this.skLimpiar();
+            this.saved = true;
+            setTimeout(() => {
+              this.saved = false;
+            }, 200);
           })
           .catch((err) => {
             let errores = err.response.data.errors;

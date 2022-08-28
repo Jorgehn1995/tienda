@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Precio;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,7 @@ class ProductosController extends Controller
         $producto = Producto::where("codigo", $codigo)->first();
         if (!$producto) {
             return [
+                "idproducto" => 0,
                 "codigo" => $codigo,
                 "nombre" => "",
                 "costo" => 0,
@@ -52,11 +54,51 @@ class ProductosController extends Controller
                 ]
             ];
         }
+        $producto->existencia_nueva=0;
+        $producto->precios;
+
         return $producto;
     }
     public function crear(Request $request)
     {
+        if ($request->idproducto==0) {
+            $request->validate([
+                'codigo' => 'bail|required|unique:productos,codigo|max:40',
+                'nombre' => 'bail|required',
+                'precios.*.cantidad' => 'bail|required|numeric',
+                'precios.*.precio' => 'bail|required|numeric',
+            ]);
+        }else{
+            $request->validate([
+                'codigo' => 'bail|required|unique:productos,codigo,' . $request->idproducto . ',idproducto|max:40',
+                'nombre' => 'bail|required',
+                'precios.*.cantidad' => 'bail|required|numeric',
+                'precios.*.precio' => 'bail|required|numeric',
+            ]);
+        }
 
-        return $request->all();
+        $producto = Producto::where("codigo", $request->codigo)->first();
+        if (!$producto) {
+            $producto = new Producto();
+        }
+        $producto->codigo = $request->codigo;
+        $producto->nombre = $request->nombre;
+        if ($request->existencia_nueva > 0) {
+            $producto->existencia = $producto->existencia + $request->existencia_nueva;
+        }
+        $producto->costo=$request->costo;
+        $producto->caducidad=$request->caducidad;
+        $producto->save();
+
+        $producto->precios()->delete();
+
+        foreach ($request->precios as $key => $p) {
+            $precio=new Precio();
+            $precio->idproducto=$producto->idproducto;
+            $precio->cantidad=$p["cantidad"];
+            $precio->precio=$p["precio"];
+            $precio->save();
+        }
+        return "Producto Guardado";
     }
 }
