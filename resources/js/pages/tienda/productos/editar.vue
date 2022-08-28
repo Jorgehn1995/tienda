@@ -1,21 +1,23 @@
 <template>
-  <v-container>
-    <div>
+  <div>
+    <div class="">
       <v-row dense>
-        <v-col cols="12">
-          <v-form ref="formCodigo" @submit="buscar">
-            <v-card outlined elevation="3">
-              <v-card-title> Codigo de Producto </v-card-title>
+        <v-col cols="12" class="mb-1">
+          <v-form ref="formCodigo" @submit="skBuscar">
+            <v-card outlined elevation="3" tile>
               <v-card-text>
                 <v-row dense>
-                  <v-col cols="12" sm="10">
+                  <v-col cols="12" sm="8">
                     <v-text-field
+                      label="Código de Barras [CTRL+Q]"
+                      v-shortkey="['ctrl', 'q']"
+                      @shortkey.native="skBuscarCodigo"
                       v-model="data.codigo"
                       :rules="[rules.requerido]"
                       ref="buscarCodigo"
                       prepend-icon="mdi-barcode"
                       placeholder="Ingrese el Codigo"
-                      @keypress.enter="buscar"
+                      @keypress.enter="skBuscar"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -26,12 +28,32 @@
                     <v-btn
                       outlined
                       block
-                      color="primary"
-                      @click="buscar"
+                      color="accent"
+                      @click="skBuscar"
+                      :loading="isLoading"
+                      v-shortkey="['ctrl', 'b']"
+                      @shortkey.native="skBuscar"
+                    >
+                      Buscar [CTRL+B]
+                      <v-icon right>mdi-cloud-search-outline</v-icon>
+                    </v-btn>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="d-flex justify-center align-center"
+                  >
+                    <v-btn
+                      outlined
+                      block
+                      color="grey"
+                      @click="skLimpiar"
+                      v-shortkey="['ctrl', 'l']"
+                      @shortkey="skLimpiar"
                       :loading="isLoading"
                     >
-                      Buscar
-                      <v-icon right>mdi-cloud-search-outline</v-icon>
+                      Limpiar [CTRL+L]
+                      <v-icon right>mdi-broom</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -39,99 +61,174 @@
             </v-card>
           </v-form>
         </v-col>
-        <v-col cols="12" md="4">
-          <v-card outlined elevation="3" v-if="isFound">
-            <v-card-title>
-              Producto
-              <v-chip color="green--text" class="v-chip--active" v-if="isNew">
-                Producto Nuevo
-              </v-chip>
-            </v-card-title>
-
-            <v-card-text class="py-2">
-              <v-row>
-                <v-col cols="12" class="py-0">
-                  <span class="subtitle">
-                    Codigo <span class="red--text">*</span>
-                  </span>
-                  <v-text-field
-                    v-model="data.codigo"
-                    ref="codigo"
-                    :rules="[rules.requerido]"
-                    dense
-                    outlined
-                    prepend-icon="mdi-barcode"
-                    placeholder="Nombre"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" class="py-0">
-                  <span class="subtitle">
-                    Nombre <span class="red--text">*</span>
-                  </span>
-                  <v-text-field
-                    ref="nombre"
-                    v-model="data.nombre"
-                    :rules="[rules.requerido, rules.min200]"
-                    dense
-                    outlined
-                    prepend-icon="mdi-account-circle-outline"
-                    placeholder="Nombre"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" class="py-0">
-                  <span class="subtitle"> Costo </span>
-                  <v-text-field
-                    ref="costo"
-                    v-model="data.costo"
-                    dense
-                    outlined
-                    prepend-icon="mdi-hand-coin-outline"
-                    placeholder="Telefono"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-card outlined elevation="3" v-if="isFound">
-            <v-card-title> Stock Actual {{ data.existencia }} </v-card-title>
-            <v-card-text class="py-2">
-              <v-row>
-                <v-col cols="12" class="py-0">
-                  <span class="subtitle">
-                    Caducidad <span class="red--text">*</span>
-                  </span>
-                  <v-text-field
-                    v-model="data.caducidad"
-                    ref="Fecha de vencimiento"
-                    type="date"
-                    :rules="[rules.requerido]"
-                    dense
-                    outlined
-                    prepend-icon="mdi-calendar-outline"
-                    placeholder="Nombre"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" class="py-0">
-                  <span class="subtitle">
-                    Agregar Stock <span class="red--text">*</span>
-                  </span>
-                  <v-text-field
-                    ref="nombre"
-                    v-model="data.nombre"
-                    :rules="[rules.requerido, rules.min200]"
-                    dense
-                    outlined
-                    prepend-icon="mdi-package-variant-plus"
-                    placeholder="Agregar Existencias"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+        <v-col
+          cols="12"
+          class="d-flex justify-center align-center"
+          v-if="isLoading"
+        >
+          <v-progress-circular
+            color="primary"
+            indeterminate
+          ></v-progress-circular>
         </v-col>
       </v-row>
+
+      <v-form ref="formProducto" lazy-validation>
+        <v-row dense v-if="isFound && !isLoading">
+          <v-col cols="12">
+            <v-card tile color="transparent" elevation="0">
+              <v-row dense>
+                <v-col cols="12">
+                  <v-card-title>
+                    <span v-if="isNew">Producto Sin Registrar</span>
+                    <span v-else>{{ data.nombre }}</span>
+                  </v-card-title>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-card outlined elevation="3" tile height="100%">
+              <v-card-title>
+                Producto [CTRL+A]
+                <v-chip color="green--text" class="v-chip--active" v-if="isNew">
+                  Codigo Nuevo
+                </v-chip>
+              </v-card-title>
+              <v-card-text class="py-2">
+                <v-row>
+                  <v-col cols="12" class="py-0">
+                    <span class="subtitle">
+                      Codigo <span class="red--text">*</span>
+                    </span>
+                    <v-text-field
+                      disabled
+                      v-model="data.codigo"
+                      ref="codigo"
+                      :rules="[rules.requerido]"
+                      dense
+                      outlined
+                      prepend-icon="mdi-barcode"
+                      placeholder="Nombre"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="py-0">
+                    <span class="subtitle">
+                      Nombre <span class="red--text">*</span>
+                    </span>
+                    <v-textarea
+                      v-shortkey="['ctrl', 'a']"
+                      @shortkey.native="skEnfocarTextField('nombre')"
+                      ref="nombre"
+                      v-model="data.nombre"
+                      :rules="[rules.requerido, rules.min200]"
+                      dense
+                      outlined
+                      prepend-icon="mdi-account-circle-outline"
+                      placeholder="Nombre"
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-card outlined elevation="3" tile height="100%">
+              <v-card-title> Stock y Costo [CTRL+S]</v-card-title>
+              <v-card-text class="py-2">
+                <v-row>
+                  <v-col cols="12" class="py-0">
+                    <span class="subtitle"> Agregar Stock </span>
+                    <v-text-field
+                      v-shortkey="['ctrl', 's']"
+                      @shortkey.native="skEnfocarTextField('existencia')"
+                      ref="existencia"
+                      type="number"
+                      v-model="data.existencia_nueva"
+                      :rules="[rules.min0]"
+                      dense
+                      outlined
+                      prepend-icon="mdi-package-variant-plus"
+                      placeholder="Agregar Existencias"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="py-0">
+                    <span class="subtitle"> Costo Unitario </span>
+                    <v-text-field
+                      ref="costo"
+                      type="number"
+                      prefix="Q"
+                      v-model="data.costo"
+                      :rules="[rules.min0]"
+                      dense
+                      outlined
+                      prepend-icon="mdi-hand-coin-outline"
+                      placeholder="##.##"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="py-0">
+                    <span class="subtitle"> Caducidad </span>
+                    <v-text-field
+                      v-model="data.caducidad"
+                      ref="caducidad"
+                      type="date"
+                      dense
+                      outlined
+                      prepend-icon="mdi-calendar-outline"
+                      placeholder="Fecha de Vencimiento"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="pt-0">
+                    <span class="title"
+                      >Existencia Actual {{ data.existencia }}</span
+                    >
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-card outlined elevation="3" tile height="100%">
+              <v-card-title> Precios [CTRL+1] </v-card-title>
+              <v-card-text class="py-2">
+                <productos-precios
+                  :costo="data.costo"
+                  ref="precios"
+                  v-model="data.precios"
+                ></productos-precios>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12">
+            <div class="d-flex justify-center align-center">
+              <v-btn
+                v-shortkey="['ctrl', 'alt', 'p']"
+                @shortkey.native="procesar()"
+                large
+                color="primary"
+                outlined
+                tile
+                @click="procesar(false)"
+              >
+                <v-icon>mdi-content-save</v-icon>
+                Guardar y Regresar [CTRL+ALT+P]
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+                v-shortkey="['ctrl', 'p']"
+                @shortkey.native="procesar()"
+                large
+                color="primary"
+                tile
+                @click="procesar()"
+              >
+                <v-icon>mdi-content-save</v-icon>
+                Guardar y Agregar otro [CTRL+P]
+              </v-btn>
+            </div>
+          </v-col>
+        </v-row>
+      </v-form>
 
       <v-nice-modal v-model="saved" @go="confirmado()">
         <template v-slot:titulo> Registro Editado </template>
@@ -154,15 +251,22 @@
         <template v-slot:btn> Ok, entendido </template>
       </v-nice-modal>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>
+import ProductosPrecios from "../../../components/tienda/productos/productosPrecios.vue";
 import VNiceModal from "../../../components/tienda/generales/v-nice-modal.vue";
 export default {
-  components: { VNiceModal },
+  components: { VNiceModal, ProductosPrecios },
   mounted() {
     this.$refs.buscarCodigo.$refs.input.focus();
+    if (this.$route.query.codigo) {
+      this.data.codigo = this.$route.query.codigo;
+      this.$nextTick(() => {
+        this.skBuscar();
+      });
+    }
   },
   data: () => ({
     isLoading: false,
@@ -188,11 +292,18 @@ export default {
       min200: (v) =>
         (v && v.length <= 200) ||
         "La información no deben superar los 200 caracteres",
+      min0: (v) => v >= 0 || "El campo debe ser mayor a 0",
     },
   }),
   methods: {
-    async buscar(e) {
-      e.preventDefault();
+    skBuscarCodigo() {
+      this.$refs.buscarCodigo.$refs.input.select();
+      this.$refs.buscarCodigo.$refs.input.focus();
+    },
+    async skBuscar(e) {
+      if (e) {
+        e.preventDefault();
+      }
       if (this.$refs.formCodigo.validate()) {
         this.isLoading = true;
         this.$axios
@@ -202,6 +313,13 @@ export default {
             this.data = result.data;
             this.isNew = result.data.nombre == "";
             this.isFound = true;
+            if (this.isNew) {
+              this.$nextTick(() => {
+                this.$refs.nombre.$refs.input.focus();
+              });
+            } else {
+              this.$refs.existencia.$refs.input.focus();
+            }
           })
           .catch((err) => {
             //this.error.msg = "Usuario no encontrado";
@@ -212,32 +330,44 @@ export default {
           });
       }
     },
+    skLimpiar() {
+      this.data.codigo = "";
+      this.isLoading = false;
+      this.isNew = false;
+      this.isFound = false;
+      this.$refs.buscarCodigo.$refs.input.focus();
+    },
+    skEnfocarTextField(n) {
+      this.$refs[n].$refs.input.select();
+      this.$refs[n].$refs.input.focus();
+    },
+
     confirmar() {
       if (this.$refs.form.validate()) {
         this.procesar();
       }
     },
     async procesar() {
-      this.isLoading = true;
-
-      await this.$axios
-        .put("/usuarios/" + this.id, this.data)
-        .then((result) => {
-          console.log(result.data);
-          this.saved = true;
-        })
-        .catch((err) => {
-          let errores = err.response.data.errors;
-          for (const key in errores) {
-            for (const error in errores[key]) {
-              this.error.msg = "• " + errores[key][error] + "<br>";
+      if (this.$refs.formProducto.validate()) {
+        this.isLoading = true;
+        await this.$axios
+          .post("/productos", this.data)
+          .then((result) => {
+            console.log(result.data);
+            //this.saved = true;
+          })
+          .catch((err) => {
+            let errores = err.response.data.errors;
+            for (const key in errores) {
+              for (const error in errores[key]) {
+                this.error.msg = "• " + errores[key][error] + "<br>";
+              }
             }
-          }
 
-          this.error.status = true;
-        });
-
-      this.isLoading = false;
+            this.error.status = true;
+          });
+        this.isLoading = false;
+      }
     },
     confirmado() {
       this.$router.go(-1);

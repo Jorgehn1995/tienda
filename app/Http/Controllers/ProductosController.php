@@ -41,9 +41,22 @@ class ProductosController extends Controller
                 "nombre" => "",
                 "costo" => 0,
                 "existencia" => 0,
-                "caducidad" => ""
+                "existencia_nueva" => 0,
+                "caducidad" => "",
+                "precios" => [
+                    [
+                        "cantidad" => 1,
+                        "nombre" => "Unidad",
+                        "precio" => "",
+                    ]
+                ]
             ];
         }
         return $producto;
+    }
+    public function crear(Request $request)
+    {
+
+        return $request->all();
     }
 }
