@@ -55,6 +55,7 @@
                   color=" cursor-pointer"
                   outlined
                   :elevation="isSelected(item[itemID]) || hover ? 3 : 0"
+                height="100%"
                 >
                   <slot
                     name="item"

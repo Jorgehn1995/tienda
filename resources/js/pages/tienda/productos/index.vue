@@ -53,7 +53,7 @@
                   <v-options :title="item.nombre">
                     <template v-slot:options>
                       <v-list-item
-                        :to="'/tienda/productos/editar?id=' + item.idusuario"
+                        :to="'/tienda/productos/editar?codigo=' + item.codigo"
                       >
                         <v-list-item-title>Editar</v-list-item-title>
                       </v-list-item>
@@ -71,33 +71,63 @@
                 <v-card
                   elevation="0"
                   class="rounded-lg"
-                  :to="'tienda/productos/' + item.idcliente"
+                  :to="'/tienda/productos/editar?codigo=' + item.codigo"
                   :ripple="false"
                 >
                   <v-list class="pt-0">
                     <v-list-item>
                       <v-list-item-content class="pt-0">
                         <v-list-item-subtitle>
-                          <v-icon left small>mdi-account-circle-outline</v-icon>
-                          {{ item.usuario }}
+                          <v-icon left small>mdi-package-variant-closed</v-icon>
+                          {{ item.existencia }} unidades en existencia
                         </v-list-item-subtitle>
                         <v-list-item-subtitle>
-                          <v-icon left small>mdi-phone-outline</v-icon>
-                          {{ item.telefono }}
-                        </v-list-item-subtitle>
-                        <v-list-item-subtitle>
-                          <v-chip color="green--text" class="v-chip--active" small v-if="item.tipo==1">
-                            <v-icon small left>mdi-shield-key-outline</v-icon>
-                            Administrador
-                          </v-chip>
-                          <v-chip color="blue--text" class="v-chip--active" small v-else>
-                            <v-icon small left>mdi-shield-key-outline</v-icon>
-                            Vendedor
-                          </v-chip>
+                          <v-icon left small>mdi-text-box-outline</v-icon>
+                          Q{{ item.costo }} costo
                         </v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
+                  <v-card-text>
+                    <v-card v-for="precio in item.precios" outlined tile>
+                      <v-card-text>
+                        <v-row>
+                          <v-col
+                            cols="12"
+                            class="d-flex justify-center align-center"
+                          >
+                            <div
+                              class="
+                                d-flex
+                                flex-column
+                                justify-center
+                                align-center
+                              "
+                            >
+                              <span class="text-capitalize">
+                                {{ precio.cantidad }} Unidades
+                              </span>
+                              <span class="headline black--text">
+                                <div v-if="precio.nombre == 'Unidad'">
+                                  <span class="subtitle">Unidad</span> Q{{ precio.precio }}
+                                </div>
+                                <div v-else>
+                                  <span v-if="precio.nombre">
+                                    {{ precio.nombre }} por Q{{ precio.precio }}
+                                  </span>
+                                  <span v-else>
+                                    {{ precio.cantidad }} por Q{{
+                                      precio.precio
+                                    }}
+                                  </span>
+                                </div>
+                              </span>
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                    </v-card>
+                  </v-card-text>
                 </v-card>
               </template>
             </t-listar>

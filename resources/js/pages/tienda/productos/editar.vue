@@ -87,7 +87,7 @@
               </v-row>
             </v-card>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="3">
             <v-card outlined elevation="3" tile height="100%">
               <v-card-title>
                 Producto [CTRL+A]
@@ -132,7 +132,7 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="3">
             <v-card outlined elevation="3" tile height="100%">
               <v-card-title> Stock y Costo [CTRL+S]</v-card-title>
               <v-card-text class="py-2">
@@ -167,7 +167,7 @@
                       :rules="[rules.min0]"
                       dense
                       outlined
-                      prepend-icon="mdi-hand-coin-outline"
+                      prepend-icon="mdi-text-box-outline"
                       placeholder="##.##"
                     ></v-text-field>
                   </v-col>
@@ -187,7 +187,7 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="6">
             <v-card outlined elevation="3" tile height="100%">
               <v-card-title> Precios [CTRL+1] </v-card-title>
               <v-card-text class="py-2">
@@ -293,7 +293,7 @@ export default {
       min200: (v) =>
         (v && v.length <= 200) ||
         "La información no deben superar los 200 caracteres",
-      min0: (v) => v >= 0 || "El campo debe ser mayor a 0",
+      min0: (v) => v >= 0 && v<=10000 || "El campo estas entre 0 y 10000",
     },
   }),
   methods: {
@@ -320,6 +320,7 @@ export default {
               });
             } else {
               this.$nextTick(() => {
+                this.$refs.existencia.$refs.input.select();
                 this.$refs.existencia.$refs.input.focus();
               });
             }

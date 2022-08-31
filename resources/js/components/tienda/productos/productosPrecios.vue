@@ -5,7 +5,7 @@
 
     <div v-for="(precio, index) in precios">
       <v-row dense>
-        <v-col cols="5" class="py-0">
+        <v-col cols="3" class="py-0">
           <span class="subtitle">
             Cantidad de Unidades <span class="red--text">*</span>
           </span>
@@ -16,7 +16,10 @@
             v-model="precios[index].cantidad"
             :rules="[rules.min1]"
             @keyup="renombrarPrecio(index)"
-            :hint="'Costo Q' + calcularCosto(precios[index])"
+            :hint="
+              'Precio Normal: Q' +
+              (precios[index].cantidad || 0) * precios[0].precio
+            "
             persistent-hint
             dense
             outlined
@@ -24,13 +27,12 @@
             placeholder="###"
           ></v-text-field>
         </v-col>
-        <v-col cols="6" class="py-0">
+        <v-col cols="4" class="py-0">
           <span class="subtitle">
             Precio
             <span v-if="index > 0">
               <strong>
-                (N Q
-                {{ (precios[index].cantidad || 0) * precios[0].precio }})
+                {{ "Costo Q" + calcularCosto(precios[index]) }}
               </strong>
             </span>
             <span class="red--text">*</span>
@@ -46,6 +48,18 @@
             outlined
             prefix="Q"
             placeholder="00.00"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="4" class="py-0">
+          <span class="subtitle"> Nombre Precio</span>
+          <v-text-field
+            :ref="'nombre' + index"
+            v-model="precios[index].nombre"
+            persistent-hint
+            dense
+            outlined
+            prepend-icon="mdi-card-text-outline"
+
           ></v-text-field>
         </v-col>
 
@@ -158,7 +172,7 @@ export default {
       return (this.costo || 0) * (p.cantidad || 0);
     },
     calcularGanancia(p) {
-      let precio = p.precio
+      let precio = p.precio;
       return precio - this.calcularCosto(p);
     },
   },

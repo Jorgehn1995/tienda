@@ -4,8 +4,6 @@
     class="d-flex flex-grow-1"
     @shortkey="onKeyup"
   >
-
-
     <!-- Toolbar -->
     <v-app-bar
       app
@@ -14,53 +12,28 @@
       :light="toolbarTheme === 'light'"
       :dark="toolbarTheme === 'dark'"
     >
-      <v-card class="flex-grow-1 d-flex" :class="[isToolbarDetached ? 'pa-1 mt-3 mx-1' : 'pa-0 ma-0']" :flat="!isToolbarDetached">
-
+      <v-card
+        class="flex-grow-1 d-flex"
+        :class="[isToolbarDetached ? 'pa-1 mt-3 mx-1' : 'pa-0 ma-0']"
+        :flat="!isToolbarDetached"
+      >
         <div class="d-flex flex-grow-1 align-center">
-
-          <!-- search input mobile -->
-          <v-text-field
-            v-if="showSearch"
-            append-icon="mdi-close"
-            placeholder="Search"
-            prepend-inner-icon="mdi-magnify"
-            hide-details
-            solo
-            flat
-            autofocus
-            @click:append="showSearch = false"
-          ></v-text-field>
-
-          <div v-else class="d-flex flex-grow-1 align-center">
-            <v-app-bar-nav-icon v-if="false" @click.stop="drawer = !drawer" class="primary"></v-app-bar-nav-icon>
-            <v-card elevation="0"  to="/tienda" :ripple="false">
-                <div class="title font-weight-bold text-uppercase primary--text">{{ product.name }}</div>
+          <div class="d-flex flex-grow-1 align-center">
+            <v-app-bar-nav-icon
+              v-if="false"
+              @click.stop="drawer = !drawer"
+              class="primary"
+            ></v-app-bar-nav-icon>
+            <v-card elevation="0" to="/tienda" :ripple="false">
+              <div class="title font-weight-bold text-uppercase primary--text">
+                {{ product.name }}
+              </div>
             </v-card>
 
             <v-spacer class="d-none d-lg-block"></v-spacer>
 
-            <!-- search input desktop -->
-            <v-text-field
-              ref="search"
-              class="mx-1 hidden-xs-only"
-              :placeholder="$t('menu.search')"
-              prepend-inner-icon="mdi-magnify"
-              hide-details
-              filled
-              rounded
-              dense
-            ></v-text-field>
-
-            <v-spacer class="d-block d-sm-none"></v-spacer>
-
-            <v-btn class="d-block d-sm-none" icon @click="showSearch = true">
-              <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-
-
-            <toolbar-apps />
-
-
+            <v-btn v-shortkey="['f1']" @shortkey="to('/tienda/productos/verificador')" > Verificador [F1] </v-btn>
+            <v-btn> Vender [F4] </v-btn>
 
             <toolbar-user />
           </div>
@@ -70,29 +43,22 @@
 
     <v-main>
       <slot></slot>
-
-      <v-footer app inset>
-        <v-spacer></v-spacer>
-        <div class="overline">
-          Built with <v-icon small color="pink">mdi-heart</v-icon> <a class="text-decoration-none" href="https://indielayer.com" target="_blank">@indielayer</a>
-        </div>
-      </v-footer>
     </v-main>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 
 // navigation menu configurations
-import config from '../configs'
+import config from "../configs";
 
-import MainMenu from '../components/navigation/MainMenu'
-import ToolbarUser from '../components/toolbar/ToolbarUser'
-import ToolbarApps from '../components/toolbar/ToolbarApps'
-import ToolbarLanguage from '../components/toolbar/ToolbarLanguage'
-import ToolbarCurrency from '../components/toolbar/ToolbarCurrency'
-import ToolbarNotifications from '../components/toolbar/ToolbarNotifications'
+import MainMenu from "../components/navigation/MainMenu";
+import ToolbarUser from "../components/toolbar/ToolbarUser";
+import ToolbarApps from "../components/toolbar/ToolbarApps";
+import ToolbarLanguage from "../components/toolbar/ToolbarLanguage";
+import ToolbarCurrency from "../components/toolbar/ToolbarCurrency";
+import ToolbarNotifications from "../components/toolbar/ToolbarNotifications";
 
 export default {
   components: {
@@ -101,25 +67,34 @@ export default {
     ToolbarApps,
     ToolbarLanguage,
     ToolbarCurrency,
-    ToolbarNotifications
+    ToolbarNotifications,
   },
   data() {
     return {
       drawer: null,
       showSearch: false,
 
-      navigation: config.navigation
-    }
+      navigation: config.navigation,
+    };
   },
   computed: {
-    ...mapState('app', ['product', 'isContentBoxed', 'menuTheme', 'toolbarTheme', 'isToolbarDetached'])
+    ...mapState("app", [
+      "product",
+      "isContentBoxed",
+      "menuTheme",
+      "toolbarTheme",
+      "isToolbarDetached",
+    ]),
   },
   methods: {
     onKeyup(e) {
-      this.$refs.search.focus()
+      this.$refs.search.focus();
+    },
+    to(e){
+        this.$router.push(e);
     }
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

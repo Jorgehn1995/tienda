@@ -106,4 +106,12 @@ export default [
             layout: "autorizado",
         },
     },
+    {
+        path: "/tienda/productos/verificador",
+        name: "",
+        component: () => import("@/pages/tienda/productos/verificador.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
 ];
