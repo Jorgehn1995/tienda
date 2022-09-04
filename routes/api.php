@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\ImpresionesController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('/imprimir', [ImpresionesController::class, 'imprimir'])->name('api.productos.index');
 Route::post('/login', [LoginController::class, 'login'])->name('api.login');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -57,4 +58,12 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/productos', [ProductosController::class, 'crear'])->name('api.productos.crear');
     Route::put('/productos/{codigo}', [ProductosController::class, 'editar'])->name('api.productos.editar');
     Route::delete('/productos/{codigo}', [ProductosController::class, 'eliminar'])->name('api.productos.eliminar');
+
+    /**
+     * Precios
+     */
+    Route::post('/impresiones/precios', [ImpresionesController::class, 'precio'])->name('api.impresiones.precios');
+    Route::post('/impresiones/barcode', [ImpresionesController::class, 'barcode'])->name('api.impresiones.barcode');
+
+
 });
