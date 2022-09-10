@@ -1,120 +1,122 @@
 <template>
   <div>
     <v-row dense no-gutters>
-      <v-col cols="12">
+      <v-col cols="12" md="8">
         <v-card tile elevation="0">
           <v-card-text>
-            <v-row>
-              <v-col cols="12" md="4">
-                <v-list-item>
-                  <v-list-item-subtitle class="text-h6"
-                    >Subtotal</v-list-item-subtitle
-                  >
-                  <v-list-item-title class="align-right text-h3"
-                    >0.00</v-list-item-title
-                  >
-                </v-list-item>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-list-item>
-                  <v-list-item-subtitle class="text-h6"
-                    >Descuento</v-list-item-subtitle
-                  >
-                  <v-list-item-title class="align-right text-h3"
-                    >0.00</v-list-item-title
-                  >
-                </v-list-item>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-list-item>
-                  <v-list-item-subtitle class="align-right text-h6"
-                    >TOTAL</v-list-item-subtitle
-                  >
-                  <v-list-item-title class="align-right">
-                    <div class="text-h1">69.00</div>
-                  </v-list-item-title>
-                </v-list-item>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card tile>
-          <v-card-text>
             <v-list-item>
-              <v-list-item-subtitle class="align-right text-h6"
-                >Cliente [CTRL+C]:</v-list-item-subtitle
-              >
+              <v-list-item-subtitle class="align-right text-h6">
+                Cliente [CTRL+C]:
+              </v-list-item-subtitle>
               <v-list-item-title class="align-right">
                 <div class="text-subtitle-1">C/F</div>
               </v-list-item-title>
             </v-list-item>
           </v-card-text>
         </v-card>
-        <productos-buscador :elevation="0"></productos-buscador>
-      </v-col>
-      <v-col cols="12" md="6">
+        <buscar-para-vender @producto="agregarProducto"></buscar-para-vender>
         <v-card tile elevation="0">
           <v-card-text>
             <v-card outlined tile>
               <v-card-text>
-                <v-row dense>
-                  <v-col cols="12" md="4"> Producto - Codigo </v-col>
-                  <v-col cols="12" md="4"> Cantidad x Precio </v-col>
-                  <v-col cols="12" md="4"> Total </v-col>
+                <v-row dense no-gutters>
+                  <v-col cols="12" md="3"> Producto - Codigo </v-col>
+                  <v-col cols="12" md="3"> Precio - Presentación </v-col>
+                  <v-col cols="12" md="3"> Cantidad </v-col>
+                  <v-col cols="12" md="3"> Total </v-col>
                 </v-row>
               </v-card-text>
             </v-card>
-            <v-card outlined tile>
-              <v-card-text class="text-h5">
+            <v-card outlined tile v-for="(item, index) in carrito">
+              <v-card-text class="text-h6 py-1">
                 <v-row dense>
-                  <v-col cols="12" md="4">
-                    Pepsi 3L <br />
-                    <span class="text-subtitle-1">684571232455</span>
+                  <v-col cols="12" md="3">
+                    {{ item.nombre }} <br />
+                    <span class="text-subtitle-1">{{ item.codigo }}</span>
                   </v-col>
-                  <v-col cols="12" md="4"> 1 x Q15.00 </v-col>
-                  <v-col cols="12" md="4"> Q15.00 </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-            <v-card outlined tile>
-              <v-card-text class="text-h5">
-                <v-row dense>
-                  <v-col cols="12" md="4">
-                    Aceite Ideal 1L <br />
-                    <span class="text-subtitle-1">7844561254487</span>
+                  <v-col cols="12" md="3">
+                     {{ item.precio }}<br />
+                    <span class="text-subtitle-1">Unidad</span>
                   </v-col>
-                  <v-col cols="12" md="4"> 2 x Q27.00 </v-col>
-                  <v-col cols="12" md="4"> Q54.00 </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-            <v-card outlined tile>
-              <v-card-text class="text-h5">
-                <v-row dense>
-                  <v-col cols="12" md="4">
-                    Azucar 5L <br />
-                    <span class="text-subtitle-1">974584123</span>
+                  <v-col cols="12" md="3">
+                    {{ item.cantidad }}
                   </v-col>
-                  <v-col cols="12" md="4"> 1 x Q24.00 </v-col>
-                  <v-col cols="12" md="4" class="text-h6"> Q24.00 </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-            <v-card outlined tile>
-              <v-card-text class="text-h5">
-                <v-row dense>
-                  <v-col cols="12" md="4">
-                    Chetos 800g <br />
-                    <span class="text-subtitle-1">58745236978</span>
+                  <v-col cols="12" md="3">
+                    Q {{ item.cantidad * item.precio }}
                   </v-col>
-                  <v-col cols="12" md="4"> 1 x Q3.00 </v-col>
-                  <v-col cols="12" md="4"> Q3.00 </v-col>
                 </v-row>
               </v-card-text>
             </v-card>
           </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4" height="100%">
+        <v-card tile>
+          <v-list>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Subtotal
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                Q {{ subtotal }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Descuento
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right">
+                <v-text-field
+                  v-model="descuento"
+                  outlined
+                  min="0"
+                  type="number"
+                  prefix="Q"
+                  placeholder="##.##"
+                  class="text-h6 elevation-0 grey--text right-input"
+                ></v-text-field>
+              </v-list-item-title>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-list-item-subtitle class="align-right text-h6">
+                TOTAL
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right">
+                <div class="d-flex flex-column">
+                  <div>
+                    <span class="text-h4">Q</span>
+                    <span class="green--text text--darken-2 text-h2">
+                      {{ subtotal - descuento }}
+                    </span>
+                  </div>
+                </div>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <div class="mx-4">
+            <v-btn elevation="0" depressed block large color="green" dark>
+              Procesar Venta
+            </v-btn>
+          </div>
+          <v-list>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Efectivo
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6">
+                0.00
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Cambio
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6">
+                0.00
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
         </v-card>
       </v-col>
     </v-row>
@@ -122,25 +124,20 @@
 </template>
 
 <script>
-import ProductosBuscador from "../../../components/tienda/productos/productosBuscador.vue";
+import BuscarParaVender from "../../../components/tienda/productos/buscarParaVender.vue";
+
 import ProductosPrecios from "../../../components/tienda/productos/productosPrecios.vue";
 import VNiceModal from "../../../components/tienda/generales/v-nice-modal.vue";
 export default {
-  components: { VNiceModal, ProductosPrecios, ProductosBuscador },
-  mounted() {
-    this.$refs.buscarCodigo.$refs.input.focus();
-    if (this.$route.query.codigo) {
-      this.data.codigo = this.$route.query.codigo;
-      this.$nextTick(() => {
-        this.skBuscar();
-      });
-    }
-  },
+  components: { VNiceModal, ProductosPrecios, BuscarParaVender },
+  mounted() {},
   data: () => ({
     isLoading: false,
     isNew: false,
     isFound: false,
     saved: false,
+    carrito: [],
+    descuento: 0,
     data: {
       idproducto: 0,
       codigo: "",
@@ -165,6 +162,19 @@ export default {
     },
   }),
   methods: {
+    agregarProducto(e) {
+      let codCarrito = e.carrito;
+
+      let index = this.carrito.findIndex((e) => e.carrito == codCarrito);
+
+      if (index >= 0) {
+        this.carrito[index].cantidad = this.carrito[index].cantidad + 1;
+        console.log(this.carrito[index].cantidad%3);
+      } else {
+        this.carrito.unshift(e);
+      }
+    },
+
     skBuscarCodigo() {
       this.$refs.buscarCodigo.$refs.input.select();
       this.$refs.buscarCodigo.$refs.input.focus();
@@ -252,9 +262,21 @@ export default {
     id() {
       return this.$route.query.id || 0;
     },
+    subtotal() {
+      let t = 0;
+
+      this.carrito.forEach((e) => {
+        t += e.cantidad * e.precio;
+      });
+
+      return t;
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.right-input >>> input {
+  text-align: right;
+}
 </style>

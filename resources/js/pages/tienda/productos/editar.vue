@@ -96,8 +96,8 @@
                 </v-chip>
               </v-card-title>
               <v-card-text class="py-2">
-                <v-row>
-                  <v-col cols="12" class="py-0">
+                <v-row dense>
+                  <v-col cols="12" md="6" class="py-0">
                     <span class="subtitle">
                       Codigo <span class="red--text">*</span>
                     </span>
@@ -110,6 +110,24 @@
                       outlined
                       prepend-icon="mdi-barcode"
                       placeholder="Nombre"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6" class="py-0">
+                    <span class="subtitle">
+                      Precio Unitario <span class="red--text">*</span>
+                    </span>
+                    <v-text-field
+                      ref="precioUnitario"
+                      v-shortkey="['ctrl', 'd']"
+                      @shortkey.native="skEnfocarTextField('precioUnitario')"
+                      type="number"
+                      prefix="Q"
+                      v-model="data.precio"
+                      :rules="[rules.min0]"
+                      dense
+                      outlined
+                      prepend-icon="mdi-text-box-outline"
+                      placeholder="##.##"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" class="py-0">
@@ -136,7 +154,7 @@
             <v-card outlined elevation="3" tile height="100%">
               <v-card-title> Stock y Costo [CTRL+S]</v-card-title>
               <v-card-text class="py-2">
-                <v-row>
+                <v-row dense>
                   <v-col cols="12" class="py-0">
                     <span class="title"
                       >Existencia Actual {{ data.existencia }}</span
@@ -189,10 +207,12 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-card outlined elevation="3" tile height="100%">
-              <v-card-title> Precios [CTRL+1] </v-card-title>
+              <v-card-title> Descuentos Especiales [CTRL+D] </v-card-title>
+
               <v-card-text class="py-2">
                 <productos-precios
                   :costo="data.costo"
+                  :precio_unitario="data.precio"
                   ref="precios"
                   v-model="data.precios"
                 ></productos-precios>
@@ -202,7 +222,7 @@
           <v-col cols="12">
             <div class="d-flex justify-center align-center">
               <v-btn
-                v-shortkey="['ctrl', 'alt', 'p']"
+                v-shortkey="['ctrl', 'alt', 'enter']"
                 @shortkey.native="procesar()"
                 large
                 color="primary"
@@ -215,7 +235,7 @@
               </v-btn>
               <v-spacer></v-spacer>
               <v-btn
-                v-shortkey="['ctrl', 'p']"
+                v-shortkey="['ctrl', 'enter']"
                 @shortkey.native="procesar()"
                 large
                 color="primary"
@@ -280,6 +300,8 @@ export default {
       costo: 0,
       caducidad: "",
       existencia: 0,
+      precio: 0,
+      precios: [],
     },
     error: {
       status: false,
@@ -293,7 +315,7 @@ export default {
       min200: (v) =>
         (v && v.length <= 200) ||
         "La información no deben superar los 200 caracteres",
-      min0: (v) => v >= 0 && v<=10000 || "El campo estas entre 0 y 10000",
+      min0: (v) => (v >= 0 && v <= 10000) || "El campo estas entre 0 y 10000",
     },
   }),
   methods: {

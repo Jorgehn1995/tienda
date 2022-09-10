@@ -1,24 +1,20 @@
 <template>
   <div>
     <div class="d-flex flex-column justify-center align-center">
-      <span class="subtitle-1" v-if="precio.cantidad == 1 && !precio.nombre">
+      <span class="subtitle-1" v-if="cantidad == 1 && !nombre">
         <strong>Precio Unitario</strong>
       </span>
       <span class="text-h5" v-else>
-        <strong>{{ precio.nombre || "N/E" }}</strong>
+        <strong>{{ nombre || "N/E" }}</strong>
       </span>
       <div style="" class="d-flex d-flex-row justify-start">
-        <div class="text-h3 black--text">{{ numero(precio.precio) }}</div>
-        <span class="text-h5 font-weight-black"
-          >.{{ decimales(precio.precio) }}</span
-        >
+        <div class="text-h3 black--text">{{ numero(precio) }}</div>
+        <span class="text-h5 font-weight-black">.{{ decimales(precio) }}</span>
       </div>
 
       <span class="subtitle-1">
-        <strong v-if="precio.cantidad == 1"
-          >{{ precio.cantidad }} Unidad</strong
-        >
-        <strong v-else>{{ precio.cantidad }} Unidades</strong>
+        <strong v-if="cantidad == 1">{{ cantidad }} Unidad</strong>
+        <strong v-else>{{ cantidad }} Unidades</strong>
       </span>
     </div>
   </div>
@@ -27,9 +23,17 @@
 <script>
 export default {
   props: {
+    nombre: {
+      type: [Number, String],
+      default: "Precio Unitario",
+    },
     precio: {
-      type: Object,
-      default: () => ({}),
+      type: [Number, String],
+      default: 0,
+    },
+    cantidad: {
+      type: [Number, String],
+      default: 0,
     },
   },
   methods: {

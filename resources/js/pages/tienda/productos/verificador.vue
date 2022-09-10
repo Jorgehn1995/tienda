@@ -35,6 +35,44 @@
               {{ item.existencia }} unidades disponibles
             </span>
             <v-row dense>
+              <v-col cols="12">
+                <v-card outlined class="mt-1" tile>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                      rounded
+                      large
+                      text
+                      outlined
+                      color="primary"
+                      @click="
+                        imprimirPrecio(item, {
+                          nombre: 'Unidad',
+                          cantidad: 1,
+                          precio: item.precio,
+                        })
+                      "
+                    >
+                      <v-icon>mdi-printer-outline</v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                  <v-card-text class="mx-0 mt-n6">
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        class="d-flex justify-center align-center"
+                      >
+                        <productos-mostrar-precio
+                          :cantidad="1"
+                          nombre="Precio Unitario"
+                          :precio="item.precio"
+                        ></productos-mostrar-precio>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
+              </v-col>
               <v-col cols="12" v-for="precio in item.precios">
                 <v-card outlined class="mt-1" tile>
                   <v-card-actions>
@@ -58,7 +96,9 @@
                         class="d-flex justify-center align-center"
                       >
                         <productos-mostrar-precio
-                          :precio="precio"
+                          :nombre="precio.nombre"
+                          :cantidad="precio.cantidad"
+                          :precio="precio.precio"
                         ></productos-mostrar-precio>
                       </v-col>
                     </v-row>

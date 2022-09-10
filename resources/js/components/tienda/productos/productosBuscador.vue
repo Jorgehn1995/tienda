@@ -2,7 +2,7 @@
   <div>
     <div class="">
       <v-row dense>
-        <v-col cols="12" class="mb-1">
+        <v-col cols="12" >
           <v-form ref="formCodigo" @submit="skBuscarCodigo">
             <v-card outlined :elevation="elevation" tile>
               <v-card-text>
@@ -119,6 +119,7 @@ export default {
     skEnfocarCodigo() {
       this.$refs.buscarCodigo.$refs.input.select();
       this.$refs.buscarCodigo.$refs.input.focus();
+      this.search="";
     },
     async skBuscarCodigo(e) {
       if (e) {

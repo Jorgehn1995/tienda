@@ -16,7 +16,7 @@ class ProductosController extends Controller
 
 
         if ($request->query("codigo")) {
-            $producto=Producto::where("codigo",$request->query("codigo"))->with("precios")->first();
+            $producto = Producto::where("codigo", $request->query("codigo"))->with("precios")->first();
             return $producto;
         } else {
             $query = Producto::query();
@@ -51,13 +51,6 @@ class ProductosController extends Controller
                 "existencia" => 0,
                 "existencia_nueva" => 0,
                 "caducidad" => "",
-                "precios" => [
-                    [
-                        "cantidad" => 1,
-                        "nombre" => "Unidad",
-                        "precio" => "",
-                    ]
-                ]
             ];
         }
         $producto->existencia_nueva = 0;
@@ -93,18 +86,22 @@ class ProductosController extends Controller
             $producto->existencia = $producto->existencia + $request->existencia_nueva;
         }
         $producto->costo = $request->costo;
+        $producto->precio = $request->precio;
         $producto->caducidad = $request->caducidad;
         $producto->save();
 
         $producto->precios()->delete();
 
-        foreach ($request->precios as $key => $p) {
-            $precio = new Precio();
-            $precio->idproducto = $producto->idproducto;
-            $precio->cantidad = $p["cantidad"];
-            $precio->precio = $p["precio"];
-            $precio->nombre=$p["nombre"];
-            $precio->save();
+        if ($request->precios) {
+            foreach ($request->precios as $key => $p) {
+                $precio = new Precio();
+                $precio->idproducto = $producto->idproducto;
+                $precio->cantidad = $p["cantidad"];
+                $precio->precio = $p["precio"];
+                $precio->nombre = $p["nombre"];
+                $precio->descuento = $p["descuento"];
+                $precio->save();
+            }
         }
         return "Producto Guardado";
     }
