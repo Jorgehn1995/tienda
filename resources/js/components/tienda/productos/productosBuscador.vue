@@ -4,7 +4,7 @@
       <v-row dense>
         <v-col cols="12" class="mb-1">
           <v-form ref="formCodigo" @submit="skBuscarCodigo">
-            <v-card outlined elevation="3" tile>
+            <v-card outlined :elevation="elevation" tile>
               <v-card-text>
                 <v-row dense>
                   <v-col cols="12" class="pb-0">
@@ -12,13 +12,14 @@
                       height="60"
                       style="font-size: 25px"
                       label="Código de Barras o Nombre del Producto [CTRL+Q]"
+                      outlined
                       v-shortkey="['ctrl', 'q']"
                       @shortkey.native="skEnfocarCodigo"
                       v-model="search"
                       :rules="[rules.requerido]"
                       ref="buscarCodigo"
                       prepend-icon="mdi-barcode"
-                      placeholder="Ingrese el Codigo"
+                      placeholder="Ingrese el Codigo [CTRL+Q]"
                       @keypress.enter="skBuscarCodigo"
                     ></v-text-field>
                   </v-col>
@@ -85,6 +86,11 @@ import ProductosPrecios from "../../../components/tienda/productos/productosPrec
 import VNiceModal from "../../../components/tienda/generales/v-nice-modal.vue";
 export default {
   components: { VNiceModal, ProductosPrecios },
+  props: {
+    elevation: {
+      default: 3,
+    },
+  },
   mounted() {
     this.$refs.buscarCodigo.$refs.input.focus();
     if (this.$route.query.codigo) {

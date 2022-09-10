@@ -32,8 +32,8 @@
 
             <v-spacer class="d-none d-lg-block"></v-spacer>
 
-            <v-btn v-shortkey="['f1']" @shortkey="to('/tienda/productos/verificador')" > Verificador [F1] </v-btn>
-            <v-btn> Vender [F4] </v-btn>
+            <v-btn v-shortkey="['f1']" @shortkey="to('/tienda/productos/verificador')" to="/tienda/productos/verificador" > Verificador [F1] </v-btn>
+            <v-btn v-shortkey="['f4']" @shortkey="to('/tienda/vender')" to="/tienda/vender" > Vender [F4] </v-btn>
 
             <toolbar-user />
           </div>

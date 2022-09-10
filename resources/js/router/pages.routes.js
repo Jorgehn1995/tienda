@@ -114,4 +114,15 @@ export default [
             layout: "autorizado",
         },
     },
+    /**
+     * VENDER
+     */
+     {
+        path: "/tienda/vender",
+        name: "",
+        component: () => import("@/pages/tienda/vender/index.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
 ];
