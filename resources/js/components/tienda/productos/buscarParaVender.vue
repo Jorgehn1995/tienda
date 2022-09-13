@@ -24,6 +24,9 @@ export default {
   }),
   methods: {
     agregarProducto(e) {
+      if (!e) {
+        return "";
+      }
       let p = JSON.parse(JSON.stringify(this.producto));
 
       p.codigo = e.codigo;

@@ -214,9 +214,9 @@ class ImpresionesController extends Controller
                     //$printer->textRaw(" \t");
                     //$printer->textRaw("Q$detalle->precio  $detalle->total \n");
                     //$printer->text("$detalle->total \n");
-
-                    $printer->text("$detalle->nombre_producto\n");
-                    $line = sprintf('%-13.40s %3.0f %-3.40s %9.40s %-2.40s %13.40s', $detalle->codigo, $detalle->cantidad, "x", "Q " . $detalle->precio, "", "Q ".$detalle->total);
+                    $nombre=substr($detalle->nombre_producto, 0, 25)." ".$detalle->codigo;
+                    $printer->text("$nombre\n");
+                    $line = sprintf('%-13.40s %3.0f %-3.40s %9.40s %-2.40s %13.40s', "", $detalle->cantidad, "x", "Q " . $detalle->precio, "", "Q ".$detalle->total);
                     $printer->text("$line\n");
                 }
                 if ($venta->descuento > 0) {
