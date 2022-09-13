@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ImpresionesController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\VentasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -65,5 +66,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/impresiones/precios', [ImpresionesController::class, 'precio'])->name('api.impresiones.precios');
     Route::post('/impresiones/barcode', [ImpresionesController::class, 'barcode'])->name('api.impresiones.barcode');
 
+
+    /**
+     * VENTA
+     */
+    Route::post('/ventas/vender', [VentasController::class, 'vender'])->name('api.ventas.vender');
 
 });

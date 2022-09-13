@@ -268,7 +268,7 @@
               </v-list-item-subtitle>
               <v-list-item-title class="text-right">
                 <v-text-field
-                  v-model="venta.Efectivo"
+                  v-model="venta.efectivo"
                   ref="efectivo"
                   outlined
                   min="0"
@@ -320,6 +320,8 @@ export default {
     carrito: [],
     venta: {
       cliente: 0,
+      costo: 0,
+      ganancia: 0,
       subtotal: 0,
       ofertas: 0,
       descuento: 0,
@@ -422,10 +424,13 @@ export default {
       this.venta.subtotal = 0;
       this.venta.ofertas = 0;
       this.venta.total = 0;
+      this.venta.costo = 0;
 
       this.carrito.forEach((e) => {
         this.venta.articulos += e.cantidad;
         this.venta.subtotal += e.cantidad * e.precio;
+
+        this.venta.costo += parseFloat(e.producto.costo).toFixed(2);
         e.descuentos.forEach((d) => {
           this.venta.ofertas = this.venta.ofertas + d.descuento * d.cantidad;
         });
@@ -434,32 +439,23 @@ export default {
         this.venta.subtotal -
         (this.venta.ofertas || 0) +
         (this.venta.descuento || 0);
+
+      this.venta.ganancia = this.total - this.venta.costo;
     },
     async procesar() {
-      console.log("hola hola");
-      return;
-      if (this.$refs.formProducto.validate()) {
-        this.isLoading = true;
-        await this.$axios
-          .post("/productos", this.data)
-          .then((result) => {
-            this.saved = true;
-            setTimeout(() => {
-              this.saved = false;
-            }, 200);
-          })
-          .catch((err) => {
-            let errores = err.response.data.errors;
-            for (const key in errores) {
-              for (const error in errores[key]) {
-                this.error.msg = "• " + errores[key][error] + "<br>";
-              }
-            }
-
-            this.error.status = true;
-          });
-        this.isLoading = false;
-      }
+      this.isProcesed = true;
+      await this.$axios
+        .post("/ventas/vender", {
+          venta: this.venta,
+          carrito: this.carrito,
+        })
+        .then((result) => {
+          console.log("guardado");
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+      this.isProcesed = false;
     },
   },
   computed: {
