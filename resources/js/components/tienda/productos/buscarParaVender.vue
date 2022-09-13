@@ -31,6 +31,8 @@ export default {
       p.cantidad = 1;
       p.precio = parseFloat(e.precio).toFixed(2);
       p.carrito = e.codigo + "-" + p.precio;
+      p.producto = e;
+      p.descuentos = [];
 
       this.$emit("producto", p);
     },

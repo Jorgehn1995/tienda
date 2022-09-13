@@ -14,7 +14,7 @@ class Producto extends Model
     public $timestamps    = true;
     public function precios()
     {
-        return $this->hasMany("App\Models\Precio", "idproducto");
+        return $this->hasMany("App\Models\Precio", "idproducto")->orderBy("cantidad","desc");
     }
 
 }

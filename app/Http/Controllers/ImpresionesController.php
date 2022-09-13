@@ -99,7 +99,7 @@ class ImpresionesController extends Controller
                 $printer->text(".$precio[1]\n");
 
                 $printer->setTextSize(1, 1);
-                $printer->text("Precio 1 $presentacion | ");
+                $printer->text("Precio x $presentacion | $unidades unidades \n");
                 //$printer->setBarcodeHeight(50);
                 //$printer->barcode("125479124785", Printer::BARCODE_CODE39);
 

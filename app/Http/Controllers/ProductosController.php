@@ -94,12 +94,17 @@ class ProductosController extends Controller
 
         if ($request->precios) {
             foreach ($request->precios as $key => $p) {
+                $precio_normal = $p["cantidad"] * $producto->precio;
+                $descuento = $precio_normal - $p["precio"];
+
                 $precio = new Precio();
                 $precio->idproducto = $producto->idproducto;
                 $precio->cantidad = $p["cantidad"];
                 $precio->precio = $p["precio"];
                 $precio->nombre = $p["nombre"];
-                $precio->descuento = $p["descuento"];
+                $precio->limite = $p["limite"];
+                $precio->fecha = $p["fecha"];
+                $precio->descuento = $descuento;
                 $precio->save();
             }
         }

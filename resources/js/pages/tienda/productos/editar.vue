@@ -87,7 +87,7 @@
               </v-row>
             </v-card>
           </v-col>
-          <v-col cols="12" md="3">
+          <v-col cols="12" md="8">
             <v-card outlined elevation="3" tile height="100%">
               <v-card-title>
                 Producto [CTRL+A]
@@ -97,7 +97,7 @@
               </v-card-title>
               <v-card-text class="py-2">
                 <v-row dense>
-                  <v-col cols="12" md="6" class="py-0">
+                  <v-col cols="12" md="2" class="py-0">
                     <span class="subtitle">
                       Codigo <span class="red--text">*</span>
                     </span>
@@ -112,7 +112,39 @@
                       placeholder="Nombre"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6" class="py-0">
+
+                  <v-col cols="12" md="4" class="py-0">
+                    <span class="subtitle">
+                      Producto <span class="red--text">*</span>
+                    </span>
+                    <v-textarea
+                      v-shortkey="['ctrl', 'a']"
+                      @shortkey.native="skEnfocarTextField('nombre')"
+                      ref="nombre"
+                      v-model="data.nombre"
+                      :rules="[rules.requerido, rules.min200]"
+                      dense
+                      outlined
+                      rows="1"
+                      prepend-icon="mdi-tag-outline"
+                      placeholder="Nombre"
+                    ></v-textarea>
+                  </v-col>
+                  <v-col cols="12" md="3" class="py-0">
+                    <span class="subtitle"> Costo Unitario </span>
+                    <v-text-field
+                      ref="costo"
+                      type="number"
+                      prefix="Q"
+                      v-model="data.costo"
+                      :rules="[rules.min0]"
+                      dense
+                      outlined
+                      prepend-icon="mdi-text-box-outline"
+                      placeholder="##.##"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="3" class="py-0">
                     <span class="subtitle">
                       Precio Unitario <span class="red--text">*</span>
                     </span>
@@ -131,36 +163,20 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" class="py-0">
-                    <span class="subtitle">
-                      Producto <span class="red--text">*</span>
-                    </span>
-                    <v-textarea
-                      v-shortkey="['ctrl', 'a']"
-                      @shortkey.native="skEnfocarTextField('nombre')"
-                      ref="nombre"
-                      v-model="data.nombre"
-                      :rules="[rules.requerido, rules.min200]"
-                      dense
-                      outlined
-                      prepend-icon="mdi-tag-outline"
-                      placeholder="Nombre"
-                    ></v-textarea>
+                    <span class="title"
+                      >Existencia Actual {{ data.existencia }}</span
+                    >
                   </v-col>
                 </v-row>
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12" md="3">
+          <v-col cols="12" md="4">
             <v-card outlined elevation="3" tile height="100%">
               <v-card-title> Stock y Costo [CTRL+S]</v-card-title>
               <v-card-text class="py-2">
                 <v-row dense>
-                  <v-col cols="12" class="py-0">
-                    <span class="title"
-                      >Existencia Actual {{ data.existencia }}</span
-                    >
-                  </v-col>
-                  <v-col cols="12" class="py-0">
+                  <v-col cols="12" md="6" class="py-0">
                     <span class="subtitle"> Agregar Stock </span>
                     <v-text-field
                       v-shortkey="['ctrl', 's']"
@@ -175,21 +191,8 @@
                       placeholder="Agregar Existencias"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle"> Costo Unitario </span>
-                    <v-text-field
-                      ref="costo"
-                      type="number"
-                      prefix="Q"
-                      v-model="data.costo"
-                      :rules="[rules.min0]"
-                      dense
-                      outlined
-                      prepend-icon="mdi-text-box-outline"
-                      placeholder="##.##"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" class="py-0">
+
+                  <v-col cols="12" md="6" class="py-0">
                     <span class="subtitle"> Caducidad </span>
                     <v-text-field
                       v-model="data.caducidad"
@@ -205,7 +208,7 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12">
             <v-card outlined elevation="3" tile height="100%">
               <v-card-title> Descuentos Especiales [CTRL+D] </v-card-title>
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row dense no-gutters>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="9">
         <v-card tile elevation="0">
           <v-card-text>
             <v-list-item>
@@ -20,54 +20,133 @@
             <v-card outlined tile>
               <v-card-text>
                 <v-row dense no-gutters>
-                  <v-col cols="12" md="3"> Producto - Codigo </v-col>
-                  <v-col cols="12" md="3"> Precio - Presentación </v-col>
-                  <v-col cols="12" md="3"> Cantidad </v-col>
-                  <v-col cols="12" md="3"> Total </v-col>
+                  <v-col cols="12" md="3">
+                    Producto <br />
+                    Codigo
+                  </v-col>
+                  <v-col cols="12" md="3" class="text-center"> Cantidad </v-col>
+                  <v-col cols="12" md="3" class="text-right">
+                    Precio <br />
+                    Presentación
+                  </v-col>
+
+                  <v-col cols="12" md="3" class="text-right"> Total </v-col>
                 </v-row>
               </v-card-text>
             </v-card>
-            <v-card outlined tile v-for="(item, index) in carrito">
-              <v-card-text class="text-h6 py-1">
-                <v-row dense>
-                  <v-col cols="12" md="3">
-                    {{ item.nombre }} <br />
-                    <span class="text-subtitle-1">{{ item.codigo }}</span>
-                  </v-col>
-                  <v-col cols="12" md="3">
-                     {{ item.precio }}<br />
-                    <span class="text-subtitle-1">Unidad</span>
-                  </v-col>
-                  <v-col cols="12" md="3">
-                    {{ item.cantidad }}
-                  </v-col>
-                  <v-col cols="12" md="3">
-                    Q {{ item.cantidad * item.precio }}
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
+            <div v-for="(item, index) in carrito">
+              <v-card elevation="0" tile>
+                <v-card-text class="text-h6 py-1">
+                  <v-row dense>
+                    <v-col cols="12" md="4">
+                      {{ item.nombre }} <br />
+                      <span class="text-subtitle-1">{{ item.codigo }}</span>
+                    </v-col>
+                    <v-col cols="12" md="2" class="text-center">
+                      <v-text-field
+                        type="number"
+                        class="center-input"
+                        solo
+                        v-model="item.cantidad"
+                        prepend-inner-icon="mdi-minus"
+                        append-icon="mdi-plus"
+                        style="align-text: center"
+                        @click:append="sumarCantidad(index)"
+                        @click:prepend-inner="restarCantidad(index)"
+                        readonly
+                        hide-details=""
+                      >
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3" class="text-right">
+                      Q {{ item.precio }}<br />
+                      <span class="text-subtitle-1">Unidad</span>
+                    </v-col>
+
+                    <v-col cols="12" md="3" class="text-right">
+                      Q {{ item.cantidad * item.precio }}
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+              <v-card elevation="0" tile v-for="descuento in item.descuentos">
+                <v-card-text class="text-h6 py-1 pl-4">
+                  <v-row dense>
+                    <v-col cols="12" md="9">
+                      <span class="text-subtitle-1">
+                        <strong
+                          >*desq {{ descuento.texto }} | Descuento de
+                        </strong>
+                        -Q{{ descuento.descuento }}
+
+                        <span
+                          v-if="
+                            descuento.limite == 0 ||
+                            descuento.cantidad < descuento.limite
+                          "
+                          >por cada {{ descuento.unidades }} unidades</span
+                        >
+                        <span v-else
+                          >por {{ descuento.unidades }} unidades | limite
+                          {{ descuento.limite }} por persona
+                        </span>
+                      </span>
+                    </v-col>
+
+                    <v-col cols="12" md="3" class="text-right">
+                      - Q {{ descuento.descuento * descuento.cantidad }}
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+              <v-divider class="primary"></v-divider>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="4" height="100%">
+      <v-col cols="12" md="3" height="100%">
         <v-card tile>
           <v-list>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Articulos
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                {{ venta.articulos }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-divider inset></v-divider>
             <v-list-item>
               <v-list-item-subtitle class="text-h6">
                 Subtotal
               </v-list-item-subtitle>
               <v-list-item-title class="text-right text-h6 grey--text pr-3">
-                Q {{ subtotal }}
+                Q {{ venta.subtotal }}
               </v-list-item-title>
             </v-list-item>
             <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Descuento Ofertas
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                Q {{ venta.ofertas }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Descuento Manual
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                Q {{ venta.descuento }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item v-if="false">
               <v-list-item-subtitle class="text-h6">
                 Descuento
               </v-list-item-subtitle>
               <v-list-item-title class="text-right">
                 <v-text-field
-                  v-model="descuento"
+                  v-model="venta.descuento"
                   outlined
                   min="0"
                   type="number"
@@ -87,7 +166,7 @@
                   <div>
                     <span class="text-h4">Q</span>
                     <span class="green--text text--darken-2 text-h2">
-                      {{ subtotal - descuento }}
+                      {{ venta.total }}
                     </span>
                   </div>
                 </div>
@@ -95,8 +174,17 @@
             </v-list-item>
           </v-list>
           <div class="mx-4">
-            <v-btn elevation="0" depressed block large color="green" dark>
-              Procesar Venta
+            <v-btn
+              elevation="0"
+              depressed
+              block
+              large
+              color="blue"
+              class="white--text"
+              :disabled="carrito.length == 0"
+              @click="finalizar()"
+            >
+              Procesar Venta [CTRL + Enter]
             </v-btn>
           </div>
           <v-list>
@@ -120,6 +208,99 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="isEnded" max-width="400">
+      <v-card>
+        <v-card-title> Finalizar Venta </v-card-title>
+        <v-card-text>
+          <v-list>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Articulos
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                {{ venta.articulos }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-divider inset></v-divider>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Subtotal
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                Q {{ venta.subtotal }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Descuento Ofertas
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                Q {{ venta.ofertas }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Descuento Manual
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                Q {{ venta.descuento }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-list-item-subtitle class="align-right text-h6">
+                TOTAL
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right">
+                <div class="d-flex flex-column">
+                  <div>
+                    <span class="text-h4">Q</span>
+                    <span class="green--text text--darken-2 text-h2">
+                      {{ venta.total }}
+                    </span>
+                  </div>
+                </div>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item class="pt-2">
+              <v-list-item-subtitle class="text-h6">
+                Efectivo
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right">
+                <v-text-field
+                  v-model="venta.Efectivo"
+                  ref="efectivo"
+                  outlined
+                  min="0"
+                  type="number"
+                  prefix="Q"
+                  placeholder="##.##"
+                  class="text-h6 elevation-0 grey--text right-input"
+                ></v-text-field>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Cambio
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                Q {{ venta.cambio }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-btn
+            block
+            large
+            color="green"
+            class="white--text"
+            :loading="isProcesed"
+          >
+            Finalizar y Cobrar [CTRl + Enter]
+          </v-btn>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <div v-shortkey="['ctrl', 'enter']" @shortkey="atajoFinalizar()"></div>
   </div>
 </template>
 
@@ -133,32 +314,22 @@ export default {
   mounted() {},
   data: () => ({
     isLoading: false,
-    isNew: false,
-    isFound: false,
+    isEnded: false,
+    isProcesed: false,
     saved: false,
     carrito: [],
-    descuento: 0,
-    data: {
-      idproducto: 0,
-      codigo: "",
-      nombre: "",
-      costo: 0,
-      caducidad: "",
-      existencia: 0,
+    venta: {
+      cliente: 0,
+      subtotal: 0,
+      ofertas: 0,
+      descuento: 0,
+      total: 0,
+      efectivo: 0,
+      cambio: 0,
     },
     error: {
       status: false,
       msg: "",
-    },
-    rules: {
-      requerido: (v) => !!v || "Campo Requerido",
-      min40: (v) =>
-        (v && v.length <= 40) ||
-        "La información no deben superar los 40 caracteres",
-      min200: (v) =>
-        (v && v.length <= 200) ||
-        "La información no deben superar los 200 caracteres",
-      min0: (v) => (v >= 0 && v <= 10000) || "El campo estas entre 0 y 10000",
     },
   }),
   methods: {
@@ -169,73 +340,109 @@ export default {
 
       if (index >= 0) {
         this.carrito[index].cantidad = this.carrito[index].cantidad + 1;
-        console.log(this.carrito[index].cantidad%3);
       } else {
         this.carrito.unshift(e);
       }
+      index = this.carrito.findIndex((e) => e.carrito == codCarrito);
+      this.aplicarDescuento(index);
     },
+    sumarCantidad(index) {
+      this.carrito[index].cantidad = this.carrito[index].cantidad + 1;
+      this.aplicarDescuento(index);
+    },
+    restarCantidad(index) {
+      this.carrito[index].cantidad =
+        this.carrito[index].cantidad - 1 < 0
+          ? 0
+          : this.carrito[index].cantidad - 1;
+      this.aplicarDescuento(index);
+    },
+    aplicarDescuento(index) {
+      let producto = JSON.parse(JSON.stringify(this.carrito[index]));
 
-    skBuscarCodigo() {
-      this.$refs.buscarCodigo.$refs.input.select();
-      this.$refs.buscarCodigo.$refs.input.focus();
-    },
-    async skBuscar(e) {
-      if (e) {
-        e.preventDefault();
-      }
-      if (this.$refs.formCodigo.validate()) {
-        this.isLoading = true;
-        this.$axios
-          .get("/productos/" + this.data.codigo)
-          .then((result) => {
-            this.isLoading = false;
-            this.data = result.data;
-            this.isNew = result.data.nombre == "";
-            this.isFound = true;
-            if (this.isNew) {
-              this.$nextTick(() => {
-                this.$refs.nombre.$refs.input.focus();
-              });
-            } else {
-              this.$nextTick(() => {
-                this.$refs.existencia.$refs.input.select();
-                this.$refs.existencia.$refs.input.focus();
-              });
+      let precios = producto.producto.precios;
+      producto.descuentos = [];
+
+      let fecha_estado = false;
+      let limite = -1;
+      let cantidad_inicial = producto.cantidad;
+      let precio_inicial = producto.cantidad * producto.precio;
+      precios.forEach((p) => {
+        fecha_estado =
+          this.$moment(this.$moment().format("Y-M-D")).isSameOrBefore(
+            this.$moment(p.fecha).format("Y-M-D")
+          ) || !p.fecha;
+
+        if (fecha_estado) {
+          let aplica = Math.floor(cantidad_inicial / p.cantidad);
+          if (aplica >= 1) {
+            if (p.limite > 0) {
+              aplica = p.limite;
             }
-          })
-          .catch((err) => {
-            //this.error.msg = "Usuario no encontrado";
-            //this.error.status = true;
-            //setTimeout(() => {
-            //  this.$router.go(-1);
-            //}, 3000);
-          });
-      }
-    },
-    skLimpiar() {
-      this.data.codigo = "";
-      this.isLoading = false;
-      this.isNew = false;
-      this.isFound = false;
-      this.$refs.buscarCodigo.$refs.input.focus();
-    },
-    skEnfocarTextField(n) {
-      this.$refs[n].$refs.input.select();
-      this.$refs[n].$refs.input.focus();
-    },
 
-    confirmar() {
-      if (this.$refs.form.validate()) {
+            let descuento = p.cantidad * producto.precio - p.precio;
+            let restantes = cantidad_inicial - aplica * p.cantidad;
+
+            producto.descuentos.push({
+              texto: p.nombre,
+              descuento: descuento,
+              cantidad: aplica,
+              unidades: p.cantidad,
+              limite: p.limite,
+            });
+
+            cantidad_inicial = restantes;
+          }
+        }
+
+        //console.log(fecha_vencimiento);
+      });
+      this.carrito[index].descuentos = producto.descuentos;
+    },
+    atajoFinalizar() {
+      if (!this.isEnded) {
+        this.finalizar();
+      } else {
         this.procesar();
       }
     },
+    finalizar() {
+      if (this.carrito.length == 0) {
+        return;
+      }
+      this.isEnded = true;
+      setTimeout(() => {
+        this.$refs.efectivo.$refs.input.select();
+        this.$refs.efectivo.$refs.input.focus();
+      }, 50);
+    },
+
+    calcularTotales() {
+      this.venta.articulos = 0;
+      this.venta.subtotal = 0;
+      this.venta.ofertas = 0;
+      this.venta.total = 0;
+
+      this.carrito.forEach((e) => {
+        this.venta.articulos += e.cantidad;
+        this.venta.subtotal += e.cantidad * e.precio;
+        e.descuentos.forEach((d) => {
+          this.venta.ofertas = this.venta.ofertas + d.descuento * d.cantidad;
+        });
+      });
+      this.venta.total =
+        this.venta.subtotal -
+        (this.venta.ofertas || 0) +
+        (this.venta.descuento || 0);
+    },
     async procesar() {
+      console.log("hola hola");
+      return;
       if (this.$refs.formProducto.validate()) {
         this.isLoading = true;
         await this.$axios
           .post("/productos", this.data)
           .then((result) => {
-            this.skLimpiar();
             this.saved = true;
             setTimeout(() => {
               this.saved = false;
@@ -254,22 +461,30 @@ export default {
         this.isLoading = false;
       }
     },
-    confirmado() {
-      this.$router.go(-1);
-    },
   },
   computed: {
-    id() {
-      return this.$route.query.id || 0;
+    descuento() {
+      return this.venta.descuento;
     },
-    subtotal() {
-      let t = 0;
-
-      this.carrito.forEach((e) => {
-        t += e.cantidad * e.precio;
-      });
-
-      return t;
+    efectivo() {
+      return this.venta.efectivo;
+    },
+  },
+  watch: {
+    carrito: {
+      deep: true,
+      handler() {
+        this.calcularTotales();
+      },
+    },
+    descuento() {
+      this.calcularTotales();
+    },
+    efectivo() {
+      this.venta.cambio =
+        this.venta.efectivo - this.venta.total < 0
+          ? 0
+          : this.venta.efectivo - this.venta.total;
     },
   },
 };
@@ -278,5 +493,8 @@ export default {
 <style scoped>
 .right-input >>> input {
   text-align: right;
+}
+.center-input >>> input {
+  text-align: center;
 }
 </style>
