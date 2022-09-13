@@ -2,7 +2,7 @@
   <div>
     <v-row dense no-gutters>
       <v-col cols="12" md="9">
-        <v-card tile elevation="0">
+        <v-card tile elevation="0" v-if="false">
           <v-card-text>
             <v-list-item>
               <v-list-item-subtitle class="align-right text-h6">
@@ -262,7 +262,6 @@
                 </div>
               </v-list-item-title>
             </v-list-item>
-
           </v-list>
           <v-btn
             block
@@ -354,8 +353,9 @@ export default {
 
         if (fecha_estado) {
           let aplica = Math.floor(cantidad_inicial / p.cantidad);
+
           if (aplica >= 1) {
-            if (p.limite > 0) {
+            if (aplica > p.limite) {
               aplica = p.limite;
             }
 
@@ -447,14 +447,14 @@ export default {
         });
       this.isProcesed = false;
     },
-    limpiar(){
-        this.carrito=[];
-        this.venta.efectivo=0;
-        this.venta.cambio=0;
-        this.isEnded=false;
-        this.isProcesed=false;
-        this.calcularTotales();
-    }
+    limpiar() {
+      this.carrito = [];
+      this.venta.efectivo = 0;
+      this.venta.cambio = 0;
+      this.isEnded = false;
+      this.isProcesed = false;
+      this.calcularTotales();
+    },
   },
 
   computed: {
