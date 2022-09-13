@@ -105,7 +105,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="3" height="100%">
-        <v-card tile>
+        <v-card tile class="pb-2">
           <v-list>
             <v-list-item>
               <v-list-item-subtitle class="text-h6">
@@ -173,38 +173,22 @@
               </v-list-item-title>
             </v-list-item>
           </v-list>
-          <div class="mx-4">
+          <div class="mx-4 mb-2">
             <v-btn
               elevation="0"
+
               depressed
               block
               large
               color="blue"
-              class="white--text"
+              class="white--text mb-2"
               :disabled="carrito.length == 0"
               @click="finalizar()"
             >
               Procesar Venta [CTRL + Enter]
             </v-btn>
           </div>
-          <v-list>
-            <v-list-item>
-              <v-list-item-subtitle class="text-h6">
-                Efectivo
-              </v-list-item-subtitle>
-              <v-list-item-title class="text-right text-h6">
-                0.00
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-subtitle class="text-h6">
-                Cambio
-              </v-list-item-subtitle>
-              <v-list-item-title class="text-right text-h6">
-                0.00
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
+
         </v-card>
       </v-col>
     </v-row>
@@ -262,8 +246,33 @@
                 </div>
               </v-list-item-title>
             </v-list-item>
+            <v-list-item class="pt-2">
+              <v-list-item-subtitle class="text-h6">
+                Efectivo
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right">
+                <v-text-field
+                  v-model="venta.efectivo"
+                  ref="efectivo"
+                  outlined
+                  min="0"
+                  type="number"
+                  prefix="Q"
+                  placeholder="##.##"
+                  class="text-h6 elevation-0 grey--text right-input"
+                ></v-text-field>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-subtitle class="text-h6">
+                Cambio
+              </v-list-item-subtitle>
+              <v-list-item-title class="text-right text-h6 grey--text pr-3">
+                Q {{ venta.cambio }}
+              </v-list-item-title>
+            </v-list-item>
           </v-list>
-          <v-btn
+         <v-btn
             block
             large
             color="green"
@@ -353,7 +362,6 @@ export default {
 
         if (fecha_estado) {
           let aplica = Math.floor(cantidad_inicial / p.cantidad);
-
           if (aplica >= 1) {
             if (aplica > p.limite) {
               aplica = p.limite;
@@ -447,14 +455,14 @@ export default {
         });
       this.isProcesed = false;
     },
-    limpiar() {
-      this.carrito = [];
-      this.venta.efectivo = 0;
-      this.venta.cambio = 0;
-      this.isEnded = false;
-      this.isProcesed = false;
-      this.calcularTotales();
-    },
+    limpiar(){
+        this.carrito=[];
+        this.venta.efectivo=0;
+        this.venta.cambio=0;
+        this.isEnded=false;
+        this.isProcesed=false;
+        this.calcularTotales();
+    }
   },
 
   computed: {
