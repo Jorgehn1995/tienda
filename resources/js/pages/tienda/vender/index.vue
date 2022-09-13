@@ -262,31 +262,7 @@
                 </div>
               </v-list-item-title>
             </v-list-item>
-            <v-list-item class="pt-2">
-              <v-list-item-subtitle class="text-h6">
-                Efectivo
-              </v-list-item-subtitle>
-              <v-list-item-title class="text-right">
-                <v-text-field
-                  v-model="venta.efectivo"
-                  ref="efectivo"
-                  outlined
-                  min="0"
-                  type="number"
-                  prefix="Q"
-                  placeholder="##.##"
-                  class="text-h6 elevation-0 grey--text right-input"
-                ></v-text-field>
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-subtitle class="text-h6">
-                Cambio
-              </v-list-item-subtitle>
-              <v-list-item-title class="text-right text-h6 grey--text pr-3">
-                Q {{ venta.cambio }}
-              </v-list-item-title>
-            </v-list-item>
+
           </v-list>
           <v-btn
             block
@@ -294,6 +270,7 @@
             color="green"
             class="white--text"
             :loading="isProcesed"
+            @click="procesar()"
           >
             Finalizar y Cobrar [CTRl + Enter]
           </v-btn>
