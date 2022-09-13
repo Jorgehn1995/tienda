@@ -17,7 +17,7 @@ class VentasController extends Controller
         $t = $request->venta;
         $c = $request->carrito;
 
-        $doc = uniqid();
+        $doc = strtoupper( uniqid());
 
         $venta = new Venta();
         $venta->cajero_nombre = Auth::User()->nombre;
@@ -30,6 +30,7 @@ class VentasController extends Controller
         $venta->promociones = $t["ofertas"];
         $venta->efectivo=$t["efectivo"];
         $venta->cambio=$t["cambio"];
+        $venta->articulos=$t["articulos"];
         $venta->save();
 
         foreach ($c as $key => $producto) {
@@ -64,10 +65,10 @@ class VentasController extends Controller
                 $detalle=new Detalle();
                 $detalle->idventa=$venta->idventa;
                 $detalle->codigo="desq";
-                $detalle->nombre_producto=$descuento["texto"]." ".$producto["nombre"]." - limite ".$descuento["limite"];
+                $detalle->nombre_producto="Descuento ".$descuento["texto"]." ".$producto["nombre"];
                 $detalle->cantidad=$descuento["cantidad"];
-                $detalle->precio=$descuento["descuento"];
-                $detalle->total=$descuento["cantidad"]*$descuento["descuento"];
+                $detalle->precio=(-($descuento["descuento"]));
+                $detalle->total=$detalle->cantidad*$detalle->precio;
                 $detalle->save();
             }
 

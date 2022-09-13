@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Venta;
 use Storage;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\EscposImage;
@@ -149,6 +150,110 @@ class ImpresionesController extends Controller
                 $printer->barcode("$codigo", $barcode);
 
                 $printer->text("$codigo\n");
+                $printer->cut(Printer::CUT_FULL, 9);
+            }
+
+            $printer->close();
+        } catch (Exception $e) {
+            echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
+        }
+    }
+    public function recibo($doc)
+    {
+
+        $venta = Venta::where("documento", $doc)->with("detalles")->first();
+
+
+
+        $impresora = env("IMPRESORA");
+        $tienda = env("TIENDA");
+
+        $copias = 1;
+        try {
+            $connector = new WindowsPrintConnector($impresora);
+
+            $printer = new Printer($connector);
+            for ($i = 0; $i < $copias; $i++) {
+                //$printer->setPrintWidth(200);
+                /* Title of receipt */
+
+
+                //$img = EscposImage::load("logoty.png",10);
+
+                //$printer->graphics($img);
+                //$printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->setTextSize(2, 1);
+                $printer->setEmphasis(true);
+                //$printer->setFont(Printer::FONT_B);
+                $printer->text("$tienda\n");
+                $printer->setEmphasis(false);
+                $printer->setTextSize(1, 1);
+                $printer->text("Barrio el calvario \n");
+                $printer->text("San Luis Jilotepeque \n");
+                $printer->text("Jalapa, Jalapa \n");
+                $printer->text(" \n");
+                $printer->setJustification(Printer::JUSTIFY_LEFT);
+                $printer->text(" \n");
+
+                $printer->text("Caja. Caja 1 \n");
+                $printer->text("Le atendio: $venta->cajero_nombre \n");
+                $printer->text("Nombre. Cliente Final \n");
+                $printer->text(" \n");
+
+                //$printer->setJustification(Printer::JUSTIFY_CENTER);
+                //$printer->text("================================================ \n");
+                //$printer->setJustification(Printer::JUSTIFY_LEFT);
+
+
+                foreach ($venta->detalles as $key => $detalle) {
+                    //$printer->setJustification(Printer::JUSTIFY_LEFT);
+                    //$printer->text("$detalle->nombre_producto $detalle->codigo \n");
+                    //$printer->setJustification(Printer::JUSTIFY_RIGHT);
+                    //$printer->text(" $detalle->cantidad ");
+                    //$printer->textRaw(" \t");
+                    //$printer->textRaw("Q$detalle->precio  $detalle->total \n");
+                    //$printer->text("$detalle->total \n");
+
+                    $printer->text("$detalle->nombre_producto\n");
+                    $line = sprintf('%-13.40s %3.0f %-3.40s %9.40s %-2.40s %13.40s', $detalle->codigo, $detalle->cantidad, "x", "Q " . $detalle->precio, "", "Q ".$detalle->total);
+                    $printer->text("$line\n");
+                }
+                if ($venta->descuento > 0) {
+                    //$printer->setJustification(Printer::JUSTIFY_LEFT);
+                    //$printer->text("Descuento por venta");
+                    //$printer->setJustification(Printer::JUSTIFY_RIGHT);
+                    //$printer->text(" -$venta->descuento \n");
+                }
+                $printer->setJustification(Printer::JUSTIFY_RIGHT);
+                $printer->setEmphasis(true);
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'TOTAL.', '', "Q ".$venta->total);
+                $printer->text("$lineTotal\n");
+                $printer->setEmphasis(false);
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Efectivo.', '', "Q ".$venta->efectivo);
+                $printer->text("$lineTotal\n");
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Cambio.', '', "Q ".$venta->cambio);
+                $printer->text("$lineTotal\n");
+                $printer->text(" \n");
+
+                $printer->setJustification(Printer::JUSTIFY_LEFT);
+                $printer->text("No. articulos vendidos. $venta->articulos \n");
+                $printer->text("No. referencia. $venta->idventa \n ");
+                //$printer->text("Fecha y hora: ".date("d-m-Y h:i:s a")." \n");
+
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->text(" \n");
+                $printer->qrCode($doc,Printer::QR_ECLEVEL_L,8);
+                $printer->text(" \n");
+                $printer->text("Recibo no. $venta->documento \n");
+                $printer->text("Fecha y hora: ".date("d-m-Y h:i:s a")." \n");
+
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->setTextSize(2, 1);
+                $printer->setEmphasis(true);
+                //$printer->setFont(Printer::FONT_B);
+                $printer->text("VUELVA PRONTO\n");
+                $printer->setEmphasis(false);
                 $printer->cut(Printer::CUT_FULL, 9);
             }
 

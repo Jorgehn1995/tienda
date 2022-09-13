@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth:api']], function () {
      */
     Route::post('/impresiones/precios', [ImpresionesController::class, 'precio'])->name('api.impresiones.precios');
     Route::post('/impresiones/barcode', [ImpresionesController::class, 'barcode'])->name('api.impresiones.barcode');
+    Route::post('/impresiones/recibos/{doc}', [ImpresionesController::class, 'recibo'])->name('api.impresiones.recibos');
 
 
     /**

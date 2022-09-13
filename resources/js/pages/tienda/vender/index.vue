@@ -430,7 +430,8 @@ export default {
         this.venta.articulos += e.cantidad;
         this.venta.subtotal += e.cantidad * e.precio;
 
-        this.venta.costo += parseFloat(e.producto.costo).toFixed(2);
+        this.venta.costo +=
+          e.cantidad * parseFloat(e.producto.costo).toFixed(2);
         e.descuentos.forEach((d) => {
           this.venta.ofertas = this.venta.ofertas + d.descuento * d.cantidad;
         });
@@ -450,14 +451,35 @@ export default {
           carrito: this.carrito,
         })
         .then((result) => {
-          console.log("guardado");
+          this.recibo(result.data.documento);
         })
         .catch((err) => {
           console.log("error");
         });
       this.isProcesed = false;
     },
+    async recibo(id) {
+      this.isProcesed = true;
+      await this.$axios
+        .post("/impresiones/recibos/" + id)
+        .then((result) => {
+          this.limpiar();
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+      this.isProcesed = false;
+    },
+    limpiar(){
+        this.carrito=[];
+        this.venta.efectivo=0;
+        this.venta.cambio=0;
+        this.isEnded=false;
+        this.isProcesed=false;
+        this.calcularTotales();
+    }
   },
+
   computed: {
     descuento() {
       return this.venta.descuento;
