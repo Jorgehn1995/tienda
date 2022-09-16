@@ -4,6 +4,7 @@ use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ImpresionesController;
 use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\VentasController;
 use Illuminate\Http\Request;
@@ -72,5 +73,10 @@ Route::group(['middleware' => ['auth:api']], function () {
      * VENTA
      */
     Route::post('/ventas/vender', [VentasController::class, 'vender'])->name('api.ventas.vender');
+
+    /**
+     * CONSULTA
+     */
+    Route::get('/reporte/{inicio}/{fin}', [ReportesController::class, 'index'])->name('api.ventas.vender');
 
 });

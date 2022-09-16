@@ -125,4 +125,15 @@ export default [
             layout: "autorizado",
         },
     },
+    /**
+     * REPORTES
+     */
+     {
+        path: "/tienda/reportes",
+        name: "",
+        component: () => import("@/pages/tienda/reportes/index.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
 ];

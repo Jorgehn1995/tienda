@@ -54,6 +54,7 @@ class VentasController extends Controller
                     $p->existencia = 0;
                 } else {
                     $p->existencia = $restantes;
+                    $p->unidades_vendidas=$p->unidades_vendidas+$producto["cantidad"];
                 }
 
                 $p->save();

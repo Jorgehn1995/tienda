@@ -7,12 +7,12 @@
             <v-card outlined elevation="3" tile>
               <v-card-text>
                 <v-row dense>
-                  <v-col cols="12" sm="8">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       label="Código de Barras [CTRL+Q]"
                       v-shortkey="['ctrl', 'q']"
                       @shortkey.native="skBuscarCodigo"
-                      v-model="data.codigo"
+                      v-model="codigo"
                       :rules="[rules.requerido]"
                       ref="buscarCodigo"
                       prepend-icon="mdi-barcode"
@@ -20,6 +20,7 @@
                       @keypress.enter="skBuscar"
                     ></v-text-field>
                   </v-col>
+
                   <v-col
                     cols="12"
                     sm="2"
@@ -47,6 +48,22 @@
                       outlined
                       block
                       color="grey"
+                      @click="generarCodigo"
+                      :loading="isLoading"
+                    >
+                      Generar Codigo
+                      <v-icon right>mdi-qrcode-plus</v-icon>
+                    </v-btn>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="d-flex justify-center align-center"
+                  >
+                    <v-btn
+                      outlined
+                      block
+                      color="grey"
                       @click="skLimpiar"
                       v-shortkey="['ctrl', 'l']"
                       @shortkey="skLimpiar"
@@ -56,6 +73,7 @@
                       <v-icon right>mdi-broom</v-icon>
                     </v-btn>
                   </v-col>
+
                 </v-row>
               </v-card-text>
             </v-card>
@@ -285,7 +303,7 @@ export default {
   mounted() {
     this.$refs.buscarCodigo.$refs.input.focus();
     if (this.$route.query.codigo) {
-      this.data.codigo = this.$route.query.codigo;
+      this.codigo = this.$route.query.codigo;
       this.$nextTick(() => {
         this.skBuscar();
       });
@@ -296,6 +314,7 @@ export default {
     isNew: false,
     isFound: false,
     saved: false,
+    codigo:"",
     data: {
       idproducto: 0,
       codigo: "",
@@ -322,6 +341,13 @@ export default {
     },
   }),
   methods: {
+    generarCodigo(){
+        let cod= Math.floor(Math.random() * (999999 - 9999 + 1)) + 9999;
+        this.codigo=cod;
+        setTimeout(() => {
+            this.skBuscar();
+        }, 100);
+    },
     skBuscarCodigo() {
       this.$refs.buscarCodigo.$refs.input.select();
       this.$refs.buscarCodigo.$refs.input.focus();
@@ -333,7 +359,7 @@ export default {
       if (this.$refs.formCodigo.validate()) {
         this.isLoading = true;
         this.$axios
-          .get("/productos/" + this.data.codigo)
+          .get("/productos/" + this.codigo)
           .then((result) => {
             this.isLoading = false;
             this.data = result.data;
@@ -360,7 +386,7 @@ export default {
       }
     },
     skLimpiar() {
-      this.data.codigo = "";
+      this.codigo = "";
       this.isLoading = false;
       this.isNew = false;
       this.isFound = false;
