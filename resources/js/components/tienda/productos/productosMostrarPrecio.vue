@@ -4,15 +4,15 @@
       <span class="subtitle-1" v-if="cantidad == 1 && !nombre">
         <strong>Precio Unitario</strong>
       </span>
-      <span class="text-h5" v-else>
+      <span class="subtitle-1" v-else>
         <strong>{{ nombre || "N/E" }}</strong>
       </span>
       <div style="" class="d-flex d-flex-row justify-start">
-        <div class="text-h3 black--text">{{ numero(precio) }}</div>
+        <div class="text-h3 ">{{ numero(precio) }}</div>
         <span class="text-h5 font-weight-black">.{{ decimales(precio) }}</span>
       </div>
 
-      <span class="subtitle-1">
+      <span class="subtitle-1" v-if="!ocultar_cantidad">
         <strong v-if="cantidad == 1">{{ cantidad }} Unidad</strong>
         <strong v-else>{{ cantidad }} Unidades</strong>
       </span>
@@ -34,6 +34,10 @@ export default {
     cantidad: {
       type: [Number, String],
       default: 0,
+    },
+    ocultar_cantidad: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {

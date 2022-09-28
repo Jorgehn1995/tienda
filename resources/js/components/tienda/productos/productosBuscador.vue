@@ -2,8 +2,8 @@
   <div>
     <div class="">
       <v-row dense>
-        <v-col cols="12" >
-          <v-form ref="formCodigo" @submit="skBuscarCodigo">
+        <v-col cols="12">
+          <v-form ref="formCodigo" @submit="skEstablecerBusqueda">
             <v-card outlined :elevation="elevation" tile>
               <v-card-text>
                 <v-row dense>
@@ -20,7 +20,7 @@
                       ref="buscarCodigo"
                       prepend-icon="mdi-barcode"
                       placeholder="Ingrese el Codigo [CTRL+Q]"
-                      @keypress.enter="skBuscarCodigo"
+                      @keypress.enter="skEstablecerBusqueda"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" class="d-flex align-center">
@@ -28,26 +28,13 @@
                       outlined
                       color="primary"
                       class="ml-2"
-                      @click="skBuscarCodigo"
+                      @click="skEstablecerBusqueda"
                       :loading="isLoading"
-                      v-shortkey="['ctrl', 'b']"
-                      @shortkey.native="skBuscarCodigo"
                     >
-                      Buscar Codigo [CTRL + B]
+                      Buscar Codigo [ENTER]
                       <v-icon right>mdi-cloud-search-outline</v-icon>
                     </v-btn>
-                    <v-btn
-                      outlined
-                      color="accent"
-                      class="ml-2"
-                      @click="skBuscarTexto"
-                      :loading="isLoading"
-                      v-shortkey="['ctrl', 't']"
-                      @shortkey.native="skBuscarTexto"
-                    >
-                      Buscar Texto [CTRL + T]
-                      <v-icon right>mdi-cloud-search-outline</v-icon>
-                    </v-btn>
+
                     <v-btn
                       outlined
                       color="grey"
@@ -119,7 +106,17 @@ export default {
     skEnfocarCodigo() {
       this.$refs.buscarCodigo.$refs.input.select();
       this.$refs.buscarCodigo.$refs.input.focus();
-      this.search="";
+      this.search = "";
+    },
+    skEstablecerBusqueda(e) {
+      if (e) {
+        e.preventDefault();
+      }
+      if (Number.isFinite(Number(this.search))) {
+        this.skBuscarCodigo();
+      }else{
+        this.skBuscarTexto();
+      }
     },
     async skBuscarCodigo(e) {
       if (e) {
