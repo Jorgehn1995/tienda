@@ -89,7 +89,7 @@
                     </v-list-item>
                   </v-list>
                   <v-card-text>
-                    <v-card v-for="precio in item.precios" outlined tile>
+                    <v-card v-for="precio,i in item.precios" :key="'prec'+i" outlined tile>
                       <v-card-text>
                         <v-row>
                           <v-col
