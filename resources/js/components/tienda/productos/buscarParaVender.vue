@@ -4,6 +4,8 @@
             :elevation="0"
             @porcodigo="agregarProducto"
             @portexto="seleccionarProducto"
+            @suma="$emit('suma', $event)"
+            @multi="$emit('multi', $event)"
         ></productos-buscador>
         <v-dialog v-model="isSelectable" fullscreen scrollable>
             <v-card>

@@ -10,7 +10,7 @@
                 cols="12"
                 md="4"
                 v-for="(item, index) in data"
-                :key="'pdocv' + i"
+                :key="'pdocv' + index"
                 :offset-md="index == 0 ? offset : ''"
             >
                 <v-card tile height="100%">

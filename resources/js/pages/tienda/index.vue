@@ -2,7 +2,7 @@
     <v-container>
         <v-row dense>
             <v-col cols="12">
-                <v-img src="/images/lg.jpg" contain height="300"></v-img>
+                <v-img src="/images/LFSL.jpg" contain height="300"></v-img>
             </v-col>
             <v-col cols="12" md="3" v-if="tipo == 1">
                 <v-card color="grey darken-1" dark to="/tienda/usuarios">

@@ -57,7 +57,7 @@
                         sm="6"
                         md="4"
                         v-for="(item, index) in data"
-                        :key="'dt' + i"
+                        :key="'dt' + index"
                     >
                         <v-item :value="item[itemID]">
                             <v-hover v-slot="{ hover }">

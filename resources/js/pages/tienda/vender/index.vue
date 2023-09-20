@@ -16,6 +16,8 @@
                 </v-card>
                 <buscar-para-vender
                     @producto="agregarProducto"
+                    @suma="sumar($event)"
+                    @multi="multi($event)"
                 ></buscar-para-vender>
                 <v-card tile elevation="0">
                     <v-card-text>
@@ -402,6 +404,16 @@ export default {
             }
             index = this.carrito.findIndex((e) => e.carrito == codCarrito);
             this.aplicarDescuento(index);
+        },
+        suma(cantidad) {
+            if (this.carrito.length > 0) {
+                this.carrito[0].cantidad += cantidad;
+            }
+        },
+        multi(cantidad) {
+            if (this.carrito.length > 0) {
+                this.carrito[0].cantidad = cantidad;
+            }
         },
         sumarCantidad(index) {
             this.carrito[index].cantidad = this.carrito[index].cantidad + 1;
