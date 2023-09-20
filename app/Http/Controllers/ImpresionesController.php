@@ -167,6 +167,11 @@ class ImpresionesController extends Controller
 
         $impresora = env("IMPRESORA");
         $tienda = env("TIENDA");
+        $barrio = env("BARRIO");
+        $municipio = env("MUNICIPIO");
+        $departamento = env("departamento");
+
+        $logo_impresion = env("LOGO_IMPRESORA");
 
         $copias = 1;
         try {
@@ -178,9 +183,10 @@ class ImpresionesController extends Controller
                 /* Title of receipt */
 
 
-                //$img = EscposImage::load("logoty.png",10);
+                $img = EscposImage::load(public_path("images/$logo_impresion"), FALSE);
 
-                //$printer->graphics($img);
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->bitImage($img);
                 //$printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->setTextSize(2, 1);
@@ -189,9 +195,9 @@ class ImpresionesController extends Controller
                 $printer->text("$tienda\n");
                 $printer->setEmphasis(false);
                 $printer->setTextSize(1, 1);
-                $printer->text("Barrio el calvario \n");
-                $printer->text("San Luis Jilotepeque \n");
-                $printer->text("Jalapa, Jalapa \n");
+                $printer->text("$barrio \n");
+                $printer->text("$municipio \n");
+                $printer->text("$departamento \n");
                 $printer->text(" \n");
                 $printer->setJustification(Printer::JUSTIFY_LEFT);
                 $printer->text(" \n");
@@ -214,9 +220,9 @@ class ImpresionesController extends Controller
                     //$printer->textRaw(" \t");
                     //$printer->textRaw("Q$detalle->precio  $detalle->total \n");
                     //$printer->text("$detalle->total \n");
-                    $nombre=substr($detalle->nombre_producto, 0, 25)." ".$detalle->codigo;
+                    $nombre = substr($detalle->nombre_producto, 0, 25) . " " . $detalle->codigo;
                     $printer->text("$nombre\n");
-                    $line = sprintf('%-13.40s %3.0f %-3.40s %9.40s %-2.40s %13.40s', "", $detalle->cantidad, "x", "Q " . $detalle->precio, "", "Q ".$detalle->total);
+                    $line = sprintf('%-13.40s %3.0f %-3.40s %9.40s %-2.40s %13.40s', "", $detalle->cantidad, "x", "Q " . $detalle->precio, "", "Q " . $detalle->total);
                     $printer->text("$line\n");
                 }
                 if ($venta->descuento > 0) {
@@ -227,12 +233,12 @@ class ImpresionesController extends Controller
                 }
                 $printer->setJustification(Printer::JUSTIFY_RIGHT);
                 $printer->setEmphasis(true);
-                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'TOTAL.', '', "Q ".$venta->total);
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'TOTAL.', '', "Q " . $venta->total);
                 $printer->text("$lineTotal\n");
                 $printer->setEmphasis(false);
-                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Efectivo.', '', "Q ".$venta->efectivo);
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Efectivo.', '', "Q " . $venta->efectivo);
                 $printer->text("$lineTotal\n");
-                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Cambio.', '', "Q ".$venta->cambio);
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Cambio.', '', "Q " . $venta->cambio);
                 $printer->text("$lineTotal\n");
                 $printer->text(" \n");
 
@@ -243,10 +249,10 @@ class ImpresionesController extends Controller
 
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->text(" \n");
-                $printer->qrCode($doc,Printer::QR_ECLEVEL_L,8);
+                $printer->qrCode($doc, Printer::QR_ECLEVEL_L, 8);
                 $printer->text(" \n");
                 $printer->text("Recibo no. $venta->documento \n");
-                $printer->text("Fecha y hora: ".date("d-m-Y h:i:s a")." \n");
+                $printer->text("Fecha y hora: " . date("d-m-Y h:i:s a") . " \n");
 
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->setTextSize(2, 1);
@@ -255,6 +261,7 @@ class ImpresionesController extends Controller
                 $printer->text("VUELVA PRONTO\n");
                 $printer->setEmphasis(false);
                 $printer->cut(Printer::CUT_FULL, 9);
+                $printer->pulse(0, 50, 50);
             }
 
             $printer->close();

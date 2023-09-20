@@ -11,7 +11,7 @@ import navigation from "./navigation";
 export default {
     // product display information
     product: {
-        name: "Tiendas Yaque",
+        name: "Sistema",
         version: "0.1",
     },
 
