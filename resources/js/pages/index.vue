@@ -7,7 +7,7 @@
                         style="height: 100px"
                         class="d-flex justify-center align-center"
                     >
-                        Sistema Gestion
+                        POS LERNIZ
                     </div>
                 </v-card-title>
             </v-card-text>

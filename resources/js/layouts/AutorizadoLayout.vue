@@ -13,10 +13,11 @@
             dark
         >
             <v-card
+                color="surface"
                 dark
                 class="flex-grow-1 d-flex"
                 :class="[isToolbarDetached ? 'pa-1 mt-3 mx-1' : 'pa-0 ma-0']"
-                :flat="!isToolbarDetached"
+                elevation="0"
             >
                 <div class="d-flex flex-grow-1 align-center">
                     <div class="d-flex flex-grow-1 align-center">
@@ -26,6 +27,8 @@
                             class="primary mr-2"
                         ></v-app-bar-nav-icon>
                         <v-card
+                            color="surface"
+                            dark
                             elevation="0"
                             class="mr-2"
                             to="/tienda"

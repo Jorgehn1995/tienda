@@ -2,12 +2,7 @@
     <v-container>
         <v-row dense>
             <v-col cols="12">
-                <v-card
-                    class="rounded-lg"
-                    color="#fefcfd"
-                    elevation="0"
-                    outlined
-                >
+                <v-card class="rounded-lg" elevation="0" outlined>
                     <v-card-text>
                         <v-img
                             src="/images/LOGO.jpg"
