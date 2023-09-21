@@ -144,8 +144,10 @@
                                         >
                                             - Q
                                             {{
-                                                descuento.descuento *
-                                                descuento.cantidad
+                                                parseFloat(
+                                                    descuento.descuento
+                                                ) *
+                                                parseFloat(descuento.cantidad)
                                             }}
                                         </v-col>
                                     </v-row>
@@ -408,11 +410,13 @@ export default {
         suma(cantidad) {
             if (this.carrito.length > 0) {
                 this.carrito[0].cantidad += cantidad;
+                this.aplicarDescuento(0);
             }
         },
         multi(cantidad) {
             if (this.carrito.length > 0) {
                 this.carrito[0].cantidad = cantidad;
+                this.aplicarDescuento(0);
             }
         },
         sumarCantidad(index) {
@@ -444,21 +448,23 @@ export default {
 
                 if (fecha_estado) {
                     let aplica = Math.floor(cantidad_inicial / p.cantidad);
+                    //console.table(cantidad_inicial, p.cantidad);
                     if (aplica >= 1) {
-                        if (aplica > p.limite) {
+                        if (aplica > p.limite && limite > 0) {
                             aplica = p.limite;
                         }
 
                         let descuento = p.cantidad * producto.precio - p.precio;
                         let restantes = cantidad_inicial - aplica * p.cantidad;
-
-                        producto.descuentos.push({
+                        let info = {
                             texto: p.nombre,
                             descuento: descuento,
                             cantidad: aplica,
                             unidades: p.cantidad,
                             limite: p.limite,
-                        });
+                        };
+                        console.log(info);
+                        producto.descuentos.push(info);
 
                         cantidad_inicial = restantes;
                     }
