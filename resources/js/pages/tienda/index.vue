@@ -10,7 +10,7 @@
                 >
                     <v-card-text>
                         <v-img
-                            src="/images/LFSL.jpg"
+                            src="/images/LOGO.jpg"
                             contain
                             height="300"
                         ></v-img>

@@ -11,8 +11,8 @@ import navigation from "./navigation";
 export default {
     // product display information
     product: {
-        name: "Sistema",
-        version: "0.1",
+        name: "POS LERNIZ",
+        version: "1.0",
     },
 
     // google maps
