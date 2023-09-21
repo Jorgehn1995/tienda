@@ -243,7 +243,7 @@
                             depressed
                             block
                             large
-                            color="blue"
+                            color="primary"
                             class="white--text mb-2"
                             :disabled="carrito.length == 0"
                             @click="finalizar()"
@@ -400,7 +400,8 @@ export default {
             let index = this.carrito.findIndex((e) => e.carrito == codCarrito);
 
             if (index >= 0) {
-                this.carrito[index].cantidad = this.carrito[index].cantidad + 1;
+                this.carrito[index].cantidad =
+                    parseFloat(this.carrito[index].cantidad) + 1;
             } else {
                 this.carrito.unshift(e);
             }

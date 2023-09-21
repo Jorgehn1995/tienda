@@ -12,11 +12,8 @@
                 <v-card-actions @click="isSelectable = false">
                     <v-btn icon>
                         <v-icon>mdi-close</v-icon>
-                        <span
-                            >Seleccione el producto (Click aqui para
-                            cerrar)</span
-                        >
                     </v-btn>
+                    <span>Seleccione el producto (Click aqui para cerrar)</span>
                 </v-card-actions>
                 <v-card-text>
                     <v-row dense>

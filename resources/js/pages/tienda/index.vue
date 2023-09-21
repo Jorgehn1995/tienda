@@ -18,7 +18,7 @@
                 </v-card>
             </v-col>
             <v-col cols="12" md="3" v-if="tipo == 1">
-                <v-card color="purple darken-2" dark to="/tienda/productos">
+                <v-card color="primary darken-1" dark to="/tienda/productos">
                     <v-card-title>Productos</v-card-title>
                     <v-card-text>Administra los productos </v-card-text>
                 </v-card>
@@ -30,7 +30,7 @@
                 </v-card>
             </v-col>
             <v-col cols="12" md="3">
-                <v-card color="green " dark to="/tienda/reportes">
+                <v-card color="primary lighten-1 " dark to="/tienda/reportes">
                     <v-card-title>Reportes</v-card-title>
                     <v-card-text>Revisa los reportes de tus ventas</v-card-text>
                 </v-card>

@@ -7,12 +7,13 @@
         <!-- Toolbar -->
         <v-app-bar
             app
-            :color="isToolbarDetached ? 'surface' : undefined"
+            color="surface"
+            elevation="3"
             :flat="isToolbarDetached"
-            :light="toolbarTheme === 'light'"
-            :dark="toolbarTheme === 'dark'"
+            dark
         >
             <v-card
+                dark
                 class="flex-grow-1 d-flex"
                 :class="[isToolbarDetached ? 'pa-1 mt-3 mx-1' : 'pa-0 ma-0']"
                 :flat="!isToolbarDetached"
@@ -31,13 +32,14 @@
                             :ripple="false"
                         >
                             <div
-                                class="title font-weight-bold text-uppercase primary--text"
+                                class="white--text title font-weight-bold text-uppercase"
                             >
                                 {{ product.name }}
                             </div>
                         </v-card>
 
                         <v-btn
+                            class="mr-2"
                             v-shortkey="['f1']"
                             @shortkey="to('/tienda/productos/verificador')"
                             to="/tienda/productos/verificador"
@@ -45,6 +47,7 @@
                             Verificador [F1]
                         </v-btn>
                         <v-btn
+                            color="primary"
                             v-shortkey="['f4']"
                             @shortkey="to('/tienda/vender')"
                             to="/tienda/vender"
