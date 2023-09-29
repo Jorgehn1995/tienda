@@ -421,14 +421,15 @@ export default {
             }
         },
         sumarCantidad(index) {
-            this.carrito[index].cantidad = this.carrito[index].cantidad + 1;
+            this.carrito[index].cantidad =
+                parseFloat(this.carrito[index].cantidad) + 1;
             this.aplicarDescuento(index);
         },
         restarCantidad(index) {
             this.carrito[index].cantidad =
                 this.carrito[index].cantidad - 1 < 0
                     ? 0
-                    : this.carrito[index].cantidad - 1;
+                    : parseFloat(this.carrito[index].cantidad) - 1;
             this.aplicarDescuento(index);
         },
         aplicarDescuento(index) {
@@ -464,7 +465,7 @@ export default {
                             unidades: p.cantidad,
                             limite: p.limite,
                         };
-                        console.log(info);
+                        //console.log(info);
                         producto.descuentos.push(info);
 
                         cantidad_inicial = restantes;
