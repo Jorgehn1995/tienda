@@ -447,15 +447,12 @@ export default {
                     this.$moment(this.$moment().format("Y-M-D")).isSameOrBefore(
                         this.$moment(p.fecha).format("Y-M-D")
                     ) || !p.fecha;
-
                 if (fecha_estado) {
                     let aplica = Math.floor(cantidad_inicial / p.cantidad);
-                    //console.table(cantidad_inicial, p.cantidad);
                     if (aplica >= 1) {
                         if (aplica > p.limite && limite > 0) {
                             aplica = p.limite;
                         }
-
                         let descuento = p.cantidad * producto.precio - p.precio;
                         let restantes = cantidad_inicial - aplica * p.cantidad;
                         let info = {
@@ -465,14 +462,10 @@ export default {
                             unidades: p.cantidad,
                             limite: p.limite,
                         };
-                        //console.log(info);
                         producto.descuentos.push(info);
-
                         cantidad_inicial = restantes;
                     }
                 }
-
-                //console.log(fecha_vencimiento);
             });
             this.carrito[index].descuentos = producto.descuentos;
         },
