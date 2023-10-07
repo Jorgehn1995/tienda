@@ -192,7 +192,7 @@
                                 Q {{ venta.ofertas }}
                             </v-list-item-title>
                         </v-list-item>
-                        <v-list-item>
+                        <v-list-item @click="isDiscount = true">
                             <v-list-item-subtitle class="text-h6">
                                 Descuento Manual
                             </v-list-item-subtitle>
@@ -360,6 +360,101 @@
             </v-card>
         </v-dialog>
         <div v-shortkey="['ctrl', 'enter']" @shortkey="atajoFinalizar()"></div>
+        <v-dialog v-model="isDiscount" max-width="350">
+            <v-card>
+                <v-card-title> Descuento </v-card-title>
+                <v-card-text>
+                    <p>Ingresa el descuento en quetzales</p>
+                    <v-text-field
+                        type="number"
+                        outlined
+                        label="Descuento"
+                        v-model="venta.descuento"
+                    ></v-text-field>
+                    <v-divider></v-divider>
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-subtitle class="text-h6">
+                                Articulos
+                            </v-list-item-subtitle>
+                            <v-list-item-title
+                                class="text-right text-h6 grey--text pr-3"
+                            >
+                                {{ venta.articulos }}
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-divider inset></v-divider>
+                        <v-list-item>
+                            <v-list-item-subtitle class="text-h6">
+                                Subtotal
+                            </v-list-item-subtitle>
+                            <v-list-item-title
+                                class="text-right text-h6 grey--text pr-3"
+                            >
+                                Q {{ venta.subtotal }}
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="isDiscount = true">
+                            <v-list-item-subtitle class="text-h6">
+                                Descuento Ofertas
+                            </v-list-item-subtitle>
+                            <v-list-item-title
+                                class="text-right text-h6 grey--text pr-3"
+                            >
+                                Q {{ venta.ofertas }}
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-subtitle class="text-h6">
+                                Descuento Manual
+                            </v-list-item-subtitle>
+                            <v-list-item-title
+                                class="text-right text-h6 grey--text pr-3"
+                            >
+                                Q {{ venta.descuento }}
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-list-item v-if="false">
+                            <v-list-item-subtitle class="text-h6">
+                                Descuento
+                            </v-list-item-subtitle>
+                            <v-list-item-title class="text-right">
+                                <v-text-field
+                                    v-model="venta.descuento"
+                                    outlined
+                                    min="0"
+                                    type="number"
+                                    prefix="Q"
+                                    placeholder="##.##"
+                                    class="text-h6 elevation-0 grey--text right-input"
+                                ></v-text-field>
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-divider></v-divider>
+                        <v-list-item>
+                            <v-list-item-subtitle class="align-right text-h6">
+                                TOTAL
+                            </v-list-item-subtitle>
+                            <v-list-item-title class="text-right">
+                                <div class="d-flex flex-column">
+                                    <div>
+                                        <span class="text-h4">Q</span>
+                                        <span
+                                            class="green--text text--darken-2 text-h2"
+                                        >
+                                            {{ venta.total }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-card-text>
+                <v-card-text @click="isDiscount = false">
+                    <v-btn text block> Cerrar </v-btn>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -376,6 +471,7 @@ export default {
         isEnded: false,
         isProcesed: false,
         saved: false,
+        isDiscount: false,
         carrito: [],
         venta: {
             cliente: 0,
@@ -507,8 +603,8 @@ export default {
             });
             this.venta.total =
                 this.venta.subtotal -
-                (this.venta.ofertas || 0) +
-                (this.venta.descuento || 0);
+                ((parseFloat(this.venta.ofertas) || 0) +
+                    (parseFloat(this.venta.descuento) || 0));
 
             this.venta.ganancia = this.total - this.venta.costo;
         },
