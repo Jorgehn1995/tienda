@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::get('/imprimir', [ImpresionesController::class, 'imprimir'])->name('api.productos.index');
 Route::post('/login', [LoginController::class, 'login'])->name('api.login');
 
@@ -67,6 +68,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/impresiones/precios', [ImpresionesController::class, 'precio'])->name('api.impresiones.precios');
     Route::post('/impresiones/barcode', [ImpresionesController::class, 'barcode'])->name('api.impresiones.barcode');
     Route::post('/impresiones/recibos/{doc}', [ImpresionesController::class, 'recibo'])->name('api.impresiones.recibos');
+    Route::post('/impresiones/reporte/total', [ImpresionesController::class, 'reporte_total'])->name('api.impresiones.reporte.total');
 
 
     /**
@@ -78,5 +80,4 @@ Route::group(['middleware' => ['auth:api']], function () {
      * CONSULTA
      */
     Route::get('/reporte/{inicio}/{fin}', [ReportesController::class, 'index'])->name('api.ventas.vender');
-
 });

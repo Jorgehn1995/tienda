@@ -82,6 +82,18 @@
                                 </v-list-item>
                             </v-list>
                         </v-card-text>
+                        <v-card-actions>
+                            <v-btn
+                                color="primary"
+                                block
+                                text
+                                outlined
+                                @click="imprimir()"
+                            >
+                                <v-icon left>mdi-printer</v-icon>
+                                Imprimir
+                            </v-btn>
+                        </v-card-actions>
                     </v-card>
                 </v-col>
                 <v-col cols="12 " md="8">
@@ -254,6 +266,21 @@ export default {
                     this.populares = result.data.populares;
                 })
                 .catch((err) => {});
+        },
+        async imprimir() {
+            await this.$axios
+                .post("/impresiones/reporte/total", {
+                    inicio: this.inicio,
+                    fin: this.fin,
+                    articulos: this.totales.articulos,
+                    total: this.totales.total,
+                })
+                .then((result) => {
+                    this.limpiar();
+                })
+                .catch((err) => {
+                    console.log("error");
+                });
         },
     },
     computed: {

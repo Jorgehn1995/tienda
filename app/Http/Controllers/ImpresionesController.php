@@ -269,4 +269,87 @@ class ImpresionesController extends Controller
             echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
         }
     }
+    public function reporte_total(Request $request)
+    {
+
+
+
+
+
+        $impresora = env("IMPRESORA");
+        $tienda = env("TIENDA");
+        $barrio = env("BARRIO");
+        $municipio = env("MUNICIPIO");
+        $departamento = env("departamento");
+
+        $logo_impresion = env("LOGO_IMPRESORA");
+
+        $copias = 1;
+        try {
+            $connector = new WindowsPrintConnector($impresora);
+
+            $printer = new Printer($connector);
+            for ($i = 0; $i < $copias; $i++) {
+                //$printer->setPrintWidth(200);
+                /* Title of receipt */
+
+
+                $img = EscposImage::load(public_path("images/$logo_impresion"), FALSE);
+
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->bitImage($img);
+                //$printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->setTextSize(2, 1);
+                $printer->setEmphasis(true);
+                //$printer->setFont(Printer::FONT_B);
+                $printer->text("$tienda\n");
+                $printer->setEmphasis(false);
+                $printer->setTextSize(1, 1);
+                $printer->text("$barrio \n");
+                $printer->text("$municipio \n");
+                $printer->text("$departamento \n");
+                $printer->text(" \n");
+                $printer->setJustification(Printer::JUSTIFY_LEFT);
+                $printer->text(" \n");
+
+
+
+                $printer->text("Inicio de Reporte: $request->inicio \n");
+                $printer->text("Fin de Reporte: $request->fin \n");
+
+
+                $printer->setJustification(Printer::JUSTIFY_RIGHT);
+                $printer->setEmphasis(true);
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Articulos Vendidos.', '', $request->articulos);
+                $printer->text("$lineTotal\n");
+                $printer->setEmphasis(true);
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Total', '', "Q " . $request->total);
+                $printer->text("$lineTotal\n");
+                $printer->setEmphasis(false);
+                $printer->text(" \n");
+
+                $printer->setJustification(Printer::JUSTIFY_LEFT);
+                $printer->text("No. articulos vendidos. $venta->articulos \n");
+                $printer->text("No. referencia. $venta->idventa \n ");
+                //$printer->text("Fecha y hora: ".date("d-m-Y h:i:s a")." \n");
+
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->text(" \n");
+
+                $printer->text("Fecha y hora: " . date("d-m-Y h:i:s a") . " \n");
+
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->setTextSize(2, 1);
+                $printer->setEmphasis(true);
+
+                $printer->setEmphasis(false);
+                $printer->cut(Printer::CUT_FULL, 9);
+            }
+
+            $printer->close();
+        } catch (Exception $e) {
+            echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
+        }
+    }
 }
