@@ -119,7 +119,7 @@
                     </template>
                     <v-list>
                         <v-list-item
-                            v-for="(item, index) in [10, 20, 30, 50]"
+                            v-for="(item, index) in [60, 80, 100]"
                             :key="index"
                             @click="limit = item"
                         >

@@ -39,9 +39,9 @@
                                                         {{ producto.codigo }}
                                                     </v-list-item-subtitle>
                                                     <v-list-item-title
-                                                        class="text-h4"
+                                                        class="text-h5"
                                                     >
-                                                        {{ producto.nombre }}}
+                                                        {{ producto.nombre }}
                                                     </v-list-item-title>
                                                 </v-list-item-content>
                                             </v-list-item>
