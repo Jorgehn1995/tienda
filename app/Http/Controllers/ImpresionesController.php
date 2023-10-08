@@ -269,6 +269,28 @@ class ImpresionesController extends Controller
             echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
         }
     }
+    public function abrir()
+    {
+
+
+
+
+
+        $impresora = env("IMPRESORA");
+
+
+        try {
+            $connector = new WindowsPrintConnector($impresora);
+
+            $printer = new Printer($connector);
+
+            $printer->pulse(0, 50, 50);
+
+            $printer->close();
+        } catch (Exception $e) {
+            echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
+        }
+    }
     public function reporte_total(Request $request)
     {
 
@@ -329,7 +351,7 @@ class ImpresionesController extends Controller
                 $printer->setEmphasis(false);
                 $printer->text(" \n");
 
-              
+
                 //$printer->text("Fecha y hora: ".date("d-m-Y h:i:s a")." \n");
 
                 $printer->setJustification(Printer::JUSTIFY_CENTER);

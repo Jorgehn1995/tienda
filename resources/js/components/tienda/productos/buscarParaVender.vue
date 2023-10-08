@@ -19,32 +19,42 @@
                     <v-row dense>
                         <v-col
                             cols="12"
-                            md="3"
                             v-for="(producto, i) in listaTexto"
                             :key="'buv' + i"
                         >
                             <v-card
                                 outlined
                                 elevation="0"
-                                color="primary"
+                                outlined
                                 class="white--text"
                                 @click="agregarProducto(producto)"
                             >
-                                <v-card-title class="pb-0">
-                                    {{ producto.nombre }}
-                                </v-card-title>
-
-                                <v-card-text class="white--text">
-                                    <span class="subtitle-1">{{
-                                        producto.codigo
-                                    }}</span>
-                                    <v-divider></v-divider>
-                                    <productos-mostrar-precio
-                                        class="white--text"
-                                        :precio="producto.precio"
-                                        :ocultar_cantidad="true"
-                                        :cantidad="1"
-                                    ></productos-mostrar-precio>
+                                <v-card-text>
+                                    <v-row dense>
+                                        <v-col cols="12" sm="8">
+                                            <v-list-item>
+                                                <v-list-item-content>
+                                                    <v-list-item-subtitle>
+                                                        Código:
+                                                        {{ producto.codigo }}
+                                                    </v-list-item-subtitle>
+                                                    <v-list-item-title
+                                                        class="text-h4"
+                                                    >
+                                                        {{ producto.nombre }}}
+                                                    </v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </v-col>
+                                        <v-col cols="12" sm="4">
+                                            <productos-mostrar-precio
+                                                class="green--text"
+                                                :precio="producto.precio"
+                                                :ocultar_cantidad="true"
+                                                :cantidad="1"
+                                            ></productos-mostrar-precio>
+                                        </v-col>
+                                    </v-row>
                                 </v-card-text>
                             </v-card>
                         </v-col>

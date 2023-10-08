@@ -350,9 +350,19 @@
                         block
                         large
                         color="green"
-                        class="white--text"
+                        text
                         :loading="isProcesed"
                         @click="procesar()"
+                    >
+                        Finalizar e Imprimir
+                    </v-btn>
+                    <v-btn
+                        block
+                        large
+                        color="green"
+                        class="white--text"
+                        :loading="isProcesed"
+                        @click="atajoFinalizar()"
                     >
                         Finalizar y Cobrar [CTRl + Enter]
                     </v-btn>
@@ -578,7 +588,7 @@ export default {
             if (!this.isEnded) {
                 this.finalizar();
             } else {
-                this.procesar();
+                this.finalizarImprimir();
             }
         },
         finalizar() {
@@ -616,6 +626,24 @@ export default {
                     (parseFloat(this.venta.descuento) || 0));
 
             this.venta.ganancia = this.total - this.venta.costo;
+        },
+        async finalizarImprimir() {
+            this.isProcesed = true;
+            await this.$axios
+                .post("/ventas/vender", {
+                    venta: this.venta,
+                    carrito: this.carrito,
+                })
+                .then((result) => {
+                    this.$axios.get("/impresiones/recibos/abrir").then((e) => {
+                        this.limpiar();
+                    });
+                })
+                .catch((err) => {
+                    console.log("error");
+                });
+
+            this.isProcesed = false;
         },
         async procesar() {
             this.isProcesed = true;
