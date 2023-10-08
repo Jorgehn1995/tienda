@@ -194,7 +194,7 @@
                         </v-list-item>
                         <v-list-item @click="isDiscount = true">
                             <v-list-item-subtitle class="text-h6">
-                                Descuento Manual
+                                Desc. M. [CTRL + M]
                             </v-list-item-subtitle>
                             <v-list-item-title
                                 class="text-right text-h6 grey--text pr-3"
@@ -360,6 +360,7 @@
             </v-card>
         </v-dialog>
         <div v-shortkey="['ctrl', 'enter']" @shortkey="atajoFinalizar()"></div>
+        <div v-shortkey="['ctrl', 'm']" @shortkey="descuentoManual()"></div>
         <v-dialog v-model="isDiscount" max-width="350">
             <v-card>
                 <v-card-title> Descuento </v-card-title>
@@ -367,6 +368,7 @@
                     <p>Ingresa el descuento en quetzales</p>
                     <v-text-field
                         type="number"
+                        ref="descm"
                         outlined
                         label="Descuento"
                         v-model="venta.descuento"
@@ -490,6 +492,13 @@ export default {
         },
     }),
     methods: {
+        descuentoManual() {
+            this.isDiscount = !this.isDiscount;
+            setTimeout(() => {
+                this.$refs.descm.$refs.input.select();
+                this.$refs.descm.$refs.input.focus();
+            }, 50);
+        },
         agregarProducto(e) {
             let codCarrito = e.carrito;
 
