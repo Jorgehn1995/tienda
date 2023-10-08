@@ -329,9 +329,7 @@ class ImpresionesController extends Controller
                 $printer->setEmphasis(false);
                 $printer->text(" \n");
 
-                $printer->setJustification(Printer::JUSTIFY_LEFT);
-                $printer->text("No. articulos vendidos. $venta->articulos \n");
-                $printer->text("No. referencia. $venta->idventa \n ");
+              
                 //$printer->text("Fecha y hora: ".date("d-m-Y h:i:s a")." \n");
 
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
