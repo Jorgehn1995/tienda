@@ -343,10 +343,20 @@ class ImpresionesController extends Controller
 
                 $printer->setJustification(Printer::JUSTIFY_RIGHT);
                 $printer->setEmphasis(true);
-                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Articulos Vendidos.', '', $request->articulos);
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Articulos Vendidos.', '', $request["totales"]["articulos"]);
                 $printer->text("$lineTotal\n");
-                $printer->setEmphasis(true);
-                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Total', '', "Q " . $request->total);
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Subtotal', '', "Q " . $request["totales"]["subtotal"]);
+                $printer->text("$lineTotal\n");
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Descuento', '', "Q " . $request["totales"]["descuento"]);
+                $printer->text("$lineTotal\n");
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Total', '', "Q " . $request["totales"]["total"]);
+
+                $printer->text("$lineTotal\n");
+                $printer->text("---------------------------------------------\n");
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Costos', '', "Q " . $request["totales"]["costos"]);
+                $printer->text("$lineTotal\n");
+                $lineTotal = sprintf('%-5.40s %-1.05s %13.40s', 'Ganancias', '', "Q " . $request["totales"]["ganancias"]);
+
                 $printer->text("$lineTotal\n");
                 $printer->setEmphasis(false);
                 $printer->text(" \n");

@@ -67,7 +67,27 @@
                                     <v-list-item-title
                                         class="text-right text-h6 grey--text pr-3"
                                     >
-                                        Q {{ totales.articulos }}
+                                        {{ totales.articulos }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-subtitle class="text-h6">
+                                        Subtotal
+                                    </v-list-item-subtitle>
+                                    <v-list-item-title
+                                        class="text-right text-h6 grey--text pr-3"
+                                    >
+                                        Q {{ totales.subtotal }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-subtitle class="text-h6">
+                                        Descuentos
+                                    </v-list-item-subtitle>
+                                    <v-list-item-title
+                                        class="text-right text-h6 grey--text pr-3"
+                                    >
+                                        Q {{ totales.descuento }}
                                     </v-list-item-title>
                                 </v-list-item>
                                 <v-list-item>
@@ -78,6 +98,27 @@
                                         class="text-right text-h6 grey--text pr-3"
                                     >
                                         Q {{ totales.total }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-divider></v-divider>
+                                <v-list-item>
+                                    <v-list-item-subtitle class="text-h6">
+                                        Costos
+                                    </v-list-item-subtitle>
+                                    <v-list-item-title
+                                        class="text-right text-h6 grey--text pr-3"
+                                    >
+                                        Q {{ totales.costos }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-subtitle class="text-h6">
+                                        Ganancias
+                                    </v-list-item-subtitle>
+                                    <v-list-item-title
+                                        class="text-right text-h6 grey--text pr-3"
+                                    >
+                                        Q {{ totales.ganancias }}
                                     </v-list-item-title>
                                 </v-list-item>
                             </v-list>
@@ -250,6 +291,10 @@ export default {
         fin: "",
         totales: {
             articulos: 0,
+            costos: 0,
+            subtotal: 0,
+            descuento: 0,
+            ganancias: 0,
             total: 0,
         },
         ventas: [],
@@ -263,6 +308,7 @@ export default {
                 .then((result) => {
                     this.totales = result.data.totales;
                     this.ventas = result.data.ventas;
+
                     this.populares = result.data.populares;
                 })
                 .catch((err) => {});
@@ -273,7 +319,7 @@ export default {
                     inicio: this.inicio,
                     fin: this.fin,
                     articulos: this.totales.articulos,
-                    total: this.totales.total,
+                    totales: this.totales,
                 })
                 .then((result) => {
                     this.limpiar();

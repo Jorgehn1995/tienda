@@ -23,9 +23,12 @@ class ReportesController extends Controller
         //    ->orderByRaw('SUM(cantidad) DESC')
         //    ->limit(10)
         //    ->get();
-
+        $totales["costos"] = round($ventas->sum("costos"), 2);
+        $totales["subtotal"] = round($ventas->sum("subtotal"), 2);
+        $totales["descuento"] = $ventas->sum("descuento");
         $totales["articulos"] = $ventas->sum("articulos");
-        $totales["total"] = $ventas->sum("total");
+        $totales["total"] = round($ventas->sum("total"), 2);
+        $totales["ganancias"] = round($totales["total"] - $totales["costos"], 2);
 
 
         return ["ventas" => $ventas, "totales" => $totales, "populares" => []];
