@@ -191,6 +191,14 @@
                                         </v-row>
                                     </v-expansion-panel-header>
                                     <v-expansion-panel-content>
+                                        <v-btn
+                                            color="primary"
+                                            @click="recibo(venta.documento)"
+                                            :loading="isProcesed"
+                                        >
+                                            <v-icon>mdi-printer</v-icon>
+                                            Imprimir
+                                        </v-btn>
                                         <v-simple-table>
                                             <template v-slot:default>
                                                 <thead>
@@ -287,6 +295,7 @@
 export default {
     data: () => ({
         isLoading: false,
+        isProcesed: false,
         inicio: "",
         fin: "",
         totales: {
@@ -327,6 +336,18 @@ export default {
                 .catch((err) => {
                     console.log("error");
                 });
+        },
+        async recibo(id) {
+            this.isProcesed = true;
+            await this.$axios
+                .post("/impresiones/recibos/" + id)
+                .then((result) => {
+                    this.limpiar();
+                })
+                .catch((err) => {
+                    console.log("error");
+                });
+            this.isProcesed = false;
         },
     },
     computed: {

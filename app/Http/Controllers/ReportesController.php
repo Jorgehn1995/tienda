@@ -12,9 +12,13 @@ class ReportesController extends Controller
     public function index($inicio, $fin)
     {
         $identificadores = Venta::select("idventa")->whereDate("created_at", ">=", $inicio)->whereDate("created_at", "<=", $fin)
-            ->where("anulado", 0)->get();
+            ->where("anulado", 0)
 
-        $ventas = Venta::whereIn("idventa", $identificadores)->with("detalles")->get();
+            ->get();
+
+        $ventas = Venta::whereIn("idventa", $identificadores)->with("detalles")
+            ->orderBy("created_at", "desc")
+            ->get();
 
         //$populares = Detalle::select("idproducto")
         //    ->whereIn("idventa", $identificadores)
