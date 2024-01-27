@@ -253,7 +253,7 @@
                     <v-col cols="12" md="6">
                         <v-card outlined elevation="3" tile height="100%">
                             <v-card-title>
-                                Presentaciones y Precio [CTRL+D]
+                                Presentaciones y Precio [CTRL+1]
                             </v-card-title>
 
                             <v-card-text class="py-2">
