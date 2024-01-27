@@ -51,6 +51,7 @@ class ProductosController extends Controller
                 "existencia" => 0,
                 "existencia_nueva" => 0,
                 "caducidad" => "",
+                "precios" => [["nombre" => "Unidad", "cantidad" => 1, "precio" => ""]]
             ];
         }
         $producto->existencia_nueva = 0;

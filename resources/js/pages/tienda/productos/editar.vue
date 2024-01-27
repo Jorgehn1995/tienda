@@ -110,7 +110,7 @@
                             </v-row>
                         </v-card>
                     </v-col>
-                    <v-col cols="12" md="8">
+                    <v-col cols="12" md="12">
                         <v-card outlined elevation="3" tile height="100%">
                             <v-card-title>
                                 <span v-if="isNew"> Nuevo Producto </span>
@@ -126,7 +126,7 @@
                             </v-card-title>
                             <v-card-text class="py-2">
                                 <v-row dense>
-                                    <v-col cols="12" md="2" class="py-0">
+                                    <v-col cols="12" md="3" class="py-0">
                                         <span class="subtitle">
                                             Codigo
                                             <span class="red--text">*</span>
@@ -161,12 +161,41 @@
                                             ]"
                                             dense
                                             outlined
-                                            rows="1"
+                                            rows="2"
                                             prepend-icon="mdi-tag-outline"
                                             placeholder="Nombre"
                                         ></v-textarea>
                                     </v-col>
                                     <v-col cols="12" md="3" class="py-0">
+                                        <span class="subtitle"> Marca </span>
+                                        <v-text-field
+                                            v-model="data.marca"
+                                            dense
+                                            outlined
+                                            rows="1"
+                                            prepend-icon="mdi-trademark"
+                                            placeholder="Marca"
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="2" class="py-0">
+                                        <span class="subtitle">
+                                            Tamaño o Dimensión
+                                        </span>
+                                        <v-text-field
+                                            v-model="data.dimension"
+                                            dense
+                                            outlined
+                                            rows="1"
+                                            prepend-icon="mdi-image-size-select-small"
+                                            placeholder="Tamaño o Dimensión"
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        md="3"
+                                        class="py-0"
+                                        v-if="false"
+                                    >
                                         <span class="subtitle">
                                             Costo Unitario
                                         </span>
@@ -182,7 +211,12 @@
                                             placeholder="##.##"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" md="3" class="py-0">
+                                    <v-col
+                                        cols="12"
+                                        md="3"
+                                        class="py-0"
+                                        v-if="false"
+                                    >
                                         <span class="subtitle">
                                             Precio Unitario
                                             <span class="red--text">*</span>
@@ -215,7 +249,24 @@
                             </v-card-text>
                         </v-card>
                     </v-col>
-                    <v-col cols="12" md="4">
+
+                    <v-col cols="12" md="6">
+                        <v-card outlined elevation="3" tile height="100%">
+                            <v-card-title>
+                                Presentaciones y Precio [CTRL+D]
+                            </v-card-title>
+
+                            <v-card-text class="py-2">
+                                <productos-precios
+                                    :costo="data.costo"
+                                    :precio_unitario="data.precio"
+                                    ref="precios"
+                                    v-model="data.precios"
+                                ></productos-precios>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12" md="6">
                         <v-card outlined elevation="3" tile height="100%">
                             <v-card-title> Stock y Costo [CTRL+S]</v-card-title>
                             <v-card-text class="py-2">
@@ -255,22 +306,6 @@
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
-                    <v-col cols="12">
-                        <v-card outlined elevation="3" tile height="100%">
-                            <v-card-title>
-                                Descuentos Especiales [CTRL+D]
-                            </v-card-title>
-
-                            <v-card-text class="py-2">
-                                <productos-precios
-                                    :costo="data.costo"
-                                    :precio_unitario="data.precio"
-                                    ref="precios"
-                                    v-model="data.precios"
-                                ></productos-precios>
                             </v-card-text>
                         </v-card>
                     </v-col>
@@ -359,7 +394,13 @@ export default {
             caducidad: "",
             existencia: 0,
             precio: 0,
-            precios: [],
+            precios: [
+                {
+                    nombre: "Unidad",
+                    cantidad: 1,
+                    precio: "",
+                },
+            ],
         },
         error: {
             status: false,
@@ -403,9 +444,7 @@ export default {
                         this.isNew = result.data.nombre == "";
                         this.isFound = true;
                         if (this.isNew) {
-                            this.$nextTick(() => {
-                                this.$refs.nombre.$refs.input.focus();
-                            });
+                            this.productoNuevo();
                         } else {
                             this.$nextTick(() => {
                                 this.$refs.existencia.$refs.input.select();
@@ -433,7 +472,12 @@ export default {
             this.$refs[n].$refs.input.select();
             this.$refs[n].$refs.input.focus();
         },
-
+        productoNuevo() {
+            this.$nextTick(() => {
+                this.$refs.nombre.$refs.input.focus();
+                console.log(this.data);
+            });
+        },
         confirmar() {
             if (this.$refs.form.validate()) {
                 this.procesar();
