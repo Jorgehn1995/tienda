@@ -2,13 +2,15 @@
     <div>
         <div class="">
             <v-row dense>
-                <v-col cols="12" class="mb-1">
+                <v-col cols="12">
                     <v-form ref="formCodigo" @submit="skBuscar">
                         <v-card outlined elevation="3" tile>
                             <v-card-text>
                                 <v-row dense>
-                                    <v-col cols="12" sm="6">
+                                    <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
+                                            height="60"
+                                            style="font-size: 25px"
                                             label="Código de Barras [CTRL+Q]"
                                             v-shortkey="['ctrl', 'q']"
                                             @shortkey.native="skBuscarCodigo"
@@ -24,7 +26,7 @@
                                     <v-col
                                         cols="12"
                                         sm="2"
-                                        class="d-flex justify-center align-center"
+                                        class="d-flex justify-center align-center py-0"
                                     >
                                         <v-btn
                                             outlined
@@ -44,7 +46,7 @@
                                     <v-col
                                         cols="12"
                                         sm="2"
-                                        class="d-flex justify-center align-center"
+                                        class="d-flex justify-center py-0 align-center"
                                     >
                                         <v-btn
                                             outlined
@@ -62,7 +64,7 @@
                                     <v-col
                                         cols="12"
                                         sm="2"
-                                        class="d-flex justify-center align-center"
+                                        class="d-flex justify-center py-0 align-center"
                                     >
                                         <v-btn
                                             outlined
@@ -93,252 +95,286 @@
                     ></v-progress-circular>
                 </v-col>
             </v-row>
+            <div class="top-sticky" v-if="isFound && !isLoading">
+                <v-card tile color="teal" dark elevation="0">
+                    <div
+                        class="py-2 px-2"
+                        style="font-family: 'Roboto'; font-size: 2em"
+                    >
+                        <span v-if="isNew">Producto Sin Registrar</span>
+                        <span v-else>
+                            {{ data.nombre }}
+                            {{ data.marca }}
+                            {{ data.dimension }}
+                        </span>
+                    </div>
+                </v-card>
+            </div>
 
-            <v-form ref="formProducto" lazy-validation>
-                <v-row dense v-if="isFound && !isLoading">
-                    <v-col cols="12">
-                        <v-card tile color="transparent" elevation="0">
-                            <v-row dense>
-                                <v-col cols="12">
-                                    <v-card-title>
-                                        <span v-if="isNew"
-                                            >Producto Sin Registrar</span
-                                        >
-                                        <span v-else>{{ data.nombre }}</span>
-                                    </v-card-title>
-                                </v-col>
-                            </v-row>
-                        </v-card>
-                    </v-col>
-                    <v-col cols="12" md="12">
-                        <v-card outlined elevation="3" tile height="100%">
-                            <v-card-title>
-                                <span v-if="isNew"> Nuevo Producto </span>
-                                <span v-else> Actualizar Producto </span>
-                                [CTRL+A]
-                                <v-chip
-                                    color="green--text"
-                                    class="v-chip--active"
-                                    v-if="isNew"
-                                >
-                                    Codigo Nuevo
-                                </v-chip>
-                            </v-card-title>
-                            <v-card-text class="py-2">
-                                <v-row dense>
-                                    <v-col cols="12" md="3" class="py-0">
-                                        <span class="subtitle">
-                                            Codigo
-                                            <span class="red--text">*</span>
-                                        </span>
-                                        <v-text-field
-                                            disabled
-                                            v-model="data.codigo"
-                                            ref="codigo"
-                                            :rules="[rules.requerido]"
-                                            dense
-                                            outlined
-                                            prepend-icon="mdi-barcode"
-                                            placeholder="Nombre"
-                                        ></v-text-field>
-                                    </v-col>
-
-                                    <v-col cols="12" md="4" class="py-0">
-                                        <span class="subtitle">
-                                            Producto
-                                            <span class="red--text">*</span>
-                                        </span>
-                                        <v-textarea
-                                            v-shortkey="['ctrl', 'a']"
-                                            @shortkey.native="
-                                                skEnfocarTextField('nombre')
-                                            "
-                                            ref="nombre"
-                                            v-model="data.nombre"
-                                            :rules="[
-                                                rules.requerido,
-                                                rules.min200,
-                                            ]"
-                                            dense
-                                            outlined
-                                            rows="2"
-                                            prepend-icon="mdi-tag-outline"
-                                            placeholder="Nombre"
-                                        ></v-textarea>
-                                    </v-col>
-                                    <v-col cols="12" md="3" class="py-0">
-                                        <span class="subtitle"> Marca </span>
-                                        <v-text-field
-                                            v-model="data.marca"
-                                            dense
-                                            outlined
-                                            rows="1"
-                                            prepend-icon="mdi-trademark"
-                                            placeholder="Marca"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="2" class="py-0">
-                                        <span class="subtitle">
-                                            Tamaño o Dimensión
-                                        </span>
-                                        <v-text-field
-                                            v-model="data.dimension"
-                                            dense
-                                            outlined
-                                            rows="1"
-                                            prepend-icon="mdi-image-size-select-small"
-                                            placeholder="Tamaño o Dimensión"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col
-                                        cols="12"
-                                        md="3"
-                                        class="py-0"
-                                        v-if="false"
-                                    >
-                                        <span class="subtitle">
-                                            Costo Unitario
-                                        </span>
-                                        <v-text-field
-                                            ref="costo"
-                                            type="number"
-                                            prefix="Q"
-                                            v-model="data.costo"
-                                            :rules="[rules.min0]"
-                                            dense
-                                            outlined
-                                            prepend-icon="mdi-text-box-outline"
-                                            placeholder="##.##"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col
-                                        cols="12"
-                                        md="3"
-                                        class="py-0"
-                                        v-if="false"
-                                    >
-                                        <span class="subtitle">
-                                            Precio Unitario
-                                            <span class="red--text">*</span>
-                                        </span>
-                                        <v-text-field
-                                            ref="precioUnitario"
-                                            v-shortkey="['ctrl', 'd']"
-                                            @shortkey.native="
-                                                skEnfocarTextField(
-                                                    'precioUnitario'
-                                                )
-                                            "
-                                            type="number"
-                                            prefix="Q"
-                                            v-model="data.precio"
-                                            :rules="[rules.min0]"
-                                            dense
-                                            outlined
-                                            prepend-icon="mdi-text-box-outline"
-                                            placeholder="##.##"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" class="py-0">
-                                        <span class="title"
-                                            >Existencia Actual
-                                            {{ data.existencia }}</span
-                                        >
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
-
-                    <v-col cols="12" md="6">
-                        <v-card outlined elevation="3" tile height="100%">
-                            <v-card-title>
-                                Presentaciones y Precio [CTRL+1]
-                            </v-card-title>
-
-                            <v-card-text class="py-2">
-                                <productos-precios
-                                    :costo="data.costo"
-                                    :precio_unitario="data.precio"
-                                    ref="precios"
-                                    v-model="data.precios"
-                                ></productos-precios>
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                        <v-card outlined elevation="3" tile height="100%">
-                            <v-card-title> Stock y Costo [CTRL+S]</v-card-title>
-                            <v-card-text class="py-2">
-                                <v-row dense>
-                                    <v-col cols="12" md="6" class="py-0">
-                                        <span class="subtitle">
-                                            Agregar Stock
-                                        </span>
-                                        <v-text-field
-                                            v-shortkey="['ctrl', 's']"
-                                            @shortkey.native="
-                                                skEnfocarTextField('existencia')
-                                            "
-                                            ref="existencia"
-                                            type="number"
-                                            v-model="data.existencia_nueva"
-                                            :rules="[rules.min0]"
-                                            dense
-                                            outlined
-                                            prepend-icon="mdi-package-variant-plus"
-                                            placeholder="Agregar Existencias"
-                                        ></v-text-field>
-                                    </v-col>
-
-                                    <v-col cols="12" md="6" class="py-0">
-                                        <span class="subtitle">
-                                            Caducidad
-                                        </span>
-                                        <v-text-field
-                                            v-model="data.caducidad"
-                                            ref="caducidad"
-                                            type="date"
-                                            dense
-                                            outlined
-                                            prepend-icon="mdi-calendar-outline"
-                                            placeholder="Fecha de Vencimiento"
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
-                    <v-col cols="12">
-                        <div class="d-flex justify-center align-center">
-                            <v-btn
-                                v-shortkey="['ctrl', 'alt', 'enter']"
-                                @shortkey.native="procesar()"
-                                large
-                                color="primary"
+            <v-container>
+                <v-form ref="formProducto" lazy-validation>
+                    <v-row dense v-if="isFound && !isLoading">
+                        <v-col cols="12" md="6">
+                            <v-card
                                 outlined
+                                elevation="0"
+                                class="rounded-lg"
                                 tile
-                                @click="procesar(false)"
+                                height="100%"
                             >
-                                <v-icon>mdi-content-save</v-icon>
-                                Guardar y Regresar [CTRL+ALT+P]
-                            </v-btn>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                v-shortkey="['ctrl', 'enter']"
-                                @shortkey.native="procesar()"
-                                large
-                                color="primary"
-                                tile
-                                @click="procesar()"
+                                <v-card-title>
+                                    <span v-if="isNew"> Nuevo Producto </span>
+                                    <span v-else> Actualizar Producto </span>
+                                    <v-chip
+                                        label
+                                        color="grey--text text--darken-1"
+                                        class="v-chip--active ml-1"
+                                    >
+                                        [CTRL+1]
+                                    </v-chip>
+                                    <v-chip
+                                        color="green--text"
+                                        class="v-chip--active"
+                                        v-if="isNew"
+                                    >
+                                        Codigo Nuevo
+                                    </v-chip>
+                                </v-card-title>
+                                <v-divider inset></v-divider>
+                                <v-card-text class="py-2">
+                                    <v-row dense>
+                                        <v-col cols="12" md="12" class="py-0">
+                                            <span class="subtitle">
+                                                Codigo
+                                                <span class="red--text">*</span>
+                                            </span>
+                                            <v-text-field
+                                                disabled
+                                                v-model="data.codigo"
+                                                ref="codigo"
+                                                :rules="[rules.requerido]"
+                                                dense
+                                                outlined
+                                                prepend-icon="mdi-barcode"
+                                                placeholder="Nombre"
+                                            ></v-text-field>
+                                        </v-col>
+
+                                        <v-col cols="12" md="12" class="py-0">
+                                            <span class="subtitle">
+                                                Producto
+                                                <span class="red--text">*</span>
+                                            </span>
+                                            <v-textarea
+                                                v-shortkey="['ctrl', '1']"
+                                                @shortkey.native="
+                                                    skEnfocarTextField('nombre')
+                                                "
+                                                ref="nombre"
+                                                v-model="data.nombre"
+                                                :rules="[
+                                                    rules.requerido,
+                                                    rules.min200,
+                                                ]"
+                                                dense
+                                                outlined
+                                                rows="4"
+                                                prepend-icon="mdi-tag-outline"
+                                                placeholder="Nombre"
+                                            ></v-textarea>
+                                        </v-col>
+                                        <v-col cols="12" md="6" class="py-0">
+                                            <span class="subtitle">
+                                                Marca
+                                            </span>
+                                            <v-text-field
+                                                v-model="data.marca"
+                                                dense
+                                                outlined
+                                                rows="1"
+                                                prepend-icon="mdi-trademark"
+                                                placeholder="Marca"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="6" class="py-0">
+                                            <span class="subtitle">
+                                                Tamaño o Dimensión
+                                            </span>
+                                            <v-text-field
+                                                v-model="data.dimension"
+                                                dense
+                                                outlined
+                                                rows="1"
+                                                prepend-icon="mdi-image-size-select-small"
+                                                placeholder="Tamaño o Dimensión"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col
+                                            cols="12"
+                                            md="3"
+                                            class="py-0"
+                                            v-if="false"
+                                        >
+                                            <span class="subtitle">
+                                                Costo Unitario
+                                            </span>
+                                            <v-text-field
+                                                ref="costo"
+                                                type="number"
+                                                prefix="Q"
+                                                v-model="data.costo"
+                                                :rules="[rules.min0]"
+                                                dense
+                                                outlined
+                                                prepend-icon="mdi-text-box-outline"
+                                                placeholder="##.##"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col
+                                            cols="12"
+                                            md="3"
+                                            class="py-0"
+                                            v-if="false"
+                                        >
+                                            <span class="subtitle">
+                                                Precio Unitario
+                                                <span class="red--text">*</span>
+                                            </span>
+                                            <v-text-field
+                                                ref="precioUnitario"
+                                                v-shortkey="['ctrl', 'd']"
+                                                @shortkey.native="
+                                                    skEnfocarTextField(
+                                                        'precioUnitario'
+                                                    )
+                                                "
+                                                type="number"
+                                                prefix="Q"
+                                                v-model="data.precio"
+                                                :rules="[rules.min0]"
+                                                dense
+                                                outlined
+                                                prepend-icon="mdi-text-box-outline"
+                                                placeholder="##.##"
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+
+                        <v-col cols="12" md="6">
+                            <v-card
+                                outlined
+                                elevation="0"
+                                class="rounded-lg"
+                                height="100%"
                             >
-                                <v-icon>mdi-content-save</v-icon>
-                                Guardar y Agregar otro [CTRL+P]
-                            </v-btn>
-                        </div>
-                    </v-col>
-                </v-row>
-            </v-form>
+                                <v-card-title>
+                                    Presentaciones y Precio
+                                    <v-chip
+                                        label
+                                        color="grey--text text--darken-1"
+                                        class="v-chip--active ml-1"
+                                    >
+                                        [CTRL+2]
+                                    </v-chip>
+                                </v-card-title>
+                                <v-divider inset></v-divider>
+                                <v-card-text class="py-2">
+                                    <productos-precios
+                                        :costo="data.costo"
+                                        :precio_unitario="data.precio"
+                                        ref="precios"
+                                        v-model="data.precios"
+                                    ></productos-precios>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-card
+                                outlined
+                                elevation="0"
+                                class="rounded-lg"
+                                height="100%"
+                            >
+                                <v-card-title>
+                                    Costos
+                                    <v-chip
+                                        label
+                                        color="grey--text text--darken-1"
+                                        class="v-chip--active ml-1"
+                                    >
+                                        [CTRL+3]
+                                    </v-chip>
+                                </v-card-title>
+                                <v-divider inset></v-divider>
+                                <v-card-text class="py-2">
+                                    <v-row dense>
+                                        <v-col cols="12">
+                                            <producto-stock
+                                                :precios="data.precios"
+                                                v-model="data.precios"
+                                            ></producto-stock>
+                                        </v-col>
+                                    </v-row>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-card
+                                outlined
+                                elevation="0"
+                                class="rounded-lg"
+                                height="100%"
+                            >
+                                <v-card-title>
+                                    Existencias
+                                    <v-chip
+                                        label
+                                        color="grey--text text--darken-1"
+                                        class="v-chip--active ml-1"
+                                    >
+                                        [CTRL+4]
+                                    </v-chip>
+                                </v-card-title>
+                                <v-divider inset></v-divider>
+                                <v-card-text class="py-2">
+                                    <v-row dense>
+                                        <v-col cols="12">
+                                            <producto-existencia
+                                                :precios="data.precios"
+                                                v-model="data.precios"
+                                            ></producto-existencia>
+                                        </v-col>
+                                    </v-row>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-bottom-navigation app>
+                                <v-btn
+                                    v-shortkey="['ctrl', 'enter']"
+                                    @shortkey.native="procesar()"
+                                    large
+                                    color="primary"
+                                    tile
+                                    dark
+                                    style="white--text"
+                                    @click="procesar()"
+                                >
+                                    <span class="white--text">
+                                        Guardar y Agregar otro
+                                    </span>
+                                    <span class="white--text"
+                                        ><strong>[CTRL+ENTER]</strong></span
+                                    >
+                                </v-btn>
+                            </v-bottom-navigation>
+                        </v-col>
+                    </v-row>
+                </v-form>
+            </v-container>
 
             <v-nice-modal v-model="saved" @go="confirmado()">
                 <template v-slot:titulo> Registro Editado </template>
@@ -367,10 +403,18 @@
 </template>
 
 <script>
+import ProductoExistencia from "../../../components/tienda/productos/productoExistencia.vue";
+import ProductoStock from "../../../components/tienda/productos/productoStock.vue";
+
 import ProductosPrecios from "../../../components/tienda/productos/productosPrecios.vue";
 import VNiceModal from "../../../components/tienda/generales/v-nice-modal.vue";
 export default {
-    components: { VNiceModal, ProductosPrecios },
+    components: {
+        VNiceModal,
+        ProductosPrecios,
+        ProductoStock,
+        ProductoExistencia,
+    },
     mounted() {
         this.$refs.buscarCodigo.$refs.input.focus();
         if (this.$route.query.codigo) {
@@ -390,17 +434,14 @@ export default {
             idproducto: 0,
             codigo: "",
             nombre: "",
+            marca: "",
+            dimension: "",
             costo: 0,
             caducidad: "",
             existencia: 0,
             precio: 0,
-            precios: [
-                {
-                    nombre: "Unidad",
-                    cantidad: 1,
-                    precio: "",
-                },
-            ],
+            precios: [],
+            recalcular_costo: false,
         },
         error: {
             status: false,
@@ -446,10 +487,10 @@ export default {
                         if (this.isNew) {
                             this.productoNuevo();
                         } else {
-                            this.$nextTick(() => {
-                                this.$refs.existencia.$refs.input.select();
-                                this.$refs.existencia.$refs.input.focus();
-                            });
+                            //setTimeout(() => {
+                            //    this.$refs.existencia.$refs.input.select();
+                            //    this.$refs.existencia.$refs.input.focus();
+                            //}, 10);
                         }
                     })
                     .catch((err) => {
@@ -475,7 +516,6 @@ export default {
         productoNuevo() {
             this.$nextTick(() => {
                 this.$refs.nombre.$refs.input.focus();
-                console.log(this.data);
             });
         },
         confirmar() {
@@ -521,4 +561,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.top-sticky {
+    position: -webkit-sticky; /* Safari */
+    position: sticky !important;
+    top: 64px;
+    z-index: 1;
+}
+</style>

@@ -10,6 +10,7 @@
 
         <!-- Quicksand Font -->
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;600;700&display=swap" rel="stylesheet">
 
         <link href="{{ mix('dist/css/app.css') }}" rel="stylesheet">
     </head>

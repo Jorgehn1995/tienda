@@ -15,6 +15,5 @@ class Precio extends Model
     public function producto()
     {
         return $this->belongsTo("App\Models\Producto", "idproducto");
-
     }
 }
