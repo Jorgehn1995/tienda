@@ -8,12 +8,12 @@
         <v-row dense>
             <v-col
                 cols="12"
-                md="4"
+                md="6"
                 v-for="(item, index) in data"
                 :key="'pdocv' + index"
                 :offset-md="index == 0 ? offset : ''"
             >
-                <v-card tile height="100%">
+                <v-card class="rounded-lg" elevation="0" outlined height="100%">
                     <v-card-title class="pb-1">
                         <v-icon left>mdi-barcode</v-icon>
                         {{ item.codigo }}
@@ -30,52 +30,22 @@
                             <v-icon>mdi-barcode</v-icon>
                         </v-btn>
                     </v-card-title>
-                    <v-card-title class="py-1">{{ item.nombre }}</v-card-title>
+                    <v-divider inset></v-divider>
                     <v-card-text>
-                        <span class="title">
-                            {{ item.existencia }} unidades disponibles
-                        </span>
+                        <p
+                            style="font-family: 'Roboto'; font-size: 2em"
+                            class="mb-0"
+                        >
+                            {{ item.nombre }}
+                            {{ item.marca }}
+                            {{ item.dimension }}
+                        </p>
+                    </v-card-text>
+                    <v-card-text>
                         <v-row dense>
-                            <v-col cols="12">
-                                <v-card outlined class="mt-1" tile>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-
-                                        <v-btn
-                                            rounded
-                                            large
-                                            text
-                                            outlined
-                                            color="primary"
-                                            @click="
-                                                imprimirPrecio(item, {
-                                                    nombre: 'Unidad',
-                                                    cantidad: 1,
-                                                    precio: item.precio,
-                                                })
-                                            "
-                                        >
-                                            <v-icon>mdi-printer-outline</v-icon>
-                                        </v-btn>
-                                    </v-card-actions>
-                                    <v-card-text class="mx-0 mt-n6">
-                                        <v-row>
-                                            <v-col
-                                                cols="12"
-                                                class="d-flex justify-center align-center"
-                                            >
-                                                <productos-mostrar-precio
-                                                    :cantidad="1"
-                                                    nombre="Precio Unitario"
-                                                    :precio="item.precio"
-                                                ></productos-mostrar-precio>
-                                            </v-col>
-                                        </v-row>
-                                    </v-card-text>
-                                </v-card>
-                            </v-col>
                             <v-col
                                 cols="12"
+                                md="6"
                                 v-for="(precio, i) in item.precios"
                                 :key="'prev' + i"
                             >
@@ -178,10 +148,7 @@ export default {
         offset() {
             switch (this.data.length) {
                 case 1:
-                    return 4;
-                    break;
-                case 2:
-                    return 2;
+                    return 3;
                     break;
 
                 default:

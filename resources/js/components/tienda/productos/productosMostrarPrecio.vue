@@ -7,8 +7,12 @@
             <span class="subtitle-1" v-else>
                 <strong>{{ nombre || "N/E" }}</strong>
             </span>
-            <div style="" class="d-flex d-flex-row justify-start">
-                <div class="text-h4">{{ numero(precio) }}</div>
+            <div
+                style=""
+                class="d-flex d-flex-row justify-start"
+                style="font-family: 'Roboto' !important"
+            >
+                <div class="text-h4"><small>Q</small> {{ numero(precio) }}</div>
                 <span class="text-h5">.{{ decimales(precio) }}</span>
             </div>
 
