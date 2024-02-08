@@ -31,7 +31,7 @@
                             >
                                 <v-card-text>
                                     <v-row dense>
-                                        <v-col cols="12" sm="8">
+                                        <v-col cols="12" sm="5">
                                             <v-list-item>
                                                 <v-list-item-content>
                                                     <v-list-item-subtitle>
@@ -42,11 +42,13 @@
                                                         class="text-h5"
                                                     >
                                                         {{ producto.nombre }}
+                                                        {{ producto.marca }}
+                                                        {{ producto.dimension }}
                                                     </v-list-item-title>
                                                 </v-list-item-content>
                                             </v-list-item>
                                         </v-col>
-                                        <v-col cols="12" sm="4">
+                                        <v-col cols="12" sm="7">
                                             <productos-mostrar-precio
                                                 class="green--text"
                                                 :precio="producto.precio"
@@ -76,7 +78,9 @@ export default {
             codigo: "",
             nombre: "",
             cantidad: 1,
+            presentacion: 1,
             precio: 0,
+            precios: [],
             total: 0,
             producto: {},
         },
@@ -97,9 +101,13 @@ export default {
             let p = JSON.parse(JSON.stringify(this.producto));
 
             p.codigo = e.codigo;
-            p.nombre = e.nombre;
+            p.nombre = e.nombre + " " + e.marca + " " + e.dimension;
             p.cantidad = 1;
-            p.precio = parseFloat(e.precio).toFixed(2);
+            p.presentacion = e.precios[0].nombre;
+            p.precio = parseFloat(e.precios[0].precio).toFixed(2);
+            p.precios = e.precios;
+            p.presentacionIndex = 0;
+            p.costo = e.precios[0].costo;
             p.carrito = e.codigo + "-" + p.precio;
             p.producto = e;
             p.descuentos = [];

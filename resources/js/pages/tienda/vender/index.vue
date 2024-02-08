@@ -19,147 +19,16 @@
                     @suma="sumar($event)"
                     @multi="multi($event)"
                 ></buscar-para-vender>
-                <v-card tile elevation="0">
-                    <v-card-text>
-                        <v-card outlined tile>
-                            <v-card-text>
-                                <v-row dense no-gutters>
-                                    <v-col cols="12" md="3">
-                                        Producto <br />
-                                        Codigo
-                                    </v-col>
-                                    <v-col cols="12" md="3" class="text-center">
-                                        Cantidad
-                                    </v-col>
-                                    <v-col cols="12" md="3" class="text-right">
-                                        Precio <br />
-                                        Presentación
-                                    </v-col>
-
-                                    <v-col cols="12" md="3" class="text-right">
-                                        Total
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
-                        <div
-                            v-for="(item, index) in carrito"
-                            :key="'car' + index"
-                        >
-                            <v-card elevation="0" tile>
-                                <v-card-text class="text-h6 py-1">
-                                    <v-row dense>
-                                        <v-col cols="12" md="4">
-                                            {{ item.nombre }} <br />
-                                            <span class="text-subtitle-1">{{
-                                                item.codigo
-                                            }}</span>
-                                        </v-col>
-                                        <v-col
-                                            cols="12"
-                                            md="2"
-                                            class="text-center"
-                                        >
-                                            <v-text-field
-                                                type="number"
-                                                class="center-input"
-                                                solo
-                                                v-model="item.cantidad"
-                                                prepend-inner-icon="mdi-minus"
-                                                append-icon="mdi-plus"
-                                                style="align-text: center"
-                                                @click:append="
-                                                    sumarCantidad(index)
-                                                "
-                                                @click:prepend-inner="
-                                                    restarCantidad(index)
-                                                "
-                                                readonly
-                                                hide-details=""
-                                            >
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col
-                                            cols="12"
-                                            md="3"
-                                            class="text-right"
-                                        >
-                                            Q {{ item.precio }}<br />
-                                            <span class="text-subtitle-1"
-                                                >Unidad</span
-                                            >
-                                        </v-col>
-
-                                        <v-col
-                                            cols="12"
-                                            md="3"
-                                            class="text-right"
-                                        >
-                                            Q {{ item.cantidad * item.precio }}
-                                        </v-col>
-                                    </v-row>
-                                </v-card-text>
-                            </v-card>
-                            <v-card
-                                elevation="0"
-                                tile
-                                v-for="(descuento, i) in item.descuentos"
-                                :key="'desc' + i"
-                            >
-                                <v-card-text class="text-h6 py-1 pl-4">
-                                    <v-row dense>
-                                        <v-col cols="12" md="9">
-                                            <span class="text-subtitle-1">
-                                                <strong
-                                                    >*desq
-                                                    {{ descuento.texto }} |
-                                                    Descuento de
-                                                </strong>
-                                                -Q{{ descuento.descuento }}
-
-                                                <span
-                                                    v-if="
-                                                        descuento.limite == 0 ||
-                                                        descuento.cantidad <
-                                                            descuento.limite
-                                                    "
-                                                    >por cada
-                                                    {{ descuento.unidades }}
-                                                    unidades</span
-                                                >
-                                                <span v-else
-                                                    >por
-                                                    {{ descuento.unidades }}
-                                                    unidades | limite
-                                                    {{ descuento.limite }} por
-                                                    persona
-                                                </span>
-                                            </span>
-                                        </v-col>
-
-                                        <v-col
-                                            cols="12"
-                                            md="3"
-                                            class="text-right"
-                                        >
-                                            - Q
-                                            {{
-                                                parseFloat(
-                                                    descuento.descuento
-                                                ) *
-                                                parseFloat(descuento.cantidad)
-                                            }}
-                                        </v-col>
-                                    </v-row>
-                                </v-card-text>
-                            </v-card>
-                            <v-divider class="primary"></v-divider>
-                        </div>
-                    </v-card-text>
-                </v-card>
+                <div>
+                    <v-card elevation="0" tile height="100%">
+                        <venta-lista-venta
+                            v-model="carrito"
+                        ></venta-lista-venta>
+                    </v-card>
+                </div>
             </v-col>
             <v-col cols="12" md="3" height="100%">
-                <v-card tile class="pb-2">
+                <v-card tile class="pb-2" elevation="0" height="100%">
                     <v-list>
                         <v-list-item>
                             <v-list-item-subtitle class="text-h6">
@@ -471,12 +340,18 @@
 </template>
 
 <script>
+import VentaListaVenta from "../../../components/tienda/venta/ventaListaVenta.vue";
 import BuscarParaVender from "../../../components/tienda/productos/buscarParaVender.vue";
 
 import ProductosPrecios from "../../../components/tienda/productos/productosPrecios.vue";
 import VNiceModal from "../../../components/tienda/generales/v-nice-modal.vue";
 export default {
-    components: { VNiceModal, ProductosPrecios, BuscarParaVender },
+    components: {
+        VNiceModal,
+        ProductosPrecios,
+        BuscarParaVender,
+        VentaListaVenta,
+    },
     mounted() {},
     data: () => ({
         isLoading: false,
@@ -535,18 +410,7 @@ export default {
                 this.aplicarDescuento(0);
             }
         },
-        sumarCantidad(index) {
-            this.carrito[index].cantidad =
-                parseFloat(this.carrito[index].cantidad) + 1;
-            this.aplicarDescuento(index);
-        },
-        restarCantidad(index) {
-            this.carrito[index].cantidad =
-                this.carrito[index].cantidad - 1 < 0
-                    ? 0
-                    : parseFloat(this.carrito[index].cantidad) - 1;
-            this.aplicarDescuento(index);
-        },
+
         aplicarDescuento(index) {
             let producto = JSON.parse(JSON.stringify(this.carrito[index]));
 

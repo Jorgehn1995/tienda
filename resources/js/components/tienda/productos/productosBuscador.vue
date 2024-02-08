@@ -36,10 +36,7 @@
                                             @click="skEstablecerBusqueda"
                                             :loading="isLoading"
                                         >
-                                            Buscar Codigo [ENTER]
-                                            <v-icon right
-                                                >mdi-cloud-search-outline</v-icon
-                                            >
+                                            Buscar [ENTER]
                                         </v-btn>
 
                                         <v-btn
@@ -52,9 +49,6 @@
                                             @shortkey.native="skLimpiar"
                                         >
                                             Limpiar[CTRL + L]
-                                            <v-icon right
-                                                >mdi-cloud-search-outline</v-icon
-                                            >
                                         </v-btn>
                                     </v-col>
                                 </v-row>
