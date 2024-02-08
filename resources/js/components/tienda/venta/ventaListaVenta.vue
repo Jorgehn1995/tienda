@@ -1,6 +1,72 @@
 <template>
     <div>
         <v-row dense no-gutters>
+            <v-col cols="12" md="4">
+                <v-card tile elevation="0" outlined>
+                    <v-card-title> Presentaciones </v-card-title>
+                    <v-card-subtitle>
+                        <div class="ml-1">
+                            <span class="caption">Seleccionar</span>
+
+                            <v-chip
+                                label
+                                color="grey--text"
+                                class="ml-1 v-chip--active"
+                            >
+                                [CTRL +
+                                <v-icon>mdi-arrow-down-bold-box-outline</v-icon
+                                >]
+                            </v-chip>
+
+                            <v-chip
+                                label
+                                color="grey--text"
+                                class="ml-1 v-chip--active"
+                            >
+                                [CTRL +
+                                <v-icon>mdi-arrow-up-bold-box-outline</v-icon>]
+                            </v-chip>
+                        </div>
+                    </v-card-subtitle>
+                    <v-card-text class="px-0">
+                        <v-simple-table>
+                            <template v-slot:default>
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Nombre</th>
+                                        <th class="text-center">Unidades</th>
+                                        <th class="text-right">Precio</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="(item, index) in presentaciones"
+                                        :key="'cartp' + index"
+                                        :class="{
+                                            'grey lighten-3 rounded-lg':
+                                                presentacion == index,
+                                        }"
+                                        @click="presentacion = index"
+                                    >
+                                        <td>
+                                            <strong>
+                                                {{ item.nombre }}
+                                            </strong>
+                                        </td>
+                                        <td class="text-center">
+                                            {{ item.cantidad }}
+                                        </td>
+
+                                        <td class="text-right">
+                                            Q{{ item.precio }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </template>
+                        </v-simple-table>
+                    </v-card-text>
+                </v-card>
+            </v-col>
             <v-col cols="12" md="8">
                 <v-card tile elevation="0">
                     <v-card-title> Productos </v-card-title>
@@ -45,7 +111,7 @@
                                         class="cursor-pointer"
                                         :class="
                                             selected == index
-                                                ? 'teal lighten-4 rounded-lg'
+                                                ? 'teal lighten-5 rounded-lg'
                                                 : ''
                                         "
                                         @click="selected = index"
@@ -105,97 +171,18 @@
                     </v-card-text>
                 </v-card>
             </v-col>
-
-            <v-col cols="12" md="4">
-                <v-card tile elevation="0" outlined>
-                    <v-card-title> Presentaciones </v-card-title>
-                    <v-card-subtitle>
-                        <div class="ml-1">
-                            <span class="caption">Seleccionar</span>
-
-                            <v-chip
-                                label
-                                color="grey--text"
-                                class="ml-1 v-chip--active"
-                            >
-                                [CTRL +
-                                <v-icon>mdi-arrow-down-bold-box-outline</v-icon
-                                >]
-                            </v-chip>
-
-                            <v-chip
-                                label
-                                color="grey--text"
-                                class="ml-1 v-chip--active"
-                            >
-                                [CTRL +
-                                <v-icon>mdi-arrow-up-bold-box-outline</v-icon>]
-                            </v-chip>
-                        </div>
-                    </v-card-subtitle>
-                    <v-card-text class="px-0">
-                        <v-simple-table>
-                            <template v-slot:default>
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Nombre</th>
-                                        <th class="text-center">Unidades</th>
-                                        <th class="text-right">Precio</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                        v-for="(item, index) in presentaciones"
-                                        :key="'cartp' + index"
-                                        :class="{
-                                            'grey lighten-3 rounded-lg':
-                                                presentacion == index,
-                                            'teal lighten-5 rounded-lg':
-                                                productos[selected]
-                                                    .presentacionIndex == index,
-                                        }"
-                                    >
-                                        <td>
-                                            <strong>
-                                                {{ item.nombre }}
-                                            </strong>
-                                        </td>
-                                        <td class="text-center">
-                                            {{ item.cantidad }}
-                                        </td>
-
-                                        <td class="text-right">
-                                            Q{{ item.precio }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
-                    </v-card-text>
-                </v-card>
-            </v-col>
         </v-row>
 
-        <div v-shortkey="['pagedown']" @shortkey="asignarPresentacion"></div>
         <div v-shortkey="['arrowup']" @shortkey="seleccionarArriba"></div>
         <div v-shortkey="['arrowdown']" @shortkey="seleccionarAbajo"></div>
         <div
-            v-shortkey="['arrowright']"
+            v-shortkey="['pagedown']"
             @shortkey="sumarCantidad(selected)"
         ></div>
-        <div
-            v-shortkey="['arrowleft']"
-            @shortkey="restarCantidad(selected)"
-        ></div>
+        <div v-shortkey="['del']" @shortkey="restarCantidad(selected)"></div>
 
-        <div
-            v-shortkey="['ctrl', 'arrowup']"
-            @shortkey="presentacionArriba"
-        ></div>
-        <div
-            v-shortkey="['ctrl', 'arrowdown']"
-            @shortkey="presentacionAbajo"
-        ></div>
+        <div v-shortkey="['home']" @shortkey="presentacionArriba"></div>
+        <div v-shortkey="['end']" @shortkey="presentacionAbajo"></div>
     </div>
 </template>
 
@@ -219,7 +206,8 @@ export default {
 
             this.productos[this.selected].costo = precio.costo;
             this.productos[this.selected].precio = precio.precio;
-            this.productos[this.selected].presentacion = precio.nombre;
+            this.productos[this.selected].presentacion =
+                precio.nombre + " / " + precio.cantidad + "u";
 
             this.productos[this.selected].presentacionIndex = this.presentacion;
 
@@ -282,15 +270,27 @@ export default {
         productos() {
             if (this.productos) {
                 this.presentaciones = this.productos[this.selected].precios;
+                this.presentacion =
+                    this.productos[this.selected].presentacionIndex;
             }
         },
         selected() {
             if (this.productos) {
                 this.presentaciones = this.productos[this.selected].precios;
+                this.presentacion =
+                    this.productos[this.selected].presentacionIndex;
             }
+        },
+        presentacion() {
+            this.productos[this.selected].presentacionIndex = this.presentacion;
+            this.asignarPresentacion();
         },
     },
 };
 </script>
 
-<style></style>
+<style>
+.center-input >>> input {
+    text-align: center;
+}
+</style>

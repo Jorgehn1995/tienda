@@ -578,7 +578,4 @@ export default {
 .right-input >>> input {
     text-align: right;
 }
-.center-input >>> input {
-    text-align: center;
-}
 </style>

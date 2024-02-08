@@ -103,7 +103,8 @@ export default {
             p.codigo = e.codigo;
             p.nombre = e.nombre + " " + e.marca + " " + e.dimension;
             p.cantidad = 1;
-            p.presentacion = e.precios[0].nombre;
+            p.presentacion =
+                e.precios[0].nombre + " / " + e.precios[0].cantidad + "u";
             p.precio = parseFloat(e.precios[0].precio).toFixed(2);
             p.precios = e.precios;
             p.presentacionIndex = 0;
