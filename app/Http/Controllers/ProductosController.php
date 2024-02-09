@@ -40,6 +40,39 @@ class ProductosController extends Controller
             return $items;
         }
     }
+    public function porPresentacion(Request $request)
+    {
+        if ($request->query("codigo")) {
+            $producto = Precio::join("productos", "productos.idproducto", "=", "precios.idproducto")
+                ->where("productos.codigo", $request->query("codigo"))
+                ->get();
+            //$producto = Producto::where("codigo", $request->query("codigo"))->with("precios")->first();
+            return $producto;
+        } else {
+            $query = Precio::query();
+            $query->join("productos", "productos.idproducto", "=", "precios.idproducto");
+            $query->selectRaw("productos.*, precios.*, precios.nombre as presentacion, productos.nombre as nombre");
+            //$query->select("productos.*");
+            if ($request->query("search") != "") {
+                $search = $this->stringsBusqueda($request->query("search"));
+                $query->orWhereRaw("MATCH (productos.codigo,productos.nombre,productos.marca,productos.dimension) AGAINST ('$search->match' IN BOOLEAN MODE) > 0")
+
+                    ->orWhere("productos.codigo", "LIKE", $search->like)
+                    ->orWhere("productos.nombre", "LIKE", $search->like)
+                    ->orWhere("productos.marca", "LIKE", $search->like)
+                    ->orWhere("productos.dimension", "LIKE", $search->like)
+                    ->orWhere("productos.costo", "LIKE", $search->like)
+                    ->orWhere("productos.existencia", "LIKE", $search->like);
+            }
+
+            if ($request->query("limit")) {
+                $items = $query->paginate($request->query("limit"));
+            } else {
+                $items = $query->paginate();
+            }
+            return $items;
+        }
+    }
     public function ver($codigo)
     {
         $producto = Producto::where("codigo", $codigo)->first();

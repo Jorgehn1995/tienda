@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row dense no-gutters>
-            <v-col cols="12" md="9">
+            <v-col cols="12" md="7">
                 <v-card tile elevation="0" v-if="false">
                     <v-card-text>
                         <v-list-item>
@@ -19,94 +19,109 @@
                     @suma="sumar($event)"
                     @multi="multi($event)"
                 ></buscar-para-vender>
-                <div>
-                    <v-card elevation="0" tile height="100%">
-                        <venta-lista-venta
-                            v-model="carrito"
-                        ></venta-lista-venta>
-                    </v-card>
-                </div>
             </v-col>
-            <v-col cols="12" md="3" height="100%">
-                <v-card tile class="pb-2" elevation="0" height="100%">
-                    <v-list>
-                        <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
-                                Articulos
-                            </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                {{ venta.articulos }}
-                            </v-list-item-title>
-                        </v-list-item>
-                        <v-divider inset></v-divider>
-                        <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
-                                Subtotal
-                            </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                Q {{ venta.subtotal }}
-                            </v-list-item-title>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
-                                Descuento Ofertas
-                            </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                Q {{ venta.ofertas }}
-                            </v-list-item-title>
-                        </v-list-item>
-                        <v-list-item @click="isDiscount = true">
-                            <v-list-item-subtitle class="text-h6">
-                                Desc. M. [CTRL + M]
-                            </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                Q {{ venta.descuento }}
-                            </v-list-item-title>
-                        </v-list-item>
-                        <v-list-item v-if="false">
-                            <v-list-item-subtitle class="text-h6">
-                                Descuento
-                            </v-list-item-subtitle>
-                            <v-list-item-title class="text-right">
-                                <v-text-field
-                                    v-model="venta.descuento"
-                                    outlined
-                                    min="0"
-                                    type="number"
-                                    prefix="Q"
-                                    placeholder="##.##"
-                                    class="text-h6 elevation-0 grey--text right-input"
-                                ></v-text-field>
-                            </v-list-item-title>
-                        </v-list-item>
-                        <v-divider></v-divider>
-                        <v-list-item>
-                            <v-list-item-subtitle class="align-right text-h6">
-                                TOTAL
-                            </v-list-item-subtitle>
-                            <v-list-item-title class="text-right">
-                                <div class="d-flex flex-column">
-                                    <div>
-                                        <span class="text-h4">Q</span>
-                                        <span
-                                            class="green--text text--darken-2 text-h2"
-                                        >
-                                            {{ venta.total }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                    <div class="mx-4 mb-2">
+            <v-col cols="12" md="5" height="100%">
+                <v-card tile class="pb-2" elevation="0" color="teal">
+                    <v-row no-gutters dense>
+                        <v-col cols="12" md="4">
+                            <v-list dark color="transparent">
+                                <v-list-item>
+                                    <v-list-item-subtitle class="text-h6">
+                                        Articulos
+                                    </v-list-item-subtitle>
+                                    <v-list-item-title
+                                        class="text-right text-h6 white--text pr-3"
+                                    >
+                                        {{ venta.articulos }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <v-list dark color="transparent">
+                                <v-list-item>
+                                    <v-list-item-subtitle class="text-h6">
+                                        Subtotal
+                                    </v-list-item-subtitle>
+                                    <v-list-item-title
+                                        class="text-right text-h6 white--text pr-3"
+                                    >
+                                        Q {{ venta.subtotal }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <v-list dark color="transparent">
+                                <v-list-item>
+                                    <v-list-item-subtitle class="text-h6">
+                                        Descuento Ofertas
+                                    </v-list-item-subtitle>
+                                    <v-list-item-title
+                                        class="text-right text-h6 white--text pr-3"
+                                    >
+                                        Q {{ venta.ofertas }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <v-list dark color="transparent">
+                                <v-list-item @click="isDiscount = true">
+                                    <v-list-item-subtitle class="text-h6">
+                                        Desc. M. [CTRL + M]
+                                    </v-list-item-subtitle>
+                                    <v-list-item-title
+                                        class="text-right text-h6 white--text pr-3"
+                                    >
+                                        Q {{ venta.descuento }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-col>
+                        <v-col cols="12 " md="8">
+                            <v-list-item v-if="false">
+                                <v-list-item-subtitle class="text-h6">
+                                    Descuento
+                                </v-list-item-subtitle>
+                                <v-list-item-title class="text-right">
+                                    <v-text-field
+                                        v-model="venta.descuento"
+                                        outlined
+                                        min="0"
+                                        type="number"
+                                        prefix="Q"
+                                        placeholder="##.##"
+                                        class="text-h6 elevation-0 white--text right-input"
+                                    ></v-text-field>
+                                </v-list-item-title>
+                            </v-list-item>
+                            <v-list color="transparent" dark>
+                                <v-list-item>
+                                    <v-list-item-subtitle
+                                        class="align-right text-h6"
+                                    >
+                                        TOTAL
+                                    </v-list-item-subtitle>
+                                    <v-list-item-title class="text-right">
+                                        <div class="d-flex flex-column">
+                                            <div>
+                                                <span class="text-h4">Q</span>
+                                                <span
+                                                    class="white--text text--darken-2 text-h2"
+                                                >
+                                                    {{ venta.total }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-col>
+                    </v-row>
+                </v-card>
+                <v-card elevation="0" tile outlined v-if="false">
+                    <div class="mx-4 my-2">
                         <v-btn
                             elevation="0"
                             depressed
@@ -120,6 +135,10 @@
                             Procesar Venta [CTRL + Enter]
                         </v-btn>
                     </div>
+                </v-card>
+                <v-divider></v-divider>
+                <v-card elevation="0" tile class="venta" color="red">
+                    <venta-lista-venta v-model="carrito"></venta-lista-venta>
                 </v-card>
             </v-col>
         </v-row>

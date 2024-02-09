@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth:api']], function () {
      * Productos
      */
     Route::get('/productos', [ProductosController::class, 'index'])->name('api.productos.index');
+    Route::get('/productos/presentaciones', [ProductosController::class, 'porPresentacion'])->name('api.productos.index');
     Route::get('/productos/{codigo}', [ProductosController::class, 'ver'])->name('api.productos.ver');
     Route::post('/productos', [ProductosController::class, 'crear'])->name('api.productos.crear');
     Route::put('/productos/{codigo}', [ProductosController::class, 'editar'])->name('api.productos.editar');

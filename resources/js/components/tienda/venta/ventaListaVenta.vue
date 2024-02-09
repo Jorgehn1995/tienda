@@ -1,7 +1,128 @@
 <template>
     <div>
         <v-row dense no-gutters>
-            <v-col cols="12" md="4">
+            <v-col cols="12">
+                <v-card tile elevation="0">
+                    <v-card-title> Productos </v-card-title>
+                    <v-card-subtitle>
+                        <div class="ml-1">
+                            <span class="caption">Seleccionar</span>
+
+                            <v-chip
+                                label
+                                color="grey--text"
+                                class="ml-1 v-chip--active"
+                            >
+                                <v-icon>mdi-arrow-down-bold-box-outline</v-icon>
+                            </v-chip>
+
+                            <v-chip
+                                label
+                                color="grey--text"
+                                class="ml-1 v-chip--active"
+                            >
+                                <v-icon>mdi-arrow-up-bold-box-outline</v-icon>
+                            </v-chip>
+                        </div>
+                    </v-card-subtitle>
+                    <v-card-text class="px-0">
+                        <v-simple-table>
+                            <template v-slot:default>
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Producto</th>
+                                        <th class="text-left">Presentacion</th>
+                                        <th class="text-left">Precio</th>
+                                        <th class="text-left">Cantidad</th>
+                                        <th class="text-left">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="(item, index) in productos"
+                                        :key="'cart' + index"
+                                        class="cursor-pointer"
+                                        :class="
+                                            selected == index
+                                                ? 'teal lighten-4 rounded-lg'
+                                                : ''
+                                        "
+                                        @click="selected = index"
+                                    >
+                                        <td>
+                                            <v-btn>
+                                                <v-icon>mdi-plus</v-icon>
+                                            </v-btn>
+                                        </td>
+                                        <td>
+                                            <strong>
+                                                {{ item.nombre }}
+                                                {{ item.marca }}
+                                                {{ item.dimension }}
+                                            </strong>
+                                            <br />
+                                            <span class="caption">{{
+                                                item.codigo
+                                            }}</span>
+                                        </td>
+                                        <td>
+                                            <v-chip
+                                                label
+                                                :color="
+                                                    selected == index
+                                                        ? 'purple'
+                                                        : 'grey darken-1'
+                                                "
+                                                small
+                                                dark
+                                            >
+                                                {{ item.presentacion }}
+                                            </v-chip>
+                                        </td>
+
+                                        <td>
+                                            <strong>Q{{ item.precio }}</strong>
+                                        </td>
+                                        <td>
+                                            <div style="max-width: 150px">
+                                                <v-text-field
+                                                    type="number"
+                                                    class="center-input my-1"
+                                                    outlined
+                                                    v-model="item.cantidad"
+                                                    prepend-inner-icon="mdi-minus"
+                                                    append-icon="mdi-plus"
+                                                    style="align-text: center"
+                                                    dense
+                                                    @click:append="
+                                                        sumarCantidad(index)
+                                                    "
+                                                    @click:prepend-inner="
+                                                        restarCantidad(index)
+                                                    "
+                                                    readonly
+                                                    hide-details=""
+                                                >
+                                                </v-text-field>
+                                            </div>
+                                        </td>
+                                        <td>Q00.00</td>
+                                        <td>
+                                            Q{{
+                                                (
+                                                    parseFloat(item.precio) *
+                                                    item.cantidad
+                                                ).toFixed(2)
+                                            }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </template>
+                        </v-simple-table>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col v-if="false" cols="12" md="4">
                 <v-card tile elevation="0" outlined>
                     <v-card-title> Presentaciones </v-card-title>
                     <v-card-subtitle>
@@ -43,9 +164,10 @@
                                         v-for="(item, index) in presentaciones"
                                         :key="'cartp' + index"
                                         :class="{
-                                            'grey lighten-3 rounded-lg':
+                                            'purple lighten-4  rounded-lg':
                                                 presentacion == index,
                                         }"
+                                        class="cursor-pointer"
                                         @click="presentacion = index"
                                     >
                                         <td>
@@ -67,122 +189,15 @@
                     </v-card-text>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="8">
-                <v-card tile elevation="0">
-                    <v-card-title> Productos </v-card-title>
-                    <v-card-subtitle>
-                        <div class="ml-1">
-                            <span class="caption">Seleccionar</span>
-
-                            <v-chip
-                                label
-                                color="grey--text"
-                                class="ml-1 v-chip--active"
-                            >
-                                <v-icon>mdi-arrow-down-bold-box-outline</v-icon>
-                            </v-chip>
-
-                            <v-chip
-                                label
-                                color="grey--text"
-                                class="ml-1 v-chip--active"
-                            >
-                                <v-icon>mdi-arrow-up-bold-box-outline</v-icon>
-                            </v-chip>
-                        </div>
-                    </v-card-subtitle>
-                    <v-card-text class="px-0">
-                        <v-simple-table>
-                            <template v-slot:default>
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Nombres</th>
-                                        <th class="text-left">Presentacion</th>
-                                        <th class="text-left">Precio</th>
-                                        <th class="text-left">Cantidad</th>
-                                        <th class="text-left">Descuento</th>
-                                        <th class="text-left">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                        v-for="(item, index) in productos"
-                                        :key="'cart' + index"
-                                        class="cursor-pointer"
-                                        :class="
-                                            selected == index
-                                                ? 'teal lighten-5 rounded-lg'
-                                                : ''
-                                        "
-                                        @click="selected = index"
-                                    >
-                                        <td>
-                                            <strong>
-                                                {{ item.nombre }}
-                                                {{ item.marca }}
-                                                {{ item.dimension }}
-                                            </strong>
-                                            <br />
-                                            <span class="caption">{{
-                                                item.codigo
-                                            }}</span>
-                                        </td>
-                                        <td>
-                                            {{ item.presentacion }}
-                                        </td>
-
-                                        <td>Q{{ item.precio }}</td>
-                                        <td>
-                                            <div style="max-width: 150px">
-                                                <v-text-field
-                                                    type="number"
-                                                    class="center-input my-1"
-                                                    outlined
-                                                    v-model="item.cantidad"
-                                                    prepend-inner-icon="mdi-minus"
-                                                    append-icon="mdi-plus"
-                                                    style="align-text: center"
-                                                    dense
-                                                    @click:append="
-                                                        sumarCantidad(index)
-                                                    "
-                                                    @click:prepend-inner="
-                                                        restarCantidad(index)
-                                                    "
-                                                    readonly
-                                                    hide-details=""
-                                                >
-                                                </v-text-field>
-                                            </div>
-                                        </td>
-                                        <td>Q00.00</td>
-                                        <td>
-                                            Q{{
-                                                (
-                                                    parseFloat(item.precio) *
-                                                    item.cantidad
-                                                ).toFixed(2)
-                                            }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
-                    </v-card-text>
-                </v-card>
-            </v-col>
         </v-row>
 
-        <div v-shortkey="['arrowup']" @shortkey="seleccionarArriba"></div>
-        <div v-shortkey="['arrowdown']" @shortkey="seleccionarAbajo"></div>
+        <div v-shortkey="['esc']" @shortkey="seleccionarArriba"></div>
+        <div v-shortkey="['esc']" @shortkey="seleccionarAbajo"></div>
         <div
             v-shortkey="['pagedown']"
             @shortkey="sumarCantidad(selected)"
         ></div>
         <div v-shortkey="['del']" @shortkey="restarCantidad(selected)"></div>
-
-        <div v-shortkey="['home']" @shortkey="presentacionArriba"></div>
-        <div v-shortkey="['end']" @shortkey="presentacionAbajo"></div>
     </div>
 </template>
 
