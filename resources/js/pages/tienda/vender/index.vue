@@ -415,7 +415,7 @@ export default {
                 this.carrito.unshift(e);
             }
             index = this.carrito.findIndex((e) => e.carrito == codCarrito);
-            this.aplicarDescuento(index);
+            ///this.aplicarDescuento(index);
         },
         suma(cantidad) {
             if (this.carrito.length > 0) {

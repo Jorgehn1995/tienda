@@ -58,6 +58,7 @@ trait BusquedaTrait
 
         $search = strtolower($this->eliminar_acentos($string));
         $searchSeccion = "";
+        $serachPresentacion = "";
         $searchNumber = "";
         $searchString = "";
         $sec = explode(" ", $string);
@@ -75,10 +76,18 @@ trait BusquedaTrait
             }
         }
 
-        $searchMatch = "+*" . str_replace(" ", "* +*", $searchString) . "*";
+        //$searchMatch = "+*" . str_replace(" ", "* +*", $searchString) . "*";
+        $searchMatchExact = "" . str_replace(" ", "*", $searchString) . "*"; //SE MUESTRA LA UNIDAD PERO NO EL PRODUCTO
+        $searchMatch = "+" . str_replace(" ", "*", $searchString) . "*"; //SE MUESTRA el producto perono la presentacion
+
         $searchLike = "%" . str_replace(" ", "%", $searchString) . "%";
+
+        $serachPresentacion = "%" . str_replace(" ", "%", $serachPresentacion) . "%";
         $r = new Collection();
+
         $r->match = $searchMatch;
+        $r->matchExact = $searchMatchExact;
+        $r->presentacion = $serachPresentacion;
         $r->like = $searchLike;
         $r->string = $searchString;
         $r->number = $searchNumber;

@@ -150,7 +150,7 @@ export default {
                     .get("/productos/presentaciones?codigo=" + this.search)
                     .then((result) => {
                         this.isLoading = false;
-                        this.$emit("porcodigo", result.data);
+                        this.$emit("portexto", result.data);
                         this.skEnfocarCodigo();
                     })
                     .catch((err) => {
@@ -169,7 +169,8 @@ export default {
                     .then((result) => {
                         this.isLoading = false;
                         this.$emit("portexto", result.data.data);
-                        this.skEnfocarCodigo();
+
+                        this.$refs.buscarCodigo.$refs.input.focus();
                     })
                     .catch((err) => {
                         console.log(err);

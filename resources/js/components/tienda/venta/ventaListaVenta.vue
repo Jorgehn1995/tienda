@@ -50,34 +50,21 @@
                                         @click="selected = index"
                                     >
                                         <td>
-                                            <v-btn>
-                                                <v-icon>mdi-plus</v-icon>
-                                            </v-btn>
-                                        </td>
-                                        <td>
                                             <strong>
                                                 {{ item.nombre }}
-                                                {{ item.marca }}
-                                                {{ item.dimension }}
                                             </strong>
+                                            <br />
+                                            {{ item.marca }}
+                                            {{ item.dimension }}
                                             <br />
                                             <span class="caption">{{
                                                 item.codigo
                                             }}</span>
                                         </td>
                                         <td>
-                                            <v-chip
-                                                label
-                                                :color="
-                                                    selected == index
-                                                        ? 'purple'
-                                                        : 'grey darken-1'
-                                                "
-                                                small
-                                                dark
-                                            >
-                                                {{ item.presentacion }}
-                                            </v-chip>
+                                            {{ item.presentacion }}
+                                            <br />
+                                            {{ item.unidades }}
                                         </td>
 
                                         <td>
@@ -106,7 +93,6 @@
                                                 </v-text-field>
                                             </div>
                                         </td>
-                                        <td>Q00.00</td>
                                         <td>
                                             Q{{
                                                 (
@@ -114,6 +100,13 @@
                                                     item.cantidad
                                                 ).toFixed(2)
                                             }}
+                                        </td>
+                                        <td>
+                                            <v-btn icon>
+                                                <v-icon
+                                                    >mdi-delete-outline</v-icon
+                                                >
+                                            </v-btn>
                                         </td>
                                     </tr>
                                 </tbody>

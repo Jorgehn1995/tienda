@@ -45,15 +45,16 @@
                                         </th>
 
                                         <th class="text-center">Marca</th>
-                                        <th class="text-center">
-                                            Concentración
-                                        </th>
+
                                         <th class="text-center">
                                             Presentación
                                         </th>
-                                        <th class="text-center">Unidades</th>
+
                                         <th class="text-right">
                                             Precio Unitario
+                                        </th>
+                                        <th>
+                                            <v-icon>mdi-dots-horizontal</v-icon>
                                         </th>
                                     </tr>
                                 </thead>
@@ -63,33 +64,58 @@
                                         :key="'buvp' + i"
                                         :class="
                                             presentacion == i
-                                                ? 'teal lighten-4 rounded-lg'
+                                                ? 'grey lighten-2 rounded-lg'
                                                 : ''
                                         "
                                     >
                                         <td>
-                                            {{ producto.nombre }}
+                                            <strong>{{
+                                                producto.nombre
+                                            }}</strong>
                                             <br />
                                             <span class="caption">
                                                 {{ producto.codigo }}
                                             </span>
                                         </td>
                                         <td class="text-center">
-                                            {{ producto.marca }}
+                                            <v-chip
+                                                label
+                                                small
+                                                color="info--text"
+                                                class="v-chip--active"
+                                            >
+                                                {{ producto.marca }}
+                                            </v-chip>
                                         </td>
+
                                         <td class="text-center">
-                                            {{ producto.dimension }}
+                                            <div
+                                                class="d-flex justify-space-between"
+                                                flat
+                                                tile
+                                            >
+                                                <div>
+                                                    {{ producto.presentacion }}
+                                                </div>
+                                                <div>
+                                                    {{
+                                                        producto.cantidad + "u"
+                                                    }}
+                                                </div>
+                                            </div>
                                         </td>
-                                        <td class="text-center">
-                                            {{ producto.presentacion }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ producto.cantidad + "u" }}
-                                        </td>
+
                                         <td class="text-right">
                                             <span class="">
                                                 Q{{ producto.precio }}
                                             </span>
+                                        </td>
+                                        <td>
+                                            <v-btn icon>
+                                                <v-icon
+                                                    >mdi-chevron-right</v-icon
+                                                >
+                                            </v-btn>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -99,6 +125,10 @@
                 </v-row>
             </v-card-text>
         </v-card>
+        <div
+            v-shortkey="['arrowright']"
+            @shortkey="agregarProducto(listaTexto[presentacion])"
+        ></div>
         <div v-shortkey="['arrowup']" @shortkey="presentacionArriba"></div>
         <div v-shortkey="['arrowdown']" @shortkey="presentacionAbajo"></div>
     </div>
@@ -153,21 +183,20 @@ export default {
             if (!e) {
                 return "";
             }
+
             this.isSelectable = false;
-            this.listaTexto = [];
+            //this.listaTexto = [];
             let p = JSON.parse(JSON.stringify(this.producto));
 
             p.codigo = e.codigo;
             p.nombre = e.nombre + " " + e.marca + " " + e.dimension;
             p.cantidad = 1;
-            p.presentacion =
-                e.precios[0].nombre + " / " + e.precios[0].cantidad + "u";
-            p.precio = parseFloat(e.precios[0].precio).toFixed(2);
-            p.precios = e.precios;
+            p.presentacion = e.presentacion;
+            p.unidades = e.cantidad + " unidades";
+            p.precio = parseFloat(e.precio).toFixed(2);
             p.presentacionIndex = 0;
-            p.costo = e.precios[0].costo;
+            p.costo = e.costo;
             p.carrito = e.codigo + "-" + p.precio;
-            p.producto = e;
             p.descuentos = [];
 
             this.$emit("producto", p);
