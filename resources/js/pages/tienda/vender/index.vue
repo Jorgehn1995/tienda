@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row dense no-gutters>
-            <v-col cols="12" md="7">
+            <v-col cols="12" md="6" height="100%">
                 <v-card tile elevation="0" v-if="false">
                     <v-card-text>
                         <v-list-item>
@@ -20,7 +20,7 @@
                     @multi="multi($event)"
                 ></buscar-para-vender>
             </v-col>
-            <v-col cols="12" md="5" height="100%">
+            <v-col cols="12" md="6" height="100%">
                 <v-card tile class="pb-2" elevation="0" color="teal">
                     <v-row no-gutters dense>
                         <v-col cols="12" md="4">
@@ -137,7 +137,7 @@
                     </div>
                 </v-card>
                 <v-divider></v-divider>
-                <v-card elevation="0" tile class="venta" color="red">
+                <v-card elevation="0" tile class="venta" height="100%">
                     <venta-lista-venta v-model="carrito"></venta-lista-venta>
                 </v-card>
             </v-col>
@@ -355,6 +355,12 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+        <v-bottom-navigation app>
+            <v-btn large color="primary" tile dark style="white--text">
+                <span class="white--text"> PROCESAR VENTA </span>
+                <span class="white--text"><strong>[CTRL+ENTER]</strong></span>
+            </v-btn>
+        </v-bottom-navigation>
     </div>
 </template>
 
@@ -410,7 +416,7 @@ export default {
 
             if (index >= 0) {
                 this.carrito[index].cantidad =
-                    parseFloat(this.carrito[index].cantidad) + 1;
+                    parseFloat(this.carrito[index].cantidad) + e.cantidad;
             } else {
                 this.carrito.unshift(e);
             }

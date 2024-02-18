@@ -1,13 +1,21 @@
 <template>
     <div>
         <v-row dense no-gutters>
-            <v-col cols="12">
-                <v-card tile elevation="0">
-                    <v-card-title> Productos </v-card-title>
+            <v-col cols="12" height="100%">
+                <v-card tile elevation="0" height="100%">
+                    <v-card-title> Carrito de Compra </v-card-title>
+
                     <v-card-subtitle>
                         <div class="ml-1">
+                            <v-chip
+                                label
+                                color="grey--text"
+                                class="ml-1 v-chip--active"
+                            >
+                                [CTRL]+
+                            </v-chip>
+                            <v-divider vertical></v-divider>
                             <span class="caption">Seleccionar</span>
-
                             <v-chip
                                 label
                                 color="grey--text"
@@ -23,6 +31,25 @@
                             >
                                 <v-icon>mdi-arrow-up-bold-box-outline</v-icon>
                             </v-chip>
+                            <v-divider class="px-1" vertical></v-divider>
+                            <span class="caption">Restar</span>
+                            <v-chip
+                                label
+                                color="grey--text"
+                                class="ml-1 v-chip--active"
+                            >
+                                <v-icon>mdi-arrow-left-bold-box-outline</v-icon>
+                            </v-chip>
+                            <v-chip
+                                label
+                                color="grey--text"
+                                class="ml-1 v-chip--active"
+                            >
+                                <v-icon
+                                    >mdi-arrow-right-bold-box-outline</v-icon
+                                >
+                            </v-chip>
+                            <span class="caption">Sumar</span>
                         </div>
                     </v-card-subtitle>
                     <v-card-text class="px-0">
@@ -37,7 +64,25 @@
                                         <th class="text-left">Total</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody v-if="productos.length == 0">
+                                    <tr>
+                                        <td colspan="5">
+                                            <p class="pa-2 text-center">
+                                                <v-icon
+                                                    size="120"
+                                                    class="my-2"
+                                                    color="grey"
+                                                >
+                                                    mdi-cart-outline
+                                                </v-icon>
+
+                                                <br />
+                                                Carrito Vacio
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody v-else>
                                     <tr
                                         v-for="(item, index) in productos"
                                         :key="'cart' + index"
@@ -103,77 +148,10 @@
                                         </td>
                                         <td>
                                             <v-btn icon>
-                                                <v-icon
-                                                    >mdi-delete-outline</v-icon
-                                                >
+                                                <v-icon>
+                                                    mdi-delete-outline
+                                                </v-icon>
                                             </v-btn>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col v-if="false" cols="12" md="4">
-                <v-card tile elevation="0" outlined>
-                    <v-card-title> Presentaciones </v-card-title>
-                    <v-card-subtitle>
-                        <div class="ml-1">
-                            <span class="caption">Seleccionar</span>
-
-                            <v-chip
-                                label
-                                color="grey--text"
-                                class="ml-1 v-chip--active"
-                            >
-                                [CTRL +
-                                <v-icon>mdi-arrow-down-bold-box-outline</v-icon
-                                >]
-                            </v-chip>
-
-                            <v-chip
-                                label
-                                color="grey--text"
-                                class="ml-1 v-chip--active"
-                            >
-                                [CTRL +
-                                <v-icon>mdi-arrow-up-bold-box-outline</v-icon>]
-                            </v-chip>
-                        </div>
-                    </v-card-subtitle>
-                    <v-card-text class="px-0">
-                        <v-simple-table>
-                            <template v-slot:default>
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Nombre</th>
-                                        <th class="text-center">Unidades</th>
-                                        <th class="text-right">Precio</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                        v-for="(item, index) in presentaciones"
-                                        :key="'cartp' + index"
-                                        :class="{
-                                            'purple lighten-4  rounded-lg':
-                                                presentacion == index,
-                                        }"
-                                        class="cursor-pointer"
-                                        @click="presentacion = index"
-                                    >
-                                        <td>
-                                            <strong>
-                                                {{ item.nombre }}
-                                            </strong>
-                                        </td>
-                                        <td class="text-center">
-                                            {{ item.cantidad }}
-                                        </td>
-
-                                        <td class="text-right">
-                                            Q{{ item.precio }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -184,13 +162,22 @@
             </v-col>
         </v-row>
 
-        <div v-shortkey="['esc']" @shortkey="seleccionarArriba"></div>
-        <div v-shortkey="['esc']" @shortkey="seleccionarAbajo"></div>
         <div
-            v-shortkey="['pagedown']"
+            v-shortkey="['ctrl', 'arrowup']"
+            @shortkey="seleccionarArriba"
+        ></div>
+        <div
+            v-shortkey="['ctrl', 'arrowdown']"
+            @shortkey="seleccionarAbajo"
+        ></div>
+        <div
+            v-shortkey="['ctrl', 'arrowright']"
             @shortkey="sumarCantidad(selected)"
         ></div>
-        <div v-shortkey="['del']" @shortkey="restarCantidad(selected)"></div>
+        <div
+            v-shortkey="['ctrl', 'arrowleft']"
+            @shortkey="restarCantidad(selected)"
+        ></div>
     </div>
 </template>
 

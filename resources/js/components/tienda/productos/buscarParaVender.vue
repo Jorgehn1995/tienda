@@ -8,11 +8,11 @@
             @multi="$emit('multi', $event)"
         ></productos-busqueda-precios>
         <v-card elevation="0" outlined tile>
-            <v-card-title>
-                Resultados
+            <v-card-title> Resultados de Busqueda </v-card-title>
+            <v-card-subtitle>
                 <div class="ml-1">
+                    <v-divider vertical></v-divider>
                     <span class="caption">Seleccionar</span>
-
                     <v-chip
                         label
                         color="grey--text"
@@ -28,9 +28,25 @@
                     >
                         <v-icon>mdi-arrow-up-bold-box-outline</v-icon>
                     </v-chip>
+                    <v-divider class="px-1" vertical></v-divider>
+                    <span class="caption">Restar</span>
+                    <v-chip
+                        label
+                        color="grey--text"
+                        class="ml-1 v-chip--active"
+                    >
+                        <v-icon>mdi-arrow-left-bold-box-outline</v-icon>
+                    </v-chip>
+                    <v-chip
+                        label
+                        color="grey--text"
+                        class="ml-1 v-chip--active"
+                    >
+                        <v-icon>mdi-arrow-right-bold-box-outline</v-icon>
+                    </v-chip>
+                    <span class="caption">Sumar</span>
                 </div>
-            </v-card-title>
-            <v-card-subtitle> </v-card-subtitle>
+            </v-card-subtitle>
             <v-card-text>
                 <v-row dense>
                     <v-col cols="12">
@@ -58,7 +74,24 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody v-if="listaTexto.length == 0">
+                                    <tr>
+                                        <td colspan="5">
+                                            <p class="pa-2 text-center">
+                                                <v-icon
+                                                    size="120"
+                                                    class="my-2"
+                                                    color="grey"
+                                                >
+                                                    mdi-shopping-search-outline
+                                                </v-icon>
+                                                <br />Busca un producto y
+                                                agregalo a al carrito de compras
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody v-else>
                                     <tr
                                         v-for="(producto, i) in listaTexto"
                                         :key="'buvp' + i"
@@ -111,10 +144,12 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <v-btn icon>
-                                                <v-icon
-                                                    >mdi-chevron-right</v-icon
-                                                >
+                                            <v-btn
+                                                icon
+                                                large
+                                                @click="agregarProductoClick(i)"
+                                            >
+                                                <v-icon>mdi-plus</v-icon>
                                             </v-btn>
                                         </td>
                                     </tr>
@@ -128,6 +163,10 @@
         <div
             v-shortkey="['arrowright']"
             @shortkey="agregarProducto(listaTexto[presentacion])"
+        ></div>
+        <div
+            v-shortkey="['arrowleft']"
+            @shortkey="agregarProducto(listaTexto[presentacion], -1)"
         ></div>
         <div v-shortkey="['arrowup']" @shortkey="presentacionArriba"></div>
         <div v-shortkey="['arrowdown']" @shortkey="presentacionAbajo"></div>
@@ -179,7 +218,7 @@ export default {
                 this.presentacion++;
             }
         },
-        agregarProducto(e) {
+        agregarProducto(e, c = 1) {
             if (!e) {
                 return "";
             }
@@ -189,8 +228,10 @@ export default {
             let p = JSON.parse(JSON.stringify(this.producto));
 
             p.codigo = e.codigo;
-            p.nombre = e.nombre + " " + e.marca + " " + e.dimension;
-            p.cantidad = 1;
+            p.nombre = e.nombre;
+            p.marca = e.marca;
+            p.dimension = e.dimension;
+            p.cantidad = c;
             p.presentacion = e.presentacion;
             p.unidades = e.cantidad + " unidades";
             p.precio = parseFloat(e.precio).toFixed(2);
@@ -200,6 +241,10 @@ export default {
             p.descuentos = [];
 
             this.$emit("producto", p);
+        },
+        agregarProductoClick(i) {
+            this.presentacion = i;
+            this.agregarProducto(this.listaTexto[this.presentacion]);
         },
     },
 };

@@ -56,8 +56,6 @@ class ProductosController extends Controller
             //$query->select("productos.*");
             if ($request->query("search") != "") {
                 $search = $this->stringsBusqueda($request->query("search"));
-                //return $search->match;
-
 
                 $query->whereRaw("MATCH (productos.codigo, productos.nombre, productos.marca, productos.dimension) AGAINST ('$search->matchExact' IN BOOLEAN MODE) > 0")
                     ->whereRaw("MATCH (precios.nombre) AGAINST ('$search->matchExact' IN BOOLEAN MODE) > 0");
