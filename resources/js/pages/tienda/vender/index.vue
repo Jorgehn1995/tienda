@@ -356,7 +356,14 @@
             </v-card>
         </v-dialog>
         <v-bottom-navigation app>
-            <v-btn large color="primary" tile dark style="white--text">
+            <v-btn
+                large
+                color="primary"
+                tile
+                dark
+                style="white--text"
+                @click="finalizar()"
+            >
                 <span class="white--text"> PROCESAR VENTA </span>
                 <span class="white--text"><strong>[CTRL+ENTER]</strong></span>
             </v-btn>

@@ -232,12 +232,14 @@ export default {
             p.marca = e.marca;
             p.dimension = e.dimension;
             p.cantidad = c;
+            p.idprecio = e.idprecio;
+            p.idproducto = e.idproducto;
             p.presentacion = e.presentacion;
             p.unidades = e.cantidad + " unidades";
             p.precio = parseFloat(e.precio).toFixed(2);
             p.presentacionIndex = 0;
             p.costo = e.costo;
-            p.carrito = e.codigo + "-" + p.precio;
+            p.carrito = e.idprecio;
             p.descuentos = [];
 
             this.$emit("producto", p);
