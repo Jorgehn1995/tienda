@@ -235,7 +235,7 @@ export default {
             p.idprecio = e.idprecio;
             p.idproducto = e.idproducto;
             p.presentacion = e.presentacion;
-            p.unidades = e.cantidad + " unidades";
+            p.unidades = e.cantidad;
             p.precio = parseFloat(e.precio).toFixed(2);
             p.presentacionIndex = 0;
             p.costo = e.costo;

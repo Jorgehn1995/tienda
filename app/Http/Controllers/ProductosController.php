@@ -192,10 +192,12 @@ class ProductosController extends Controller
                         $precio->costo = $costo_unitario * $p["cantidad"];
                     }
 
-                    $precio->existencia = (float)$p["existencia"] + (float)$p["stock_nuevo"];
+                    //$precio->existencia = (float)$p["existencia"] + (float)$p["stock_nuevo"];
+                    $producto->existencia = (float)$producto->existencia + ((float)$p["stock_nuevo"] * (float)$precio->cantidad);
                     $producto->precios()->save($precio);
                 }
             }
+            $producto->save();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();

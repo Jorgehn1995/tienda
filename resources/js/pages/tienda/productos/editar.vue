@@ -349,6 +349,22 @@
                                         </v-col>
                                     </v-row>
                                 </v-card-text>
+                                <v-card-text>
+                                    <v-card class="rounded-lg" color="teal">
+                                        <v-list color="transparent" dark>
+                                            <v-list-item>
+                                                <v-list-item-subtitle>
+                                                    Existencia Actual
+                                                </v-list-item-subtitle>
+                                                <v-list-item-title
+                                                    class="text-right"
+                                                >
+                                                    {{ data.existencia || 0 }}
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                        </v-list>
+                                    </v-card>
+                                </v-card-text>
                             </v-card>
                         </v-col>
                         <v-col cols="12">
