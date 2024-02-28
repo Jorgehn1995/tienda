@@ -42,13 +42,13 @@ class VentasController extends Controller
             foreach ($c as $key => $producto) {
                 $id = $producto["carrito"];
 
-
                 $detalle = new Detalle();
                 $detalle->idventa = $venta->idventa;
                 $detalle->idprecio = $producto["idprecio"];
                 $detalle->idproducto = $producto["idproducto"];
                 $detalle->codigo = $producto["codigo"];
                 $detalle->nombre_producto = $producto["nombre"] . " " . $producto["marca"] . " " . $producto["dimension"];
+                $detalle->presentacion = $producto["presentacion"];
                 $detalle->cantidad = $producto["cantidad"];
                 $detalle->precio = $producto["precio"];
                 $detalle->total = $producto["cantidad"] * $producto["precio"];

@@ -16,4 +16,8 @@ class Precio extends Model
     {
         return $this->belongsTo("App\Models\Producto", "idproducto");
     }
+    public function vendidos()
+    {
+        return $this->hasMany("App\Models\Detalle", "idprecio");
+    }
 }

@@ -81,10 +81,18 @@ export default [
     /**
      * PRODUCTOS
      */
-     {
+    {
         path: "/tienda/productos",
         name: "",
         component: () => import("@/pages/tienda/productos/index.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
+    {
+        path: "/tienda/productos/:idproducto",
+        name: "",
+        component: () => import("@/pages/tienda/productos/_idproducto.vue"),
         meta: {
             layout: "autorizado",
         },
@@ -117,7 +125,7 @@ export default [
     /**
      * VENDER
      */
-     {
+    {
         path: "/tienda/vender",
         name: "",
         component: () => import("@/pages/tienda/vender/index.vue"),
@@ -128,7 +136,7 @@ export default [
     /**
      * REPORTES
      */
-     {
+    {
         path: "/tienda/reportes",
         name: "",
         component: () => import("@/pages/tienda/reportes/index.vue"),

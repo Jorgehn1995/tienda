@@ -46,20 +46,114 @@
                                     index,
                                 }"
                             >
-                                <v-card-actions class="pb-0">
-                                    <v-card-title
-                                        class="pb-0 pl-1 pt-1"
-                                        :title="item.nombre"
-                                        style="width: 100%; display: block"
+                                <v-card-text class="px-2">
+                                    <v-row dense style="height: 100%">
+                                        <v-col cols="5">
+                                            <v-row dense>
+                                                <v-col cols="12" md="4">
+                                                    <a
+                                                        class="text-right undertext teal--text font-weight-bold text-decoration-none"
+                                                        style="width: 100%"
+                                                        :href="
+                                                            '/tienda/productos/' +
+                                                            item.idproducto
+                                                        "
+                                                    >
+                                                        {{ item.codigo }}
+                                                    </a>
+                                                </v-col>
+                                                <v-col cols="12" md="8">
+                                                    <a
+                                                        class="undertext teal--text font-weight-bold text-decoration-none"
+                                                        style="width: 100%"
+                                                        :href="
+                                                            '/tienda/productos/' +
+                                                            item.idproducto
+                                                        "
+                                                    >
+                                                        {{ item.nombre }}
+                                                    </a>
+                                                </v-col>
+                                            </v-row>
+                                        </v-col>
+                                        <v-col cols="7">
+                                            <v-row dense>
+                                                <v-col cols="12" md="3">
+                                                    <a
+                                                        class="undertext teal--text font-weight-bold text-decoration-none"
+                                                        style="width: 100%"
+                                                        :href="
+                                                            '/tienda/productos/' +
+                                                            item.idproducto
+                                                        "
+                                                    >
+                                                        {{ item.dimension }}
+                                                    </a>
+                                                </v-col>
+                                                <v-col cols="12" md="2">
+                                                    <div
+                                                        class="undertext info--text"
+                                                        style="width: 100%"
+                                                    >
+                                                        {{ item.marca }}
+                                                    </div>
+                                                </v-col>
+
+                                                <v-col cols="12" md="3">
+                                                    {{ item.existencia }}
+                                                    {{ item.unidades }}
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    01/02/2024
+                                                </v-col>
+                                            </v-row>
+                                        </v-col>
+                                    </v-row>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-btn
+                                        text
+                                        outlined
+                                        @click="toggle($event, index, item)"
                                     >
-                                        <div class="text-truncate">
-                                            {{ item.nombre }}
-                                        </div>
-                                    </v-card-title>
-
+                                        <v-icon
+                                            v-if="isSelected(item.idproducto)"
+                                        >
+                                            mdi-chevron-up
+                                        </v-icon>
+                                        <v-icon v-else>
+                                            mdi-chevron-down
+                                        </v-icon>
+                                        Más Info
+                                    </v-btn>
                                     <v-spacer></v-spacer>
-
-                                    <v-options :title="item.nombre">
+                                    <v-btn depressed>
+                                        <v-icon left>mdi-plus</v-icon>
+                                        Stock
+                                    </v-btn>
+                                    <v-btn depressed>
+                                        <v-icon left>
+                                            mdi-calendar-outline
+                                        </v-icon>
+                                        Vencimiento
+                                    </v-btn>
+                                    <v-btn depressed>
+                                        <v-icon left> mdi-cart-variant </v-icon>
+                                        Reporte
+                                    </v-btn>
+                                    <v-btn depressed>
+                                        <v-icon left>mdi-pencil-outline</v-icon>
+                                        Editar
+                                    </v-btn>
+                                    <v-btn depressed>
+                                        <v-icon left>mdi-delete-outline</v-icon>
+                                        Eliminar
+                                    </v-btn>
+                                    <v-options
+                                        :title="item.nombre"
+                                        icon="mdi-dots-horizontal"
+                                        v-if="false"
+                                    >
                                         <template v-slot:options>
                                             <v-list-item
                                                 :to="
@@ -87,109 +181,137 @@
                                         </template>
                                     </v-options>
                                 </v-card-actions>
-                                <v-card
-                                    elevation="0"
-                                    class="rounded-lg"
-                                    :to="
-                                        '/tienda/productos/editar?codigo=' +
-                                        item.codigo
-                                    "
-                                    :ripple="false"
-                                >
-                                    <v-list class="pt-0">
-                                        <v-list-item>
-                                            <v-list-item-content class="pt-0">
-                                                <v-list-item-subtitle>
-                                                    <v-icon left small
-                                                        >mdi-package-variant-closed</v-icon
-                                                    >
-                                                    {{
-                                                        item.existencia
-                                                    }}
-                                                    unidades en existencia
-                                                </v-list-item-subtitle>
-                                                <v-list-item-subtitle>
-                                                    <v-icon left small
-                                                        >mdi-text-box-outline</v-icon
-                                                    >
-                                                    Q{{ item.costo }} costo
-                                                </v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                    </v-list>
-                                    <v-card-text>
-                                        <v-card
-                                            v-for="(precio, i) in item.precios"
-                                            :key="'prec' + i"
-                                            outlined
-                                            tile
-                                        >
-                                            <v-card-text>
-                                                <v-row>
-                                                    <v-col
-                                                        cols="12"
-                                                        class="d-flex justify-center align-center"
-                                                    >
-                                                        <div
-                                                            class="d-flex flex-column justify-center align-center"
+                                <v-slide-y-transition hide-on-leave>
+                                    <div v-if="isSelected(item.idproducto)">
+                                        <v-divider></v-divider>
+                                        <v-card-text class="pt-0">
+                                            <div>
+                                                <v-row dense>
+                                                    <v-col cols="12" md="10">
+                                                        <v-subheader
+                                                            class="px-0 mb-0"
                                                         >
-                                                            <span
-                                                                class="text-capitalize"
+                                                            Presentaciones y
+                                                            Precios
+                                                        </v-subheader>
+                                                        <v-divider
+                                                            class="mb-1"
+                                                            inset
+                                                        ></v-divider>
+                                                        <v-simple-table dense>
+                                                            <template
+                                                                v-slot:default
                                                             >
-                                                                {{
-                                                                    precio.cantidad
-                                                                }}
-                                                                Unidades
-                                                            </span>
-                                                            <span
-                                                                class="headline black--text"
-                                                            >
-                                                                <div
-                                                                    v-if="
-                                                                        precio.nombre ==
-                                                                        'Unidad'
-                                                                    "
-                                                                >
-                                                                    <span
-                                                                        class="subtitle"
-                                                                        >Unidad</span
-                                                                    >
-                                                                    Q{{
-                                                                        precio.precio
-                                                                    }}
-                                                                </div>
-                                                                <div v-else>
-                                                                    <span
-                                                                        v-if="
-                                                                            precio.nombre
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th
+                                                                            class="text-left"
+                                                                        >
+                                                                            Presentacion
+                                                                        </th>
+                                                                        <th
+                                                                            class="text-left"
+                                                                        >
+                                                                            {{
+                                                                                item.unidades
+                                                                            }}
+                                                                        </th>
+                                                                        <th
+                                                                            class="text-left"
+                                                                        >
+                                                                            Costo
+                                                                        </th>
+                                                                        <th
+                                                                            class="text-left"
+                                                                        >
+                                                                            Precio
+                                                                        </th>
+                                                                        <th
+                                                                            class="text-left"
+                                                                        >
+                                                                            Ganancia
+                                                                        </th>
+                                                                        <th
+                                                                            class="text-left"
+                                                                        >
+                                                                            Margen
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr
+                                                                        v-for="(
+                                                                            precio,
+                                                                            i
+                                                                        ) in item.precios"
+                                                                        :key="
+                                                                            precio.idprecio
                                                                         "
                                                                     >
-                                                                        {{
-                                                                            precio.nombre
-                                                                        }}
-                                                                        por Q{{
-                                                                            precio.precio
-                                                                        }}
-                                                                    </span>
-                                                                    <span
-                                                                        v-else
-                                                                    >
-                                                                        {{
-                                                                            precio.cantidad
-                                                                        }}
-                                                                        por Q{{
-                                                                            precio.precio
-                                                                        }}
-                                                                    </span>
-                                                                </div>
-                                                            </span>
-                                                        </div>
+                                                                        <td>
+                                                                            {{
+                                                                                precio.nombre
+                                                                            }}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{
+                                                                                precio.cantidad
+                                                                            }}
+                                                                            {{
+                                                                                item.unidades
+                                                                            }}
+                                                                        </td>
+                                                                        <td>
+                                                                            Q
+                                                                            {{
+                                                                                precio.costo
+                                                                            }}
+                                                                        </td>
+                                                                        <td>
+                                                                            Q
+                                                                            {{
+                                                                                precio.precio
+                                                                            }}
+                                                                        </td>
+
+                                                                        <td>
+                                                                            Q
+                                                                            {{
+                                                                                precio.precio -
+                                                                                precio.costo
+                                                                            }}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{
+                                                                                Math.round(
+                                                                                    ((precio.precio -
+                                                                                        precio.costo) /
+                                                                                        precio.precio) *
+                                                                                        100
+                                                                                )
+                                                                            }}%
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </template>
+                                                        </v-simple-table>
+                                                    </v-col>
+                                                    <v-col cols="12" md="2">
+                                                        <v-subheader
+                                                            class="px-0 mb-0"
+                                                        >
+                                                            Menu
+                                                        </v-subheader>
+                                                        <v-divider
+                                                            class="mb-1"
+                                                            inset
+                                                        ></v-divider>
                                                     </v-col>
                                                 </v-row>
-                                            </v-card-text>
-                                        </v-card>
-                                    </v-card-text>
-                                </v-card>
+                                            </div>
+                                        </v-card-text>
+                                    </div>
+                                </v-slide-y-transition>
                             </template>
                         </t-listar>
                     </v-col>
@@ -200,12 +322,13 @@
 </template>
 
 <script>
+import ProductosMostrarPrecio from "../../../components/tienda/productos/productosMostrarPrecio.vue";
 import VOptions from "../../../components/tienda/generales/v-options.vue";
 import TListar from "../../../components/tienda/generales/t-listar.vue";
 
 import { mapActions } from "vuex";
 export default {
-    components: { TListar, VOptions },
+    components: { TListar, VOptions, ProductosMostrarPrecio },
 
     mounted() {
         //this.init();
@@ -228,4 +351,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.undertext {
+    cursor: pointer;
+    display: inline-block;
+    border-bottom: 1px dashed transparent;
+}
+.undertext:hover {
+    border-bottom: 1px dashed;
+}
+</style>

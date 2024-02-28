@@ -54,8 +54,6 @@
                 <v-row dense>
                     <v-col
                         cols="12"
-                        sm="6"
-                        md="4"
                         v-for="(item, index) in data"
                         :key="'dt' + index"
                     >
@@ -63,7 +61,6 @@
                             <v-hover v-slot="{ hover }">
                                 <v-card
                                     class="rounded-lg pa-0"
-                                    color=" cursor-pointer"
                                     outlined
                                     :elevation="
                                         isSelected(item[itemID]) || hover
