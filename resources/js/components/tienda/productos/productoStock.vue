@@ -6,42 +6,52 @@
             <template v-slot:default>
                 <thead>
                     <tr>
-                        <th class="text-left">Present.</th>
-                        <th class="text-left">Uni.</th>
-                        <th class="text-left">
-                            <v-chip
-                                label
-                                small
-                                color="info--text"
-                                class="v-chip--active ml-1"
-                            >
-                                Nuevo Costo</v-chip
-                            >
-                        </th>
-                        <th class="text-right">
-                            Costo <br />
-                            Actual
-                        </th>
-                        <th class="text-right">
-                            Precio <br />
-                            Actual
-                        </th>
+                        <th class="text-left">Presentación</th>
+                        <th class="text-center">Costo</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Vencimiento</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(precio, index) in precios">
                         <td>
                             <div
-                                class="d-flex justify-start align-center"
-                                style="height: 60px !important"
+                                class="d-flex justify-space-around"
+                                style="
+                                    height: 60px !important;
+                                    word-break: normal;
+                                "
                             >
-                                {{ precios[index].nombre }}
+                                <div class="d-flex justify-start align-center">
+                                    <div class="pr-1">
+                                        <div>
+                                            {{ precios[index].nombre }}
+                                        </div>
+                                        <span
+                                            class="caption"
+                                            style="white-space: nowrap"
+                                        >
+                                            {{ precios[index].cantidad }}
+                                            unidades
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-center align-center">
+                                    <div
+                                        style="white-space: nowrap"
+                                        class="pa-1"
+                                    >
+                                        Q
+                                        {{
+                                            parseFloat(
+                                                precios[index].costo
+                                            ).toFixed(2) | formatCurrency
+                                        }}
+                                    </div>
+                                </div>
                             </div>
                         </td>
-                        <td>
-                            {{ precios[index].cantidad }}
-                            <small>u</small>
-                        </td>
+
                         <td>
                             <v-text-field
                                 type="number"
@@ -51,7 +61,21 @@
                                 persistent-hint
                                 dense
                                 outlined
-                                prepend-icon="mdi-cash-multiple"
+                                prepend-icon="mdi-cash"
+                                placeholder="###"
+                                @focus="$event.target.select()"
+                                hide-details=""
+                            ></v-text-field>
+                        </td>
+                        <td>
+                            <v-text-field
+                                type="number"
+                                :ref="'costo' + index"
+                                v-model="precios[index].stock_nuevo"
+                                persistent-hint
+                                dense
+                                outlined
+                                prepend-icon="mdi-package-variant-closed-plus"
                                 placeholder="###"
                                 @focus="$event.target.select()"
                                 hide-details=""
@@ -59,38 +83,17 @@
                         </td>
 
                         <td>
-                            <div
-                                class="d-flex justify-end align-center"
-                                style="white-space: nowrap"
-                            >
-                                <strong>
-                                    Q
-                                    {{
-                                        (
-                                            Math.round(
-                                                precios[index].costo * 100
-                                            ) / 100
-                                        ).toFixed(2)
-                                    }}
-                                </strong>
-                            </div>
-                        </td>
-                        <td>
-                            <div
-                                class="d-flex justify-end align-center"
-                                style="white-space: nowrap"
-                            >
-                                <strong>
-                                    Q
-                                    {{
-                                        (
-                                            Math.round(
-                                                precios[index].precio * 100
-                                            ) / 100
-                                        ).toFixed(2)
-                                    }}
-                                </strong>
-                            </div>
+                            <v-text-field
+                                type="date"
+                                :ref="'costo' + index"
+                                v-model="precios[index].vencimiento"
+                                persistent-hint
+                                dense
+                                outlined
+                                placeholder="###"
+                                @focus="$event.target.select()"
+                                hide-details=""
+                            ></v-text-field>
                         </td>
                     </tr>
                 </tbody>
@@ -114,10 +117,6 @@ export default {
             type: [Number, String],
             default: 0,
         },
-        precios: {
-            type: Array,
-            default: () => [],
-        },
     },
 
     data: () => ({
@@ -140,7 +139,16 @@ export default {
             return precio - this.calcularCosto(p);
         },
     },
-    computed: {},
+    computed: {
+        precios: {
+            get() {
+                return this.value;
+            },
+            set(n) {
+                this.$emit("input", n);
+            },
+        },
+    },
 };
 </script>
 

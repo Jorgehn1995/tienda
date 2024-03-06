@@ -1,6 +1,11 @@
 <template>
     <div>
-        <apexchart type="pie" :options="options" :series="series"></apexchart>
+        <apexchart
+            ref="chart"
+            type="pie"
+            :options="options"
+            :series="series"
+        ></apexchart>
     </div>
 </template>
 

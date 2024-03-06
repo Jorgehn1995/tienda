@@ -16,4 +16,8 @@ class Producto extends Model
     {
         return $this->hasMany("App\Models\Precio", "idproducto")->orderBy("cantidad", "asc");
     }
+    public function vencimientos()
+    {
+        return $this->hasMany("App\Models\Vencimiento", "idproducto");
+    }
 }

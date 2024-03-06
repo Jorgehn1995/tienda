@@ -114,7 +114,7 @@
             <v-container>
                 <v-form ref="formProducto" lazy-validation>
                     <v-row dense v-if="isFound && !isLoading">
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="12">
                             <v-card
                                 outlined
                                 elevation="0"
@@ -143,7 +143,7 @@
                                 <v-divider inset></v-divider>
                                 <v-card-text class="py-2">
                                     <v-row dense>
-                                        <v-col cols="12" md="12" class="py-0">
+                                        <v-col cols="12" md="2" class="py-0">
                                             <span class="subtitle">
                                                 Codigo
                                                 <span class="red--text">*</span>
@@ -160,7 +160,7 @@
                                             ></v-text-field>
                                         </v-col>
 
-                                        <v-col cols="12" md="12" class="py-0">
+                                        <v-col cols="12" md="4" class="py-0">
                                             <span class="subtitle">
                                                 Producto
                                                 <span class="red--text">*</span>
@@ -178,12 +178,12 @@
                                                 ]"
                                                 dense
                                                 outlined
-                                                rows="4"
+                                                rows="1"
                                                 prepend-icon="mdi-tag-outline"
                                                 placeholder="Nombre"
                                             ></v-textarea>
                                         </v-col>
-                                        <v-col cols="12" md="6" class="py-0">
+                                        <v-col cols="12" md="3" class="py-0">
                                             <span class="subtitle">
                                                 Marca
                                             </span>
@@ -196,7 +196,7 @@
                                                 placeholder="Marca"
                                             ></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" md="6" class="py-0">
+                                        <v-col cols="12" md="3" class="py-0">
                                             <span class="subtitle">
                                                 Tamaño o Dimensión
                                             </span>
@@ -262,8 +262,7 @@
                                 </v-card-text>
                             </v-card>
                         </v-col>
-
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="12">
                             <v-card
                                 outlined
                                 elevation="0"
@@ -271,7 +270,7 @@
                                 height="100%"
                             >
                                 <v-card-title>
-                                    Presentaciones y Precio
+                                    Presentaciones
                                     <v-chip
                                         label
                                         color="grey--text text--darken-1"
@@ -282,114 +281,101 @@
                                 </v-card-title>
                                 <v-divider inset></v-divider>
                                 <v-card-text class="py-2">
-                                    <productos-precios
+                                    <productos-presentaciones
                                         :costo="data.costo"
                                         :precio_unitario="data.precio"
                                         ref="precios"
                                         v-model="data.precios"
-                                    ></productos-precios>
+                                    ></productos-presentaciones>
                                 </v-card-text>
                             </v-card>
                         </v-col>
-                        <v-col cols="12" md="6">
-                            <v-card
-                                outlined
-                                elevation="0"
-                                class="rounded-lg"
-                                height="100%"
-                            >
-                                <v-card-title>
-                                    Costos
-                                    <v-chip
-                                        label
-                                        color="grey--text text--darken-1"
-                                        class="v-chip--active ml-1"
+                        <v-col cols="12" md="8">
+                            <v-row dense>
+                                <v-col cols="12" md="12">
+                                    <v-card
+                                        outlined
+                                        elevation="0"
+                                        class="rounded-lg"
+                                        height="100%"
                                     >
-                                        [CTRL+3]
-                                    </v-chip>
-                                </v-card-title>
-                                <v-divider inset></v-divider>
-                                <v-card-text class="py-2">
-                                    <v-row dense>
-                                        <v-col cols="12">
+                                        <v-card-title>
+                                            Agregar Existencias
+                                            <v-chip
+                                                label
+                                                color="grey--text text--darken-1"
+                                                class="v-chip--active ml-1"
+                                            >
+                                                [CTRL+2]
+                                            </v-chip>
+                                        </v-card-title>
+                                        <v-divider inset></v-divider>
+                                        <v-card-text class="py-2">
                                             <producto-stock
-                                                :precios="data.precios"
+                                                :costo="data.costo"
+                                                :precio_unitario="data.precio"
+                                                ref="precios"
                                                 v-model="data.precios"
                                             ></producto-stock>
-                                        </v-col>
-                                    </v-row>
-                                </v-card-text>
-                            </v-card>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <v-card
-                                outlined
-                                elevation="0"
-                                class="rounded-lg"
-                                height="100%"
-                            >
-                                <v-card-title>
-                                    Existencias
-                                    <v-chip
-                                        label
-                                        color="grey--text text--darken-1"
-                                        class="v-chip--active ml-1"
-                                    >
-                                        [CTRL+4]
-                                    </v-chip>
-                                </v-card-title>
-                                <v-divider inset></v-divider>
-                                <v-card-text class="py-2">
-                                    <v-row dense>
-                                        <v-col cols="12">
-                                            <producto-existencia
-                                                :precios="data.precios"
-                                                v-model="data.precios"
-                                            ></producto-existencia>
-                                        </v-col>
-                                    </v-row>
-                                </v-card-text>
-                                <v-card-text>
-                                    <v-card class="rounded-lg" color="teal">
-                                        <v-list color="transparent" dark>
-                                            <v-list-item>
-                                                <v-list-item-subtitle>
-                                                    Existencia Actual
-                                                </v-list-item-subtitle>
-                                                <v-list-item-title
-                                                    class="text-right"
-                                                >
-                                                    {{ data.existencia || 0 }}
-                                                </v-list-item-title>
-                                            </v-list-item>
-                                        </v-list>
+                                        </v-card-text>
+                                        <v-card-text class="pt-0">
+                                            <v-card
+                                                class="rounded-lg"
+                                                color="teal lighten-5 "
+                                                outlined
+                                            >
+                                                <v-list color="transparent">
+                                                    <v-list-item>
+                                                        <v-list-item-subtitle
+                                                            class="teal--text text--darken-3"
+                                                        >
+                                                            Existencia Actual
+                                                        </v-list-item-subtitle>
+                                                        <v-list-item-title
+                                                            class="text-right teal--text text--darken-3"
+                                                        >
+                                                            {{
+                                                                data.existencia ||
+                                                                0
+                                                            }}
+                                                            {{ data.unidades }}
+                                                        </v-list-item-title>
+                                                    </v-list-item>
+                                                </v-list>
+                                            </v-card>
+                                        </v-card-text>
                                     </v-card>
-                                </v-card-text>
-                            </v-card>
+                                </v-col>
+                            </v-row>
                         </v-col>
-                        <v-col cols="12">
-                            <v-bottom-navigation app>
-                                <v-btn
-                                    v-shortkey="['ctrl', 'enter']"
-                                    @shortkey.native="procesar()"
-                                    large
-                                    color="primary"
-                                    tile
-                                    dark
-                                    style="white--text"
-                                    @click="procesar()"
-                                >
-                                    <span class="white--text">
-                                        Guardar y Agregar otro
-                                    </span>
-                                    <span class="white--text"
-                                        ><strong>[CTRL+ENTER]</strong></span
-                                    >
-                                </v-btn>
-                            </v-bottom-navigation>
+                        <v-col cols="12" md="4">
+                            <v-card outlined elevation="0" class="rounded-lg">
+                                <v-card-title> Vencimientos </v-card-title>
+                                <v-card-divider></v-card-divider>
+                                <v-card-text> Vencimientos </v-card-text>
+                            </v-card>
                         </v-col>
                     </v-row>
                 </v-form>
+                <v-bottom-navigation app>
+                    <v-btn
+                        v-shortkey="['ctrl', 'enter']"
+                        @shortkey.native="procesar()"
+                        large
+                        color="primary"
+                        tile
+                        dark
+                        style="white--text"
+                        @click="procesar()"
+                    >
+                        <span class="white--text">
+                            Guardar y Agregar otro
+                        </span>
+                        <span class="white--text"
+                            ><strong>[CTRL+ENTER]</strong></span
+                        >
+                    </v-btn>
+                </v-bottom-navigation>
             </v-container>
 
             <v-nice-modal v-model="saved" @go="confirmado()">
@@ -419,6 +405,7 @@
 </template>
 
 <script>
+import ProductosPresentaciones from "../../../components/tienda/productos/productosPresentaciones.vue";
 import ProductoExistencia from "../../../components/tienda/productos/productoExistencia.vue";
 import ProductoStock from "../../../components/tienda/productos/productoStock.vue";
 
@@ -430,6 +417,7 @@ export default {
         ProductosPrecios,
         ProductoStock,
         ProductoExistencia,
+        ProductosPresentaciones,
     },
     mounted() {
         this.$refs.buscarCodigo.$refs.input.focus();

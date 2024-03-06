@@ -135,54 +135,86 @@
                                     </v-card-subtitle>
                                     <v-divider></v-divider>
                                     <v-card-text>
-                                        <v-dialog
-                                            ref="dialog"
-                                            v-model="modal"
-                                            :return-value.sync="fecha"
-                                            persistent
-                                            width="450px"
-                                        >
-                                            <template
-                                                v-slot:activator="{ on, attrs }"
-                                            >
-                                                <v-text-field
-                                                    v-model="fecha"
-                                                    prepend-icon="mdi-calendar"
-                                                    readonly
-                                                    class="rounded-lg"
-                                                    v-bind="attrs"
-                                                    v-on="on"
+                                        <v-row dense>
+                                            <v-col cols="12" md="5">
+                                                <v-dialog
+                                                    ref="dialog"
+                                                    v-model="modal"
+                                                    :return-value.sync="fecha"
+                                                    persistent
+                                                    width="450px"
+                                                >
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on,
+                                                            attrs,
+                                                        }"
+                                                    >
+                                                        <v-text-field
+                                                            v-model="fecha"
+                                                            prepend-icon="mdi-calendar"
+                                                            readonly
+                                                            class="rounded-lg"
+                                                            v-bind="attrs"
+                                                            v-on="on"
+                                                            outlined
+                                                            dense
+                                                            hide-details=""
+                                                        ></v-text-field>
+                                                    </template>
+                                                    <v-date-picker
+                                                        v-model="fecha"
+                                                        range
+                                                        scrollable
+                                                        width="450"
+                                                        locale="es-gt"
+                                                    >
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn
+                                                            text
+                                                            color="primary"
+                                                            @click="
+                                                                modal = false
+                                                            "
+                                                        >
+                                                            Cancel
+                                                        </v-btn>
+                                                        <v-btn
+                                                            text
+                                                            color="primary"
+                                                            @click="
+                                                                $refs.dialog.save(
+                                                                    fecha
+                                                                )
+                                                            "
+                                                        >
+                                                            OK
+                                                        </v-btn>
+                                                    </v-date-picker>
+                                                </v-dialog>
+                                            </v-col>
+                                            <v-col cols="12" md="5">
+                                                <v-select
+                                                    :items="formatos"
+                                                    v-model="format"
                                                     outlined
+                                                    class="rounded-lg"
                                                     dense
-                                                    hide-details=""
-                                                ></v-text-field>
-                                            </template>
-                                            <v-date-picker
-                                                v-model="fecha"
-                                                range
-                                                scrollable
-                                                width="450"
-                                                locale="es-gt"
-                                            >
-                                                <v-spacer></v-spacer>
-                                                <v-btn
-                                                    text
-                                                    color="primary"
-                                                    @click="modal = false"
+                                                    prepend-icon="mdi-chart-box-outline"
                                                 >
-                                                    Cancel
-                                                </v-btn>
+                                                </v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="2">
                                                 <v-btn
-                                                    text
+                                                    :loading="isLoadingSales"
+                                                    block
                                                     color="primary"
-                                                    @click="
-                                                        $refs.dialog.save(fecha)
-                                                    "
+                                                    @click="obtenerVentas"
                                                 >
-                                                    OK
+                                                    Generar
                                                 </v-btn>
-                                            </v-date-picker>
-                                        </v-dialog>
+                                            </v-col>
+                                        </v-row>
                                     </v-card-text>
                                 </v-card>
                             </v-col>
@@ -224,7 +256,7 @@
                                                 </div>
                                                 <div class="text-h5">
                                                     {{
-                                                        producto.vendidos_cantidad
+                                                        ventas.vendidos_cantidad
                                                     }}
                                                     Presentaciones
                                                 </div>
@@ -248,6 +280,7 @@
                                             :labels="graficaVendidos.labels"
                                             :series="graficaVendidos.series"
                                             chart-id="g2"
+                                            :key="'gb1' + updates"
                                             :legend="true"
                                             :names="$vuetify.breakpoint.smAndUp"
                                             :palette="palette"
@@ -317,6 +350,7 @@
                                         <grafica-pie
                                             :labels="graficaGanancias.labels"
                                             :series="graficaGanancias.series"
+                                            :key="'gb2' + updates"
                                             :legend="true"
                                             chart-id="g3"
                                             :names="$vuetify.breakpoint.smAndUp"
@@ -340,11 +374,29 @@
                                     </v-card-subtitle>
                                     <v-divider inset> </v-divider>
                                     <v-card-text>
-                                        <grafica-barras
-                                            :labels="graficaFechas.labels"
-                                            :series="graficaFechas.series"
-                                            :palette="palette"
-                                        ></grafica-barras>
+                                        <v-card
+                                            outlined
+                                            elevation="0"
+                                            class="rounded-lg"
+                                            height="100%"
+                                            v-if="isLoadingSales"
+                                        >
+                                            <v-skeleton-loader
+                                                type="article"
+                                            ></v-skeleton-loader>
+                                            <v-skeleton-loader
+                                                type="image"
+                                            ></v-skeleton-loader>
+                                        </v-card>
+                                        <div v-else>
+                                            <grafica-barras
+                                                ref="barras"
+                                                :key="'gf' + updates"
+                                                :labels="graficaFechas.labels"
+                                                :series="graficaFechas.series"
+                                                :palette="palette"
+                                            ></grafica-barras>
+                                        </div>
                                     </v-card-text>
                                 </v-card>
                             </v-col>
@@ -538,6 +590,7 @@ export default {
             series: [],
         },
         palette: "palette1",
+        updates: 0,
         moment: moment,
     }),
     methods: {
@@ -554,7 +607,6 @@ export default {
             this.isLoading = false;
         },
         async obtenerVentas() {
-            console.log("asdfas");
             this.isLoadingSales = true;
             await this.$axios
                 .get(
@@ -569,46 +621,44 @@ export default {
                 )
                 .then((result) => {
                     this.ventas = result.data;
-                    this.graficaVendidos.series = this.producto.precios.map(
+                    this.graficaVendidos.series = this.ventas.precios.map(
                         (e) => e.vendidos_cantidad
                     );
-                    this.graficaVendidos.labels = this.producto.precios.map(
+                    this.graficaVendidos.labels = this.ventas.precios.map(
                         (e) => e.nombre
                     );
-                    this.graficaGanancias.series = this.producto.precios.map(
+                    this.graficaGanancias.series = this.ventas.precios.map(
                         (e) => e.vendidos_ganancia
                     );
-                    this.graficaGanancias.labels = this.producto.precios.map(
+                    this.graficaGanancias.labels = this.ventas.precios.map(
                         (e) => e.nombre
                     );
-
+                    this.graficaFechas.labels = [];
+                    this.graficaFechas.series = [];
                     this.graficaFechas.labels = this.ventas.detalles.map(
                         (e) => e.fecha
                     );
+
                     let series = this.ventas.detalles.map((e) => e.ventas);
+                    let gs = [];
                     this.ventas.precios.forEach((p) => {
                         this.graficaFechas.series.push({
                             name: p.nombre,
                             data: series.map((e) => e[p.nombre]),
                         });
                     });
-
-                    console.log(this.graficaFechas);
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+
             this.isLoadingSales = false;
+            this.updates++;
         },
     },
     computed: {
         idproducto() {
             return this.$route.params.idproducto;
-        },
-    },
-    watch: {
-        fecha() {
-            console.log(this.fecha);
         },
     },
 };

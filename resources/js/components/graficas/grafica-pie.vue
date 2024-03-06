@@ -83,9 +83,7 @@ export default {
                     },
                 ],
             };
-            if (!this.names) {
-                options.dataLabels.formatter = formatter;
-            }
+
             return options;
         },
     },

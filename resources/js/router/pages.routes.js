@@ -90,6 +90,14 @@ export default [
         },
     },
     {
+        path: "/tienda/productos/editar",
+        name: "",
+        component: () => import("@/pages/tienda/productos/editar.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
+    {
         path: "/tienda/productos/:idproducto",
         name: "",
         component: () => import("@/pages/tienda/productos/_idproducto.vue"),
@@ -98,14 +106,6 @@ export default [
         },
     },
 
-    {
-        path: "/tienda/productos/editar",
-        name: "",
-        component: () => import("@/pages/tienda/productos/editar.vue"),
-        meta: {
-            layout: "autorizado",
-        },
-    },
     {
         path: "/tienda/productos/eliminar",
         name: "",

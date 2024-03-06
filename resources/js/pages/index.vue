@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card class="text-center rounded-lg" elevation="3">
+        <v-card class="text-center rounded-lg" elevation="0">
             <v-card-text class="pb-0">
                 <v-card-title class="justify-center display-1 mb-2">
                     <div
@@ -15,7 +15,7 @@
             <v-card-text class="pt-0">
                 <v-form ref="login" lazy-validation>
                     <v-row>
-                        <v-col cols="12" md="12" class="pb-0 pt-0">
+                        <v-col cols="12" md="12">
                             <v-text-field
                                 @keyup.enter="login()"
                                 v-model="usuario"
@@ -25,8 +25,9 @@
                                 placeholder="Usuario"
                                 name="correo"
                                 outlined
-                                dense
                                 prepend-icon="mdi-account-outline"
+                                hide-details=""
+                                class="rounded-lg"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" class="pt-0">
@@ -47,7 +48,7 @@
                                         : 'mdi-eye-outline'
                                 "
                                 @click:append="showPassword = !showPassword"
-                                dense
+                                class="rounded-lg"
                             ></v-text-field>
                         </v-col>
                     </v-row>
@@ -61,6 +62,7 @@
                                 block
                                 :loading="isLoading"
                                 depressed
+                                large
                                 color="primary"
                                 @click="login()"
                             >
@@ -129,7 +131,8 @@ export default {
                         console.log(result.data);
                     })
                     .catch((err) => {
-                        this.error.msg = err.response.data;
+                        this.error.msg =
+                            "Ha ocurrido un error al iniciar sesión";
                         this.error.status = true;
                         console.log(err.response.data);
                     });

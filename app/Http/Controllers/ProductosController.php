@@ -103,7 +103,7 @@ class ProductosController extends Controller
                     "costo_nuevo" => 0,
                     "existencia" => 0,
                     "stock_nuevo" => 0,
-
+                    "vencimiento" => 0
                 ]]
             ];
         }
@@ -113,6 +113,7 @@ class ProductosController extends Controller
         foreach ($producto->precios as $key => $precio) {
             $precio->costo_nuevo = 0;
             $precio->stock_nuevo = 0;
+            $precio->vencimiento = "";
         }
 
 
