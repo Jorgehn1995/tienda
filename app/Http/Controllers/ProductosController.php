@@ -96,8 +96,8 @@ class ProductosController extends Controller
                     "nombre" => "Unidad",
                     "cantidad" => 1,
                     "precio" => "",
-                    "costo" => 0,
-                    "costo_nuevo" => 0,
+                    "costo" => "",
+                    "costo_nuevo" => "",
                     "existencia" => 0,
                     "stock_nuevo" => 0,
                     "vencimiento" => 0

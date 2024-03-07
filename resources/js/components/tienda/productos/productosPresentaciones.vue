@@ -20,12 +20,12 @@
                         <td style="height: 60px !important">
                             <div class="d-flex justify-center align-center">
                                 <v-text-field
+                                    class="rounded-lg"
                                     :ref="'nombre' + index"
                                     v-model="precios[index].nombre"
+                                    :rules="[rules.requerido]"
                                     persistent-hint
-                                    dense
                                     outlined
-                                    prepend-icon="mdi-basket-fill"
                                 ></v-text-field>
                             </div>
                         </td>
@@ -36,14 +36,13 @@
                                 v-model="precios[index].cantidad"
                                 :rules="[rules.min1]"
                                 persistent-hint
-                                dense
+                                class="rounded-lg"
                                 outlined
-                                prepend-icon="mdi-food-apple-outline"
                                 placeholder="###"
                             ></v-text-field>
                         </td>
                         <td class="d-flex justify-center align-top pt-1">
-                            <div>
+                            <div class="pt-1">
                                 Q
                                 {{
                                     parseFloat(precios[index].costo).toFixed(2)
@@ -59,7 +58,7 @@
                                 persistent-hint
                                 type="number"
                                 :rules="[rules.min0]"
-                                dense
+                                class="rounded-lg"
                                 outlined
                                 prefix="Q"
                                 :placeholder="posiblePrecio(index)"
@@ -239,7 +238,8 @@ export default {
         },
 
         skPreciosFocus() {
-            this.$refs["precio0"][0].$refs.input.focus();
+            this.$refs["nombre0"][0].$refs.input.focus();
+            this.$refs["nombre0"][0].$refs.input.select();
         },
         renombrarPrecio(index, cantidad) {
             let nombre = this.nombrePrecios[this.precios[index].cantidad];

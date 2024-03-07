@@ -7,7 +7,7 @@
                 <thead>
                     <tr>
                         <th class="text-left">Presentación</th>
-                        <th class="text-center">Costo</th>
+                        <th class="text-center" v-if="false">Costo</th>
                         <th class="text-center">Cantidad</th>
                         <th class="text-center">Vencimiento</th>
                     </tr>
@@ -44,7 +44,7 @@
                                         Q
                                         {{
                                             parseFloat(
-                                                precios[index].costo
+                                                precios[index].precio
                                             ).toFixed(2) | formatCurrency
                                         }}
                                     </div>
@@ -52,7 +52,7 @@
                             </div>
                         </td>
 
-                        <td>
+                        <td v-if="false">
                             <v-text-field
                                 type="number"
                                 :ref="'costo' + index"

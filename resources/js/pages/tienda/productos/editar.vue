@@ -48,7 +48,10 @@
                                         Codigo Nuevo
                                     </v-chip>
                                 </v-card-title>
-                                <v-divider inset></v-divider>
+                                <v-card-subtitle>
+                                    Ingresa los datos generales del producto
+                                </v-card-subtitle>
+                                <v-divider></v-divider>
                                 <v-card-text class="py-2">
                                     <v-row dense>
                                         <v-col cols="12" md="4" class="py-0">
@@ -145,6 +148,10 @@
                                         [CTRL+2]
                                     </v-chip>
                                 </v-card-title>
+                                <v-card-subtitle>
+                                    Agrega las presentaciones en las que se
+                                    venderá el producto
+                                </v-card-subtitle>
                                 <v-divider inset></v-divider>
                                 <v-card-text class="py-2">
                                     <productos-presentaciones
@@ -156,63 +163,109 @@
                                 </v-card-text>
                             </v-card>
                         </v-col>
-                        <v-col cols="12" md="12">
-                            <v-row dense>
-                                <v-col cols="12" md="12">
-                                    <v-card
-                                        outlined
-                                        elevation="0"
-                                        class="rounded-lg"
-                                        height="100%"
+                        <v-col cols="12" md="8">
+                            <v-card
+                                outlined
+                                elevation="0"
+                                class="rounded-lg"
+                                height="100%"
+                            >
+                                <v-card-title>
+                                    Agregar Existencias
+                                    <v-chip
+                                        label
+                                        color="grey--text text--darken-1"
+                                        class="v-chip--active ml-1"
                                     >
-                                        <v-card-title>
-                                            Agregar Existencias
-                                            <v-chip
-                                                label
-                                                color="grey--text text--darken-1"
-                                                class="v-chip--active ml-1"
-                                            >
-                                                [CTRL+2]
-                                            </v-chip>
-                                        </v-card-title>
-                                        <v-divider inset></v-divider>
-                                        <v-card-text class="py-2">
-                                            <producto-stock
-                                                :costo="data.costo"
-                                                :precio_unitario="data.precio"
-                                                ref="precios"
-                                                v-model="data.precios"
-                                            ></producto-stock>
-                                        </v-card-text>
-                                        <v-card-text class="pt-0">
-                                            <v-card
-                                                class="rounded-lg"
-                                                color="teal lighten-5 "
-                                                outlined
-                                            >
-                                                <v-list color="transparent">
-                                                    <v-list-item>
-                                                        <v-list-item-subtitle
-                                                            class="teal--text text--darken-3"
-                                                        >
-                                                            Existencia Actual
-                                                        </v-list-item-subtitle>
-                                                        <v-list-item-title
-                                                            class="text-right teal--text text--darken-3"
-                                                        >
-                                                            {{
-                                                                data.existencia ||
-                                                                0
-                                                            }}
-                                                            {{ data.unidades }}
-                                                        </v-list-item-title>
-                                                    </v-list-item>
-                                                </v-list>
-                                            </v-card>
-                                        </v-card-text>
+                                        [CTRL+2]
+                                    </v-chip>
+                                </v-card-title>
+                                <v-card-subtitle>
+                                    Agrega existencias del producto registrado
+                                </v-card-subtitle>
+                                <v-divider></v-divider>
+                                <v-card-text class="py-2">
+                                    <productos-existencias
+                                        :costo="data.costo"
+                                        :precio_unitario="data.precio"
+                                        ref="precios"
+                                        v-model="data.precios"
+                                    ></productos-existencias>
+                                </v-card-text>
+                                <v-card-text class="pt-0">
+                                    <v-card
+                                        class="rounded-lg"
+                                        color="teal lighten-5 "
+                                        outlined
+                                    >
+                                        <v-list color="transparent">
+                                            <v-list-item>
+                                                <v-list-item-subtitle
+                                                    class="teal--text text--darken-3"
+                                                >
+                                                    Existencia Actual
+                                                </v-list-item-subtitle>
+                                                <v-list-item-title
+                                                    class="text-right teal--text text--darken-3"
+                                                >
+                                                    {{ data.existencia || 0 }}
+                                                    {{ data.unidades }}
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                        </v-list>
                                     </v-card>
-                                </v-col>
-                            </v-row>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <v-card
+                                outlined
+                                elevation="0"
+                                class="rounded-lg"
+                                height="100%"
+                            >
+                                <v-card-title>
+                                    Costo
+                                    <v-chip
+                                        label
+                                        color="grey--text text--darken-1"
+                                        class="v-chip--active ml-1"
+                                    >
+                                        [CTRL+3]
+                                    </v-chip>
+                                </v-card-title>
+                                <v-card-subtitle>
+                                    Indica el costo del producto
+                                </v-card-subtitle>
+                                <v-divider></v-divider>
+                                <v-card-text>
+                                    <p>
+                                        Selecciona la presentacion e indica el
+                                        costo, el costo de todas las
+                                        presentaciones se basa en el costo
+                                        ingresado
+                                    </p>
+                                    <v-radio-group v-model="costo">
+                                        <v-radio
+                                            v-for="(p, i) in data.precios"
+                                            :key="'p' + i"
+                                            :label="p.nombre"
+                                            :value="i"
+                                        ></v-radio>
+                                    </v-radio-group>
+                                    <form-text-field
+                                        label="Costo"
+                                        v-model="
+                                            data.precios[costo].costo_nuevo
+                                        "
+                                        :hint="
+                                            'Ingresa el costo de la presentacion ' +
+                                            data.precios[costo].nombre
+                                        "
+                                        :persistentHint="true"
+                                    ></form-text-field>
+                                </v-card-text>
+                            </v-card>
                         </v-col>
                         <v-col cols="12" md="12">
                             <v-card outlined elevation="0" class="rounded-lg">
@@ -273,21 +326,16 @@
 </template>
 
 <script>
+import ProductosExistencias from "../../../components/tienda/productos/productosExistencias.vue";
 import FormTextArea from "../../../components/forms/form-text-area.vue";
 import FormTextField from "../../../components/forms/form-text-field.vue";
 import ProductosVencimientos from "../../../components/tienda/productos/productosVencimientos.vue";
 import ProductosPresentaciones from "../../../components/tienda/productos/productosPresentaciones.vue";
-import ProductoExistencia from "../../../components/tienda/productos/productoExistencia.vue";
-import ProductoStock from "../../../components/tienda/productos/productoStock.vue";
-
-import ProductosPrecios from "../../../components/tienda/productos/productosPrecios.vue";
 import VNiceModal from "../../../components/tienda/generales/v-nice-modal.vue";
 export default {
     components: {
         VNiceModal,
-        ProductosPrecios,
-        ProductoStock,
-        ProductoExistencia,
+        ProductosExistencias,
         ProductosPresentaciones,
         ProductosVencimientos,
         FormTextField,
@@ -304,6 +352,7 @@ export default {
         isFound: true,
         saved: false,
         codigo: "",
+        costo: 0,
         data: {
             idproducto: 0,
             codigo: "",
@@ -314,7 +363,18 @@ export default {
             caducidad: "",
             existencia: 0,
             precio: 0,
-            precios: [{}],
+            precios: [
+                {
+                    nombre: "Unidad",
+                    cantidad: 1,
+                    precio: 0,
+                    costo: 0,
+                    costo_nuevo: 0,
+                    existencia: "",
+                    stock_nuevo: 0,
+                    vencimiento: "",
+                },
+            ],
             recalcular_costo: false,
         },
         error: {
