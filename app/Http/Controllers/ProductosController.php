@@ -17,16 +17,13 @@ class ProductosController extends Controller
     use BusquedaTrait;
     public function index(Request $request)
     {
+        $query = Producto::query();
+        $query->select("productos.*");
+        if ($request->query("search") != "") {
 
-
-
-        if ($request->query("codigo")) {
-            $producto = Producto::where("codigo", $request->query("codigo"))->with("precios")->first();
-            return $producto;
-        } else {
-            $query = Producto::query();
-            $query->select("productos.*");
-            if ($request->query("search") != "") {
+            if (is_numeric($request->query('search'))) {
+                $query->where("codigo", $request->query("search"));
+            } else {
                 $search = $this->stringsBusqueda($request->query("search"));
                 $query->orWhereRaw("MATCH (codigo,nombre,marca,dimension) AGAINST ('$search->match' IN BOOLEAN MODE) > 0")
 
@@ -35,14 +32,14 @@ class ProductosController extends Controller
                     ->orWhere("costo", "LIKE", $search->like)
                     ->orWhere("existencia", "LIKE", $search->like);
             }
-            $query->with("precios");
-            if ($request->query("limit")) {
-                $items = $query->paginate($request->query("limit"));
-            } else {
-                $items = $query->get();
-            }
-            return $items;
         }
+        $query->with("precios");
+        if ($request->query("limit")) {
+            $items = $query->paginate($request->query("limit"));
+        } else {
+            $items = $query->get();
+        }
+        return $items;
     }
     public function porPresentacion(Request $request)
     {
@@ -301,16 +298,9 @@ class ProductosController extends Controller
             $producto->nombre = $request->nombre;
             $producto->marca = $request->marca;
             $producto->dimension = $request->dimension;
-            //if ($request->existencia_nueva > 0) {
-            //    $producto->existencia = $producto->existencia + $request->existencia_nueva;
-            //}
-            //$producto->costo = $request->costo;
-            //$producto->precio = $request->precio;
-            //$producto->caducidad = $request->caducidad;
             $producto->save();
-
             $producto->precios()->delete();
-
+            $vencimientos = [];
             if ($request->precios) {
                 $costo_base = 0;
                 $costo_unitario = 0;
@@ -322,10 +312,6 @@ class ProductosController extends Controller
                         $costo_base = $p["costo_nuevo"] / $p["cantidad"];
                     }
                 }
-
-
-
-
                 foreach ($request->precios as $key => $p) {
                     $precio = new Precio();
                     $precio->idproducto = $producto->idproducto;
@@ -334,6 +320,8 @@ class ProductosController extends Controller
                     $precio->nombre = $p["nombre"];
                     $precio->costo = $p["costo"];
 
+                    if ($p->vencimiento) {
+                    }
 
                     if ($p["costo_nuevo"] > 0) {
                         $precio->costo = $p["costo_nuevo"];
@@ -342,12 +330,9 @@ class ProductosController extends Controller
                             $precio->costo = $costo_base * $p["cantidad"];
                         }
                     }
-
                     if (!$precio->costo) {
                         $precio->costo = $costo_unitario * $p["cantidad"];
                     }
-
-                    //$precio->existencia = (float)$p["existencia"] + (float)$p["stock_nuevo"];
                     $producto->existencia = (float)$producto->existencia + ((float)$p["stock_nuevo"] * (float)$precio->cantidad);
                     $producto->precios()->save($precio);
                 }

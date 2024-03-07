@@ -1,107 +1,15 @@
 <template>
     <div>
         <div class="">
-            <v-row dense>
-                <v-col cols="12">
-                    <v-form ref="formCodigo" @submit="skBuscar">
-                        <v-card outlined elevation="3" tile>
-                            <v-card-text>
-                                <v-row dense>
-                                    <v-col cols="12" sm="6" class="py-0">
-                                        <v-text-field
-                                            height="60"
-                                            style="font-size: 25px"
-                                            label="Código de Barras [CTRL+Q]"
-                                            v-shortkey="['ctrl', 'q']"
-                                            @shortkey.native="skBuscarCodigo"
-                                            v-model="codigo"
-                                            :rules="[rules.requerido]"
-                                            ref="buscarCodigo"
-                                            prepend-icon="mdi-barcode"
-                                            placeholder="Ingrese el Codigo"
-                                            @keypress.enter="skBuscar"
-                                        ></v-text-field>
-                                    </v-col>
-
-                                    <v-col
-                                        cols="12"
-                                        sm="2"
-                                        class="d-flex justify-center align-center py-0"
-                                    >
-                                        <v-btn
-                                            outlined
-                                            block
-                                            color="accent"
-                                            @click="skBuscar"
-                                            :loading="isLoading"
-                                            v-shortkey="['ctrl', 'b']"
-                                            @shortkey.native="skBuscar"
-                                        >
-                                            Buscar [CTRL+B]
-                                            <v-icon right
-                                                >mdi-cloud-search-outline</v-icon
-                                            >
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col
-                                        cols="12"
-                                        sm="2"
-                                        class="d-flex justify-center py-0 align-center"
-                                    >
-                                        <v-btn
-                                            outlined
-                                            block
-                                            color="grey"
-                                            @click="generarCodigo"
-                                            :loading="isLoading"
-                                        >
-                                            Generar Codigo
-                                            <v-icon right
-                                                >mdi-qrcode-plus</v-icon
-                                            >
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col
-                                        cols="12"
-                                        sm="2"
-                                        class="d-flex justify-center py-0 align-center"
-                                    >
-                                        <v-btn
-                                            outlined
-                                            block
-                                            color="grey"
-                                            @click="skLimpiar"
-                                            v-shortkey="['ctrl', 'l']"
-                                            @shortkey="skLimpiar"
-                                            :loading="isLoading"
-                                        >
-                                            Limpiar [CTRL+L]
-                                            <v-icon right>mdi-broom</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
-                    </v-form>
-                </v-col>
-                <v-col
-                    cols="12"
-                    class="d-flex justify-center align-center"
-                    v-if="isLoading"
-                >
-                    <v-progress-circular
-                        color="primary"
-                        indeterminate
-                    ></v-progress-circular>
-                </v-col>
-            </v-row>
             <div class="top-sticky" v-if="isFound && !isLoading">
                 <v-card tile color="teal" dark elevation="0">
                     <div
                         class="py-2 px-2"
                         style="font-family: 'Roboto'; font-size: 2em"
                     >
-                        <span v-if="isNew">Producto Sin Registrar</span>
+                        <span v-if="!data.nombre">
+                            Producto Sin Registrar
+                        </span>
                         <span v-else>
                             {{ data.nombre }}
                             {{ data.marca }}
@@ -143,34 +51,40 @@
                                 <v-divider inset></v-divider>
                                 <v-card-text class="py-2">
                                     <v-row dense>
-                                        <v-col cols="12" md="2" class="py-0">
-                                            <span class="subtitle">
-                                                Codigo
-                                                <span class="red--text">*</span>
-                                            </span>
-                                            <v-text-field
-                                                disabled
+                                        <v-col cols="12" md="4" class="py-0">
+                                            <form-text-field
                                                 v-model="data.codigo"
+                                                v-shortkey="['ctrl', '1']"
+                                                @shortkey.native="
+                                                    skEnfocarTextField('codigo')
+                                                "
                                                 ref="codigo"
                                                 :rules="[rules.requerido]"
                                                 dense
                                                 outlined
-                                                prepend-icon="mdi-barcode"
-                                                placeholder="Nombre"
-                                            ></v-text-field>
+                                                label="Código"
+                                                placeholder="Código de barras Producto"
+                                            >
+                                                <template v-slot:append-outer>
+                                                    <div class="pt-1 pl-1">
+                                                        <v-btn
+                                                            icon
+                                                            @click="
+                                                                generarCodigo
+                                                            "
+                                                        >
+                                                            <v-icon>
+                                                                mdi-autorenew
+                                                            </v-icon>
+                                                        </v-btn>
+                                                    </div>
+                                                </template>
+                                            </form-text-field>
                                         </v-col>
-
-                                        <v-col cols="12" md="4" class="py-0">
-                                            <span class="subtitle">
-                                                Producto
-                                                <span class="red--text">*</span>
-                                            </span>
-                                            <v-textarea
-                                                v-shortkey="['ctrl', '1']"
-                                                @shortkey.native="
-                                                    skEnfocarTextField('nombre')
-                                                "
-                                                ref="nombre"
+                                        <v-col cols="12" md="8" class="py-0">
+                                            <form-text-area
+                                                ref="producto"
+                                                label="Producto"
                                                 v-model="data.nombre"
                                                 :rules="[
                                                     rules.requerido,
@@ -180,83 +94,35 @@
                                                 outlined
                                                 rows="1"
                                                 prepend-icon="mdi-tag-outline"
-                                                placeholder="Nombre"
-                                            ></v-textarea>
+                                                placeholder="Producto"
+                                            ></form-text-area>
                                         </v-col>
-                                        <v-col cols="12" md="3" class="py-0">
-                                            <span class="subtitle">
-                                                Marca
-                                            </span>
-                                            <v-text-field
+                                        <v-col cols="12" md="4" class="py-0">
+                                            <form-text-field
+                                                label="Marca"
                                                 v-model="data.marca"
                                                 dense
                                                 outlined
-                                                rows="1"
-                                                prepend-icon="mdi-trademark"
                                                 placeholder="Marca"
-                                            ></v-text-field>
+                                            ></form-text-field>
                                         </v-col>
-                                        <v-col cols="12" md="3" class="py-0">
-                                            <span class="subtitle">
-                                                Tamaño o Dimensión
-                                            </span>
-                                            <v-text-field
+                                        <v-col cols="12" md="4" class="py-0">
+                                            <form-text-field
+                                                label="Dimensión"
                                                 v-model="data.dimension"
                                                 dense
                                                 outlined
-                                                rows="1"
-                                                prepend-icon="mdi-image-size-select-small"
-                                                placeholder="Tamaño o Dimensión"
-                                            ></v-text-field>
+                                                placeholder="Dimensión o Tamaño del Producto"
+                                            ></form-text-field>
                                         </v-col>
-                                        <v-col
-                                            cols="12"
-                                            md="3"
-                                            class="py-0"
-                                            v-if="false"
-                                        >
-                                            <span class="subtitle">
-                                                Costo Unitario
-                                            </span>
-                                            <v-text-field
-                                                ref="costo"
-                                                type="number"
-                                                prefix="Q"
-                                                v-model="data.costo"
-                                                :rules="[rules.min0]"
+                                        <v-col cols="12" md="4" class="py-0">
+                                            <form-text-field
+                                                label="Detalles"
+                                                v-model="data.dimension"
                                                 dense
                                                 outlined
-                                                prepend-icon="mdi-text-box-outline"
-                                                placeholder="##.##"
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col
-                                            cols="12"
-                                            md="3"
-                                            class="py-0"
-                                            v-if="false"
-                                        >
-                                            <span class="subtitle">
-                                                Precio Unitario
-                                                <span class="red--text">*</span>
-                                            </span>
-                                            <v-text-field
-                                                ref="precioUnitario"
-                                                v-shortkey="['ctrl', 'd']"
-                                                @shortkey.native="
-                                                    skEnfocarTextField(
-                                                        'precioUnitario'
-                                                    )
-                                                "
-                                                type="number"
-                                                prefix="Q"
-                                                v-model="data.precio"
-                                                :rules="[rules.min0]"
-                                                dense
-                                                outlined
-                                                prepend-icon="mdi-text-box-outline"
-                                                placeholder="##.##"
-                                            ></v-text-field>
+                                                placeholder="Detalles adicionales del producto"
+                                            ></form-text-field>
                                         </v-col>
                                     </v-row>
                                 </v-card-text>
@@ -290,7 +156,7 @@
                                 </v-card-text>
                             </v-card>
                         </v-col>
-                        <v-col cols="12" md="8">
+                        <v-col cols="12" md="12">
                             <v-row dense>
                                 <v-col cols="12" md="12">
                                     <v-card
@@ -348,11 +214,13 @@
                                 </v-col>
                             </v-row>
                         </v-col>
-                        <v-col cols="12" md="4">
+                        <v-col cols="12" md="12">
                             <v-card outlined elevation="0" class="rounded-lg">
                                 <v-card-title> Vencimientos </v-card-title>
-                                <v-card-divider></v-card-divider>
-                                <v-card-text> Vencimientos </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-text>
+                                    <productos-vencimientos></productos-vencimientos>
+                                </v-card-text>
                             </v-card>
                         </v-col>
                     </v-row>
@@ -405,6 +273,9 @@
 </template>
 
 <script>
+import FormTextArea from "../../../components/forms/form-text-area.vue";
+import FormTextField from "../../../components/forms/form-text-field.vue";
+import ProductosVencimientos from "../../../components/tienda/productos/productosVencimientos.vue";
 import ProductosPresentaciones from "../../../components/tienda/productos/productosPresentaciones.vue";
 import ProductoExistencia from "../../../components/tienda/productos/productoExistencia.vue";
 import ProductoStock from "../../../components/tienda/productos/productoStock.vue";
@@ -418,20 +289,19 @@ export default {
         ProductoStock,
         ProductoExistencia,
         ProductosPresentaciones,
+        ProductosVencimientos,
+        FormTextField,
+        FormTextArea,
     },
     mounted() {
-        this.$refs.buscarCodigo.$refs.input.focus();
-        if (this.$route.query.codigo) {
-            this.codigo = this.$route.query.codigo;
-            this.$nextTick(() => {
-                this.skBuscar();
-            });
-        }
+        this.$nextTick(() => {
+            this.$refs["codigo"].$refs["field"].$refs.input.select();
+        });
     },
     data: () => ({
         isLoading: false,
-        isNew: false,
-        isFound: false,
+        isNew: true,
+        isFound: true,
         saved: false,
         codigo: "",
         data: {
@@ -444,7 +314,7 @@ export default {
             caducidad: "",
             existencia: 0,
             precio: 0,
-            precios: [],
+            precios: [{}],
             recalcular_costo: false,
         },
         error: {
@@ -466,10 +336,11 @@ export default {
     methods: {
         generarCodigo() {
             let cod = Math.floor(Math.random() * (999999 - 9999 + 1)) + 9999;
-            this.codigo = cod;
-            setTimeout(() => {
-                this.skBuscar();
-            }, 100);
+            this.data.codigo = cod * 2;
+        },
+        skEnfocarTextField(n) {
+            this.$refs[n].$refs["field"].$refs.input.select();
+            this.$refs[n].$refs["field"].$refs.input.focus();
         },
         skBuscarCodigo() {
             this.$refs.buscarCodigo.$refs.input.select();
@@ -513,10 +384,7 @@ export default {
             this.isFound = false;
             this.$refs.buscarCodigo.$refs.input.focus();
         },
-        skEnfocarTextField(n) {
-            this.$refs[n].$refs.input.select();
-            this.$refs[n].$refs.input.focus();
-        },
+
         productoNuevo() {
             this.$nextTick(() => {
                 this.$refs.nombre.$refs.input.focus();

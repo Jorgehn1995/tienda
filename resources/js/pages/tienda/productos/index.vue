@@ -1,5 +1,18 @@
 <template>
     <div>
+        <busqueda-text-field prefix="productos_search">
+            <v-btn
+                dark
+                block
+                color="teal"
+                to="/tienda/productos/editar"
+                v-shortkey="['ctrl', 'l']"
+                :loading="isLoading"
+            >
+                Agregar [CTRL+A]
+                <v-icon right>mdi-plus</v-icon>
+            </v-btn>
+        </busqueda-text-field>
         <v-container>
             <div class="d-flex flex-grow-1 flex-column">
                 <v-row class="flex-grow-0" dense>
@@ -7,7 +20,7 @@
                         <t-listar
                             ref="tabla"
                             tableID="actividades.profesores"
-                            prefix="usuarios_"
+                            prefix="productos_"
                             show-select
                             show-expand
                             toggle-columns
@@ -21,6 +34,7 @@
                             :truncate="true"
                             :show_menu="true"
                             :pagination="50"
+                            :toolbar="false"
                         >
                             <template
                                 v-slot:toolbar.name="{ reload, isReloading }"
@@ -46,67 +60,50 @@
                                     index,
                                 }"
                             >
+                                <v-card-title>
+                                    <a
+                                        class="undertext black--text font-weight-bold text-decoration-none"
+                                        :href="
+                                            '/tienda/productos/' +
+                                            item.idproducto
+                                        "
+                                    >
+                                        {{ item.nombre }} {{ item.marca }}
+                                        {{ item.dimension }}
+                                    </a>
+                                </v-card-title>
                                 <v-card-text class="px-2">
                                     <v-row dense style="height: 100%">
-                                        <v-col cols="5">
-                                            <v-row dense>
-                                                <v-col cols="12" md="4">
-                                                    <a
-                                                        class="text-right undertext teal--text font-weight-bold text-decoration-none"
-                                                        style="width: 100%"
-                                                        :href="
-                                                            '/tienda/productos/' +
-                                                            item.idproducto
-                                                        "
-                                                    >
-                                                        {{ item.codigo }}
-                                                    </a>
-                                                </v-col>
-                                                <v-col cols="12" md="8">
-                                                    <a
-                                                        class="undertext teal--text font-weight-bold text-decoration-none"
-                                                        style="width: 100%"
-                                                        :href="
-                                                            '/tienda/productos/' +
-                                                            item.idproducto
-                                                        "
-                                                    >
-                                                        {{ item.nombre }}
-                                                    </a>
-                                                </v-col>
-                                            </v-row>
+                                        <v-col cols="4" md="4">
+                                            <a
+                                                class="text-left undertext teal--text font-weight-bold text-decoration-none"
+                                                style="width: 100%"
+                                                :href="
+                                                    '/tienda/productos/' +
+                                                    item.idproducto
+                                                "
+                                            >
+                                                <v-icon>mdi-barcode</v-icon>
+                                                <span>{{ item.codigo }}</span>
+                                            </a>
                                         </v-col>
-                                        <v-col cols="7">
-                                            <v-row dense>
-                                                <v-col cols="12" md="3">
-                                                    <a
-                                                        class="undertext teal--text font-weight-bold text-decoration-none"
-                                                        style="width: 100%"
-                                                        :href="
-                                                            '/tienda/productos/' +
-                                                            item.idproducto
-                                                        "
-                                                    >
-                                                        {{ item.dimension }}
-                                                    </a>
-                                                </v-col>
-                                                <v-col cols="12" md="2">
-                                                    <div
-                                                        class="undertext info--text"
-                                                        style="width: 100%"
-                                                    >
-                                                        {{ item.marca }}
-                                                    </div>
-                                                </v-col>
-
-                                                <v-col cols="12" md="3">
-                                                    {{ item.existencia }}
-                                                    {{ item.unidades }}
-                                                </v-col>
-                                                <v-col cols="12" md="4">
-                                                    01/02/2024
-                                                </v-col>
-                                            </v-row>
+                                        <v-col cols="4" md="4">
+                                            <v-chip
+                                                color="green"
+                                                dark
+                                                small
+                                                v-if="item.existencia > 0"
+                                            >
+                                                {{ item.existencia }}
+                                                {{ item.unidades }}
+                                            </v-chip>
+                                            <v-chip v-else small>
+                                                {{ item.existencia }}
+                                                {{ item.unidades }}
+                                            </v-chip>
+                                        </v-col>
+                                        <v-col cols="4" md="4">
+                                            01/02/2024
                                         </v-col>
                                     </v-row>
                                 </v-card-text>
@@ -322,13 +319,19 @@
 </template>
 
 <script>
+import BusquedaTextField from "../../../components/busqueda/busquedaTextField.vue";
 import ProductosMostrarPrecio from "../../../components/tienda/productos/productosMostrarPrecio.vue";
 import VOptions from "../../../components/tienda/generales/v-options.vue";
 import TListar from "../../../components/tienda/generales/t-listar.vue";
 
 import { mapActions } from "vuex";
 export default {
-    components: { TListar, VOptions, ProductosMostrarPrecio },
+    components: {
+        TListar,
+        VOptions,
+        ProductosMostrarPrecio,
+        BusquedaTextField,
+    },
 
     mounted() {
         //this.init();

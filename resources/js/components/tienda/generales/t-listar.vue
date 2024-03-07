@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="mb-2">
+        <div class="mb-2" v-if="toolbar">
             <div>
                 <v-row dense>
                     <v-col
@@ -180,6 +180,10 @@ export default {
         top: {
             type: [Number, String],
             default: 250,
+        },
+        toolbar: {
+            type: Boolean,
+            default: true,
         },
         truncate: {
             type: Boolean,
@@ -405,12 +409,12 @@ export default {
         },
         search: {
             get: function () {
-                return this.$route.query[this.prefix + "s"] || "";
+                return this.$route.query[this.prefix + "search"] || "";
             },
             set: function (nuevoValor) {
                 this.page = 1;
                 this.actualizarRuta(
-                    this.prefix + "s",
+                    this.prefix + "search",
                     nuevoValor,
                     nuevoValor == ""
                 );
