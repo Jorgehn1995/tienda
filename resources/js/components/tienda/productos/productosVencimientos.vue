@@ -24,17 +24,19 @@
                             {{ moment(v.ingreso).format("DD/MM/Y") }}
                         </td>
                         <td class="text-center">
-                            <div style="min-width: 150px; max-width: 150px">
-                                <v-text-field
-                                    type="date"
-                                    v-model="vencimientos[i].vencimiento"
-                                    persistent-hint
-                                    dense
-                                    outlined
-                                    placeholder="###"
-                                    @focus="$event.target.select()"
-                                    hide-details=""
-                                ></v-text-field>
+                            <div class="d-flex justify-center align-center">
+                                <div style="min-width: 150px; max-width: 150px">
+                                    <v-text-field
+                                        type="date"
+                                        v-model="vencimientos[i].vencimiento"
+                                        persistent-hint
+                                        dense
+                                        outlined
+                                        placeholder="###"
+                                        @focus="$event.target.select()"
+                                        hide-details=""
+                                    ></v-text-field>
+                                </div>
                             </div>
                         </td>
                         <td class="text-center">
@@ -71,30 +73,32 @@
                             {{ v.detalles }}
                         </td>
                         <td class="text-center">
-                            <div style="min-width: 170px; max-width: 170px">
-                                <v-select
-                                    outlined
-                                    class="rounded-lg"
-                                    dense
-                                    hide-details=""
-                                    :items="estados"
-                                    v-model="vencimientos[i].activo"
-                                >
-                                    <template v-slot:selection="{ item }">
-                                        <v-chip
-                                            small
-                                            dark
-                                            :color="
-                                                item.value ? 'teal' : 'info'
-                                            "
-                                        >
-                                            <v-icon left small>{{
-                                                item.icon
-                                            }}</v-icon>
-                                            {{ item.text }}
-                                        </v-chip>
-                                    </template>
-                                </v-select>
+                            <div class="d-flex justify-center align-center">
+                                <div style="min-width: 170px; max-width: 170px">
+                                    <v-select
+                                        outlined
+                                        class="rounded-lg"
+                                        dense
+                                        hide-details=""
+                                        :items="estados"
+                                        v-model="vencimientos[i].activo"
+                                    >
+                                        <template v-slot:selection="{ item }">
+                                            <v-chip
+                                                small
+                                                dark
+                                                :color="
+                                                    item.value ? 'teal' : 'info'
+                                                "
+                                            >
+                                                <v-icon left small>{{
+                                                    item.icon
+                                                }}</v-icon>
+                                                {{ item.text }}
+                                            </v-chip>
+                                        </template>
+                                    </v-select>
+                                </div>
                             </div>
                         </td>
                     </tr>

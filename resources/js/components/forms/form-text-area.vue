@@ -31,6 +31,7 @@
                         :readonly="readonly"
                         @click="$emit('click:field')"
                         @keyup="uppercase"
+                        :dense="dense"
                     >
                         <template v-slot:append>
                             <slot name="append"></slot>
@@ -58,6 +59,10 @@ import FormStructField from "./form-struct-field.vue";
 export default {
     components: { FormStructField },
     props: {
+        dense: {
+            type: Boolean,
+            default: false,
+        },
         type: {
             type: String,
             default: "text",

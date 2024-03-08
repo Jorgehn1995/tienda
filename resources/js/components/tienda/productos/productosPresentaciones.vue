@@ -30,6 +30,7 @@
                                     placeholder="Nombre de la presentacion"
                                     persistent-hint
                                     outlined
+                                    dense
                                 ></v-text-field>
                             </div>
                         </td>
@@ -43,6 +44,7 @@
                                     persistent-hint
                                     class="rounded-lg"
                                     outlined
+                                    dense
                                     placeholder="###"
                                 ></v-text-field>
                             </div>
@@ -65,6 +67,7 @@
                                     type="number"
                                     :rules="[rules.min0]"
                                     class="rounded-lg"
+                                    dense
                                     outlined
                                     prefix="Q"
                                     :placeholder="posiblePrecio(index)"

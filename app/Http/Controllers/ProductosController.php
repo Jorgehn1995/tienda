@@ -273,8 +273,6 @@ class ProductosController extends Controller
     public function crear(Request $request)
     {
 
-
-
         if ($request->idproducto == 0) {
             $request->validate([
                 'codigo' => 'bail|required|max:40',
@@ -290,7 +288,7 @@ class ProductosController extends Controller
                 'precios.*.precio' => 'bail|required|numeric',
             ]);
         }
-
+        $id = 0;
         try {
             DB::beginTransaction();
 
@@ -373,6 +371,7 @@ class ProductosController extends Controller
             DB::rollback();
             return response("error: " . $e->getMessage(), 404);
         }
-        return "Producto Guardado";
+        $id = $producto->idproducto;
+        return $this->ver($id);
     }
 }

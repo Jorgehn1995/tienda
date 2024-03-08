@@ -30,6 +30,7 @@
                         :readonly="readonly"
                         @click="$emit('click:field')"
                         @keyup="uppercase"
+                        :dense="dense"
                     >
                         <template v-slot:append>
                             <slot name="append"></slot>
@@ -138,6 +139,10 @@ export default {
             default: false,
         },
         upper: {
+            type: Boolean,
+            default: false,
+        },
+        dense: {
             type: Boolean,
             default: false,
         },

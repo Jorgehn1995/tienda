@@ -1,6 +1,25 @@
 <template>
     <div>
-        <div class="">
+        <div
+            style="height: 200px; width: 100%"
+            class="d-flex justify-center align-center"
+            v-if="isLoading"
+        >
+            <v-progress-circular
+                color="primary"
+                indeterminate
+            ></v-progress-circular>
+        </div>
+        <div
+            style="height: 200px; width: 100%"
+            class="d-flex justify-center align-center flex-column"
+            v-else-if="!isFound"
+        >
+            <v-icon size="100" color="grey">mdi-database-remove-outline</v-icon>
+
+            <p class="pt-2 grey--text">No se ha encontrado el producto</p>
+        </div>
+        <div v-else>
             <div class="top-sticky" v-if="isFound && !isLoading">
                 <v-card tile color="teal" dark elevation="0">
                     <div
@@ -335,7 +354,6 @@
                                 </v-card-text>
                             </v-card>
                         </v-col>
-
                         <v-col cols="12" md="12">
                             <v-card outlined elevation="0" class="rounded-lg">
                                 <v-card-title> Vencimientos </v-card-title>
@@ -363,27 +381,39 @@
                                 </v-card-text>
                             </v-card>
                         </v-col>
+                        <v-col cols="12">
+                            <div class="d-flex">
+                                <v-btn outlined @click="$router.go(-1)">
+                                    <v-icon left>mdi-chevron-left</v-icon>
+                                    Regresar
+                                </v-btn>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    color="teal"
+                                    dark
+                                    outlined
+                                    class="mr-2"
+                                    @click="procesar(false)"
+                                >
+                                    <v-icon left>mdi-content-save</v-icon>
+                                    Guardar y Ver
+                                </v-btn>
+                                <v-btn
+                                    color="teal"
+                                    dark
+                                    @shortkey.native="procesar()"
+                                    @click="procesar()"
+                                    v-shortkey="['ctrl', 'enter']"
+                                >
+                                    <v-icon left>
+                                        mdi-arrow-u-left-bottom
+                                    </v-icon>
+                                    Guardar y Regresar [CTRL+ENTER]
+                                </v-btn>
+                            </div>
+                        </v-col>
                     </v-row>
                 </v-form>
-                <v-bottom-navigation app>
-                    <v-btn
-                        v-shortkey="['ctrl', 'enter']"
-                        @shortkey.native="procesar()"
-                        large
-                        color="primary"
-                        tile
-                        dark
-                        style="white--text"
-                        @click="procesar()"
-                    >
-                        <span class="white--text">
-                            Guardar y Agregar otro
-                        </span>
-                        <span class="white--text"
-                            ><strong>[CTRL+ENTER]</strong></span
-                        >
-                    </v-btn>
-                </v-bottom-navigation>
             </v-container>
 
             <v-nice-modal v-model="saved" @go="confirmado()">
@@ -441,6 +471,7 @@ export default {
     },
     data: () => ({
         isLoading: false,
+        isSaving: false,
         isNew: true,
         isFound: true,
         saved: false,
@@ -511,8 +542,9 @@ export default {
                 .get("/productos/" + this.id)
                 .then((result) => {
                     this.isLoading = false;
+                    this.isFound = true;
                     this.data = result.data;
-                    this.isNew = result.data.nombre == "";
+
                     this.isFound = true;
                 })
                 .catch((err) => {
@@ -528,29 +560,25 @@ export default {
                 this.procesar();
             }
         },
-        async procesar() {
+        async procesar(regresar = true) {
             if (this.$refs.formProducto.validate()) {
-                this.isLoading = true;
+                this.isSaving = true;
                 await this.$axios
                     .post("/productos", this.data)
                     .then((result) => {
-                        this.saved = true;
-                        setTimeout(() => {
-                            this.saved = false;
-                        }, 200);
+                        if (regresar) {
+                            this.$router.go(-1);
+                        } else {
+                            this.$router.replace(
+                                "/tienda/productos/" + result.data.idproducto
+                            );
+                        }
                     })
                     .catch((err) => {
-                        let errores = err.response.data.errors;
-                        for (const key in errores) {
-                            for (const error in errores[key]) {
-                                this.error.msg =
-                                    "• " + errores[key][error] + "<br>";
-                            }
-                        }
-
-                        this.error.status = true;
+                        console.log(err);
+                        //this.error.status = true;
                     });
-                this.isLoading = false;
+                this.isSaving = false;
             }
         },
         confirmado() {
