@@ -143,11 +143,9 @@ export default {
                 let cantidadPresentaciones = Math.floor(
                     existencias / presentacion.cantidad
                 );
-
                 presentacionesDisponibles[presentacion.idprecio] =
                     cantidadPresentaciones;
                 existencias -= cantidadPresentaciones * presentacion.cantidad;
-                console.log(cantidadPresentaciones, existencias);
             });
 
             this.cantidades = presentacionesDisponibles;

@@ -339,8 +339,24 @@
                         <v-col cols="12" md="12">
                             <v-card outlined elevation="0" class="rounded-lg">
                                 <v-card-title> Vencimientos </v-card-title>
+                                <v-card-subtitle>
+                                    Visualiza los ultimos 10 ingresos de
+                                    productos y modifica las fechas de
+                                    vencimiento de los productos ingresados
+                                </v-card-subtitle>
                                 <v-divider></v-divider>
                                 <v-card-text>
+                                    <p>
+                                        Si quieres marcar producto como revisado
+                                        debes ingresar, al apartado de revisar
+                                        mercadería
+                                    </p>
+                                    <v-btn text outlined>
+                                        <v-icon left>
+                                            mdi-file-document-outline
+                                        </v-icon>
+                                        Revisión de Productos
+                                    </v-btn>
                                     <productos-vencimientos
                                         v-model="data.vencimientos"
                                     ></productos-vencimientos>

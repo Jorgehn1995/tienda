@@ -83,7 +83,7 @@ class ProductosController extends Controller
     public function ver($idproducto)
     {
 
-        $producto = Producto::with("precios", "vencimientos")->find($idproducto);
+        $producto = Producto::with("precios")->find($idproducto);
 
         if (!$producto) {
             return [
@@ -106,6 +106,8 @@ class ProductosController extends Controller
                 ]]
             ];
         }
+        $vencimientos = Vencimiento::where("idproducto", $idproducto)->orderBy("created_at", "desc")->limit(10)->get();
+        $producto->vencimientos = $vencimientos;
         $producto->existencia_nueva = 0;
         $producto->precios;
 
@@ -357,6 +359,15 @@ class ProductosController extends Controller
             }
             $producto->existencia = (float)$producto->existencia + $existencia;
             $producto->save();
+            foreach ($request->vencimientos as $key => $v) {
+                $vencimiento = Vencimiento::find($v["idvencimiento"]);
+                if ($vencimiento) {
+                    $vencimiento->vencimiento = $v["vencimiento"];
+                    $vencimiento->activo = $v["activo"];
+                    $vencimiento->save();
+                }
+            }
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
