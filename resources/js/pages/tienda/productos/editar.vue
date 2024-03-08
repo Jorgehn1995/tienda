@@ -23,6 +23,7 @@
             <div class="top-sticky" v-if="isFound && !isLoading">
                 <v-card tile color="teal" dark elevation="0">
                     <div
+                        v-if="$vuetify.breakpoint.smAndUp"
                         class="py-2 px-2"
                         style="font-family: 'Roboto'; font-size: 2em"
                     >
@@ -34,6 +35,25 @@
                             {{ data.marca }}
                             {{ data.dimension }}
                         </span>
+                    </div>
+                    <div v-else class="py-2 px-2">
+                        <span v-if="!data.nombre">
+                            Producto Sin Registrar
+                        </span>
+                        <div v-else>
+                            <span
+                                style="font-family: 'Roboto'; font-size: 1.5em"
+                            >
+                                {{ data.nombre }}
+                            </span>
+                            <br />
+                            <span
+                                style="font-family: 'Roboto'; font-size: 1.2em"
+                            >
+                                {{ data.marca }}
+                                {{ data.dimension }}
+                            </span>
+                        </div>
                     </div>
                 </v-card>
             </div>
@@ -73,7 +93,12 @@
                                 <v-divider></v-divider>
                                 <v-card-text class="py-2">
                                     <v-row dense>
-                                        <v-col cols="12" md="4" class="py-0">
+                                        <v-col
+                                            cols="12"
+                                            sm="6"
+                                            md="4"
+                                            class="py-0"
+                                        >
                                             <form-text-field
                                                 v-model="data.codigo"
                                                 v-shortkey="['ctrl', '1']"
@@ -103,7 +128,12 @@
                                                 </template>
                                             </form-text-field>
                                         </v-col>
-                                        <v-col cols="12" md="8" class="py-0">
+                                        <v-col
+                                            cols="12"
+                                            sm="6"
+                                            md="8"
+                                            class="py-0"
+                                        >
                                             <form-text-area
                                                 ref="producto"
                                                 label="Producto"
@@ -119,7 +149,12 @@
                                                 placeholder="Producto"
                                             ></form-text-area>
                                         </v-col>
-                                        <v-col cols="12" md="4" class="py-0">
+                                        <v-col
+                                            cols="12"
+                                            sm="6"
+                                            md="4"
+                                            class="py-0"
+                                        >
                                             <form-text-field
                                                 label="Marca"
                                                 v-model="data.marca"
@@ -128,7 +163,12 @@
                                                 placeholder="Marca"
                                             ></form-text-field>
                                         </v-col>
-                                        <v-col cols="12" md="4" class="py-0">
+                                        <v-col
+                                            cols="12"
+                                            sm="6"
+                                            md="4"
+                                            class="py-0"
+                                        >
                                             <form-text-field
                                                 label="Dimensión"
                                                 v-model="data.dimension"
@@ -137,7 +177,12 @@
                                                 placeholder="Dimensión o Tamaño del Producto"
                                             ></form-text-field>
                                         </v-col>
-                                        <v-col cols="12" md="4" class="py-0">
+                                        <v-col
+                                            cols="12"
+                                            sm="6"
+                                            md="4"
+                                            class="py-0"
+                                        >
                                             <form-text-field
                                                 label="Detalles"
                                                 v-model="data.dimension"
@@ -382,35 +427,60 @@
                             </v-card>
                         </v-col>
                         <v-col cols="12">
-                            <div class="d-flex">
-                                <v-btn outlined @click="$router.go(-1)">
-                                    <v-icon left>mdi-chevron-left</v-icon>
-                                    Regresar
-                                </v-btn>
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                    color="teal"
-                                    dark
-                                    outlined
-                                    class="mr-2"
-                                    @click="procesar(false)"
+                            <v-row dense>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="3"
+                                    order="3"
+                                    order-sm="1"
                                 >
-                                    <v-icon left>mdi-content-save</v-icon>
-                                    Guardar y Ver
-                                </v-btn>
-                                <v-btn
-                                    color="teal"
-                                    dark
-                                    @shortkey.native="procesar()"
-                                    @click="procesar()"
-                                    v-shortkey="['ctrl', 'enter']"
+                                    <v-btn
+                                        outlined
+                                        @click="$router.go(-1)"
+                                        block
+                                    >
+                                        <v-icon left>mdi-chevron-left</v-icon>
+                                        Regresar
+                                    </v-btn>
+                                </v-col>
+
+                                <v-col cols="12" sm="6" md="3" order="2">
+                                    <v-btn
+                                        color="teal"
+                                        dark
+                                        outlined
+                                        @click="procesar(false)"
+                                        block
+                                        :loading="isSaving"
+                                    >
+                                        <v-icon left>mdi-content-save</v-icon>
+                                        Guardar y Ver
+                                    </v-btn>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    sm="12"
+                                    md="6"
+                                    order="1"
+                                    order-sm="3"
                                 >
-                                    <v-icon left>
-                                        mdi-arrow-u-left-bottom
-                                    </v-icon>
-                                    Guardar y Regresar [CTRL+ENTER]
-                                </v-btn>
-                            </div>
+                                    <v-btn
+                                        color="teal"
+                                        dark
+                                        @shortkey.native="procesar()"
+                                        @click="procesar()"
+                                        v-shortkey="['ctrl', 'enter']"
+                                        block
+                                        :loading="isSaving"
+                                    >
+                                        <v-icon left>
+                                            mdi-arrow-u-left-bottom
+                                        </v-icon>
+                                        Guardar y Regresar [CTRL+ENTER]
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
                         </v-col>
                     </v-row>
                 </v-form>

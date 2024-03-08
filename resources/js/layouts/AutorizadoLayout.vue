@@ -9,6 +9,7 @@
             app
             color="surface"
             elevation="3"
+            height="64"
             :flat="isToolbarDetached"
             dark
         >
@@ -47,7 +48,10 @@
                             @shortkey="to('/tienda/productos/verificador')"
                             to="/tienda/productos/verificador"
                         >
-                            Verificador [F1]
+                            <span v-if="$vuetify.breakpoint.smAndDown">
+                                <v-icon> mdi-barcode </v-icon>
+                            </span>
+                            <span v-else> Verificador [F1] </span>
                         </v-btn>
                         <v-btn
                             color="primary"
@@ -55,7 +59,10 @@
                             @shortkey="to('/tienda/vender')"
                             to="/tienda/vender"
                         >
-                            Vender [F4]
+                            <span v-if="$vuetify.breakpoint.smAndDown">
+                                <v-icon> mdi-cart-outline </v-icon>
+                            </span>
+                            <span v-else> Vender [F4] </span>
                         </v-btn>
                         <v-spacer class="d-none d-lg-block"></v-spacer>
                         <v-btn to="/"> Salir </v-btn>
