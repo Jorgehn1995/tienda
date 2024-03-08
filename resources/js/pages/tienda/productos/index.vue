@@ -138,7 +138,13 @@
                                         <v-icon left> mdi-cart-variant </v-icon>
                                         Reporte
                                     </v-btn>
-                                    <v-btn depressed>
+                                    <v-btn
+                                        depressed
+                                        :to="
+                                            '/tienda/productos/editar?id=' +
+                                            item.idproducto
+                                        "
+                                    >
                                         <v-icon left>mdi-pencil-outline</v-icon>
                                         Editar
                                     </v-btn>

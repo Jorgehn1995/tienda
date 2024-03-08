@@ -6,7 +6,7 @@ use App\Models\Detalle;
 use DB;
 use App\Models\Precio;
 use App\Models\Producto;
-
+use App\Models\Vencimiento;
 use Illuminate\Http\Request;
 use App\Traits\BusquedaTrait;
 use Carbon\Carbon;
@@ -80,13 +80,15 @@ class ProductosController extends Controller
             return $items;
         }
     }
-    public function ver($codigo)
+    public function ver($idproducto)
     {
-        $producto = Producto::where("codigo", $codigo)->first();
+
+        $producto = Producto::with("precios", "vencimientos")->find($idproducto);
+
         if (!$producto) {
             return [
                 "idproducto" => 0,
-                "codigo" => $codigo,
+                "codigo" => "",
                 "nombre" => "",
                 "costo" => 0,
                 "existencia" => 0,
@@ -273,7 +275,7 @@ class ProductosController extends Controller
 
         if ($request->idproducto == 0) {
             $request->validate([
-                'codigo' => 'bail|required|unique:productos,codigo|max:40',
+                'codigo' => 'bail|required|max:40',
                 'nombre' => 'bail|required',
                 'precios.*.cantidad' => 'bail|required|numeric',
                 'precios.*.precio' => 'bail|required|numeric',
@@ -300,7 +302,9 @@ class ProductosController extends Controller
             $producto->dimension = $request->dimension;
             $producto->save();
             $producto->precios()->delete();
-            $vencimientos = [];
+            $existencia = 0;
+            $vencimiento = new Vencimiento();
+            $vencimiento->idproducto = $producto->idproducto;
             if ($request->precios) {
                 $costo_base = 0;
                 $costo_unitario = 0;
@@ -311,6 +315,17 @@ class ProductosController extends Controller
                     if ($p["costo_nuevo"]) {
                         $costo_base = $p["costo_nuevo"] / $p["cantidad"];
                     }
+                    if ((float)$p["stock_nuevo"] > 0) {
+                        $vencimiento->ingreso = Carbon::now()->format("Y-m-d");
+                        if ($p["vencimiento"] != "") {
+                            $vencimiento->vencimiento = $p["vencimiento"];
+                        }
+                        if ($vencimiento->detalles) {
+                            $vencimiento->detalles = $vencimiento->detalles . ", " . $p["stock_nuevo"] . " " . $p["nombre"];
+                        } else {
+                            $vencimiento->detalles = $p["stock_nuevo"] . " " . $p["nombre"];
+                        }
+                    }
                 }
                 foreach ($request->precios as $key => $p) {
                     $precio = new Precio();
@@ -320,8 +335,7 @@ class ProductosController extends Controller
                     $precio->nombre = $p["nombre"];
                     $precio->costo = $p["costo"];
 
-                    if ($p->vencimiento) {
-                    }
+
 
                     if ($p["costo_nuevo"] > 0) {
                         $precio->costo = $p["costo_nuevo"];
@@ -333,10 +347,15 @@ class ProductosController extends Controller
                     if (!$precio->costo) {
                         $precio->costo = $costo_unitario * $p["cantidad"];
                     }
-                    $producto->existencia = (float)$producto->existencia + ((float)$p["stock_nuevo"] * (float)$precio->cantidad);
+                    $existencia =  $existencia + ((float)$p["stock_nuevo"] * (float)$precio->cantidad);
                     $producto->precios()->save($precio);
                 }
             }
+            $vencimiento->unidades = $existencia;
+            if ($vencimiento->unidades > 0) {
+                $vencimiento->save();
+            }
+            $producto->existencia = (float)$producto->existencia + $existencia;
             $producto->save();
             DB::commit();
         } catch (\Exception $e) {

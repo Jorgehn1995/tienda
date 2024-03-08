@@ -18,31 +18,37 @@
                 <tbody>
                     <tr v-for="(precio, index) in precios">
                         <td style="height: 60px !important">
-                            <div class="d-flex justify-center align-center">
+                            <div
+                                class="d-flex justify-center align-center"
+                                style="min-width: 120px"
+                            >
                                 <v-text-field
                                     class="rounded-lg"
                                     :ref="'nombre' + index"
                                     v-model="precios[index].nombre"
                                     :rules="[rules.requerido]"
+                                    placeholder="Nombre de la presentacion"
                                     persistent-hint
                                     outlined
                                 ></v-text-field>
                             </div>
                         </td>
                         <td>
-                            <v-text-field
-                                type="number"
-                                :ref="'cantidad' + index"
-                                v-model="precios[index].cantidad"
-                                :rules="[rules.min1]"
-                                persistent-hint
-                                class="rounded-lg"
-                                outlined
-                                placeholder="###"
-                            ></v-text-field>
+                            <div style="min-width: 120px">
+                                <v-text-field
+                                    type="number"
+                                    :ref="'cantidad' + index"
+                                    v-model="precios[index].cantidad"
+                                    :rules="[rules.min1]"
+                                    persistent-hint
+                                    class="rounded-lg"
+                                    outlined
+                                    placeholder="###"
+                                ></v-text-field>
+                            </div>
                         </td>
                         <td class="d-flex justify-center align-top pt-1">
-                            <div class="pt-1">
+                            <div class="pt-1" style="white-space: nowrap">
                                 Q
                                 {{
                                     parseFloat(precios[index].costo).toFixed(2)
@@ -50,19 +56,20 @@
                                 }}
                             </div>
                         </td>
-
                         <td>
-                            <v-text-field
-                                :ref="'3' + index"
-                                v-model="precios[index].precio"
-                                persistent-hint
-                                type="number"
-                                :rules="[rules.min0]"
-                                class="rounded-lg"
-                                outlined
-                                prefix="Q"
-                                :placeholder="posiblePrecio(index)"
-                            ></v-text-field>
+                            <div style="min-width: 120px">
+                                <v-text-field
+                                    :ref="'3' + index"
+                                    v-model="precios[index].precio"
+                                    persistent-hint
+                                    type="number"
+                                    :rules="[rules.min0]"
+                                    class="rounded-lg"
+                                    outlined
+                                    prefix="Q"
+                                    :placeholder="posiblePrecio(index)"
+                                ></v-text-field>
+                            </div>
                         </td>
 
                         <td>
@@ -141,6 +148,7 @@ export default {
                 stock_nuevo: 0,
                 costo: 0,
                 costo_nuevo: 0,
+                vencimiento: "",
             },
             {
                 nombre: "Media Docena",
@@ -150,6 +158,7 @@ export default {
                 stock_nuevo: 0,
                 costo: 0,
                 costo_nuevo: 0,
+                vencimiento: "",
             },
             {
                 nombre: "Docena",
@@ -159,6 +168,7 @@ export default {
                 stock_nuevo: 0,
                 costo: 0,
                 costo_nuevo: 0,
+                vencimiento: "",
             },
             {
                 nombre: "Blister",
@@ -168,6 +178,7 @@ export default {
                 stock_nuevo: 0,
                 costo: 0,
                 costo_nuevo: 0,
+                vencimiento: "",
             },
             {
                 nombre: "Media Caja",
@@ -177,6 +188,7 @@ export default {
                 stock_nuevo: 0,
                 costo: 0,
                 costo_nuevo: 0,
+                vencimiento: "",
             },
             {
                 nombre: "Caja",
@@ -186,6 +198,7 @@ export default {
                 stock_nuevo: 0,
                 costo: 0,
                 costo_nuevo: 0,
+                vencimiento: "",
             },
         ],
         rules: {
@@ -204,6 +217,7 @@ export default {
                 stock_nuevo: 0,
                 costo: 0,
                 costo_nuevo: 0,
+                vencimiento: "",
             });
 
             let name = "nombre" + (this.precios.length - 1);

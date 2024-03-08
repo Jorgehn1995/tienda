@@ -7,7 +7,10 @@
                 <thead>
                     <tr>
                         <th class="text-left">Presentación</th>
-                        <th class="text-center" v-if="false">Costo</th>
+                        <th class="text-center">
+                            Existencia <br />
+                            Actual
+                        </th>
                         <th class="text-center">Cantidad</th>
                         <th class="text-center">Vencimiento</th>
                     </tr>
@@ -16,7 +19,7 @@
                     <tr v-for="(precio, index) in precios">
                         <td>
                             <div
-                                class="d-flex justify-space-around"
+                                class="d-flex justify-space-between"
                                 style="
                                     height: 60px !important;
                                     word-break: normal;
@@ -25,13 +28,16 @@
                                 <div class="d-flex justify-start align-center">
                                     <div class="pr-1">
                                         <div>
-                                            {{ precios[index].nombre }}
+                                            {{
+                                                precios[index].nombre ||
+                                                "Presentacion " + (index + 1)
+                                            }}
                                         </div>
                                         <span
                                             class="caption"
                                             style="white-space: nowrap"
                                         >
-                                            {{ precios[index].cantidad }}
+                                            {{ precios[index].cantidad || 0 }}
                                             unidades
                                         </span>
                                     </div>
@@ -44,42 +50,31 @@
                                         Q
                                         {{
                                             parseFloat(
-                                                precios[index].precio
-                                            ).toFixed(2) | formatCurrency
+                                                precios[index].precio || 0
+                                            ).toFixed(2)
                                         }}
                                     </div>
                                 </div>
                             </div>
                         </td>
-
-                        <td v-if="false">
-                            <v-text-field
-                                type="number"
-                                :ref="'costo' + index"
-                                v-model="precios[index].costo_nuevo"
-                                prefix="Q"
-                                persistent-hint
-                                dense
-                                outlined
-                                prepend-icon="mdi-cash"
-                                placeholder="###"
-                                @focus="$event.target.select()"
-                                hide-details=""
-                            ></v-text-field>
+                        <td class="text-center">
+                            {{ cantidades[precio.idprecio] || 0 }}
                         </td>
                         <td>
-                            <v-text-field
-                                type="number"
-                                :ref="'costo' + index"
-                                v-model="precios[index].stock_nuevo"
-                                persistent-hint
-                                dense
-                                outlined
-                                prepend-icon="mdi-package-variant-closed-plus"
-                                placeholder="###"
-                                @focus="$event.target.select()"
-                                hide-details=""
-                            ></v-text-field>
+                            <div style="min-width: 120px">
+                                <v-text-field
+                                    type="number"
+                                    :ref="'costo' + index"
+                                    v-model="precios[index].stock_nuevo"
+                                    persistent-hint
+                                    dense
+                                    outlined
+                                    prepend-icon="mdi-package-variant-closed-plus"
+                                    placeholder="###"
+                                    @focus="$event.target.select()"
+                                    hide-details=""
+                                ></v-text-field>
+                            </div>
                         </td>
 
                         <td>
@@ -117,20 +112,46 @@ export default {
             type: [Number, String],
             default: 0,
         },
+        existencia: {
+            type: Number,
+            default: 0,
+        },
     },
-
+    mounted() {
+        this.calcularExistencias();
+    },
     data: () => ({
         rules: {
             requerido: (v) => !!v || "Campo Requerido",
             min0: (v) => v > 0 || "El precio debe ser mayor a 0",
             min1: (v) => v >= 1 || "La cantidad debe ser mayor a 0",
         },
+        cantidades: {},
     }),
     methods: {
         skFocus() {
             this.$refs["costo0"][0].$refs.input.focus();
         },
+        calcularExistencias() {
+            let presentaciones = JSON.parse(JSON.stringify(this.precios));
+            presentaciones = presentaciones.reverse();
 
+            let existencias = this.existencia;
+            let presentacionesDisponibles = [];
+
+            presentaciones.forEach((presentacion) => {
+                let cantidadPresentaciones = Math.floor(
+                    existencias / presentacion.cantidad
+                );
+
+                presentacionesDisponibles[presentacion.idprecio] =
+                    cantidadPresentaciones;
+                existencias -= cantidadPresentaciones * presentacion.cantidad;
+                console.log(cantidadPresentaciones, existencias);
+            });
+
+            this.cantidades = presentacionesDisponibles;
+        },
         calcularCosto(p) {
             return (this.costo || 0) * (p.cantidad || 0);
         },
@@ -147,6 +168,11 @@ export default {
             set(n) {
                 this.$emit("input", n);
             },
+        },
+    },
+    watch: {
+        existencia() {
+            this.calcularExistencias();
         },
     },
 };

@@ -7,6 +7,7 @@
             <template v-slot:field>
                 <slot>
                     <v-textarea
+                        ref="field"
                         :rows="rows"
                         :autofocus="autofocus"
                         :prefix="prefix"

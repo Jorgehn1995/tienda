@@ -59,7 +59,7 @@
                                                 v-model="data.codigo"
                                                 v-shortkey="['ctrl', '1']"
                                                 @shortkey.native="
-                                                    skEnfocarTextField('codigo')
+                                                    textfieldEnfocar('codigo')
                                                 "
                                                 ref="codigo"
                                                 :rules="[rules.requerido]"
@@ -73,11 +73,11 @@
                                                         <v-btn
                                                             icon
                                                             @click="
-                                                                generarCodigo
+                                                                codigoGenerar
                                                             "
                                                         >
                                                             <v-icon>
-                                                                mdi-autorenew
+                                                                mdi-qrcode-plus
                                                             </v-icon>
                                                         </v-btn>
                                                     </div>
@@ -153,7 +153,7 @@
                                     venderá el producto
                                 </v-card-subtitle>
                                 <v-divider inset></v-divider>
-                                <v-card-text class="py-2">
+                                <v-card-text class="py-0">
                                     <productos-presentaciones
                                         :costo="data.costo"
                                         :precio_unitario="data.precio"
@@ -163,7 +163,124 @@
                                 </v-card-text>
                             </v-card>
                         </v-col>
-                        <v-col cols="12" md="8">
+                        <v-col cols="12" md="5">
+                            <v-card
+                                outlined
+                                elevation="0"
+                                class="rounded-lg"
+                                height="100%"
+                            >
+                                <v-card-title>
+                                    Registrar Costo
+                                    <v-chip
+                                        label
+                                        color="grey--text text--darken-1"
+                                        class="v-chip--active ml-1"
+                                    >
+                                        [CTRL+3]
+                                    </v-chip>
+                                </v-card-title>
+                                <v-card-subtitle>
+                                    Indica el costo del producto
+                                </v-card-subtitle>
+                                <v-divider></v-divider>
+                                <v-card-text class="pt-0">
+                                    <v-radio-group v-model="costo">
+                                        <v-simple-table>
+                                            <template v-slot:default>
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-left">
+                                                            Presentación
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Costo Actual
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Costo Nuevo
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        v-for="(
+                                                            p, i
+                                                        ) in data.precios"
+                                                        @click="
+                                                            (costo = i),
+                                                                textfieldEnfocar(
+                                                                    'costo' + i,
+                                                                    'corto'
+                                                                )
+                                                        "
+                                                    >
+                                                        <td>
+                                                            <v-radio
+                                                                :key="'p' + i"
+                                                                :label="
+                                                                    p.nombre ||
+                                                                    'Presentacion ' +
+                                                                        (i + 1)
+                                                                "
+                                                                :value="i"
+                                                            ></v-radio>
+                                                        </td>
+                                                        <td>
+                                                            Q
+                                                            {{
+                                                                parseFloat(
+                                                                    p.costo || 0
+                                                                ).toFixed(2)
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                class="pt-1"
+                                                                style="
+                                                                    min-width: 120px;
+                                                                "
+                                                            >
+                                                                <v-text-field
+                                                                    label="Costo Nuevo"
+                                                                    :ref="
+                                                                        'costo' +
+                                                                        i
+                                                                    "
+                                                                    :disabled="
+                                                                        costo !=
+                                                                        i
+                                                                    "
+                                                                    hide-details=""
+                                                                    outlined
+                                                                    class="rounded-lg"
+                                                                    dense
+                                                                    type="number"
+                                                                    prefix="Q"
+                                                                    v-model="
+                                                                        data
+                                                                            .precios[
+                                                                            i
+                                                                        ]
+                                                                            .costo_nuevo
+                                                                    "
+                                                                ></v-text-field>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </template>
+                                        </v-simple-table>
+                                    </v-radio-group>
+                                    <p>
+                                        Selecciona la presentacion e indica el
+                                        costo de la presentación, el resto de
+                                        costos será calculado de forma
+                                        automatica
+                                    </p>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="7">
                             <v-card
                                 outlined
                                 elevation="0"
@@ -190,6 +307,7 @@
                                         :precio_unitario="data.precio"
                                         ref="precios"
                                         v-model="data.precios"
+                                        :existencia="data.existencia"
                                     ></productos-existencias>
                                 </v-card-text>
                                 <v-card-text class="pt-0">
@@ -208,7 +326,7 @@
                                                 <v-list-item-title
                                                     class="text-right teal--text text--darken-3"
                                                 >
-                                                    {{ data.existencia || 0 }}
+                                                    {{ data.existencia }}
                                                     {{ data.unidades }}
                                                 </v-list-item-title>
                                             </v-list-item>
@@ -217,62 +335,15 @@
                                 </v-card-text>
                             </v-card>
                         </v-col>
-                        <v-col cols="12" md="4">
-                            <v-card
-                                outlined
-                                elevation="0"
-                                class="rounded-lg"
-                                height="100%"
-                            >
-                                <v-card-title>
-                                    Costo
-                                    <v-chip
-                                        label
-                                        color="grey--text text--darken-1"
-                                        class="v-chip--active ml-1"
-                                    >
-                                        [CTRL+3]
-                                    </v-chip>
-                                </v-card-title>
-                                <v-card-subtitle>
-                                    Indica el costo del producto
-                                </v-card-subtitle>
-                                <v-divider></v-divider>
-                                <v-card-text>
-                                    <p>
-                                        Selecciona la presentacion e indica el
-                                        costo, el costo de todas las
-                                        presentaciones se basa en el costo
-                                        ingresado
-                                    </p>
-                                    <v-radio-group v-model="costo">
-                                        <v-radio
-                                            v-for="(p, i) in data.precios"
-                                            :key="'p' + i"
-                                            :label="p.nombre"
-                                            :value="i"
-                                        ></v-radio>
-                                    </v-radio-group>
-                                    <form-text-field
-                                        label="Costo"
-                                        v-model="
-                                            data.precios[costo].costo_nuevo
-                                        "
-                                        :hint="
-                                            'Ingresa el costo de la presentacion ' +
-                                            data.precios[costo].nombre
-                                        "
-                                        :persistentHint="true"
-                                    ></form-text-field>
-                                </v-card-text>
-                            </v-card>
-                        </v-col>
+
                         <v-col cols="12" md="12">
                             <v-card outlined elevation="0" class="rounded-lg">
                                 <v-card-title> Vencimientos </v-card-title>
                                 <v-divider></v-divider>
                                 <v-card-text>
-                                    <productos-vencimientos></productos-vencimientos>
+                                    <productos-vencimientos
+                                        v-model="data.vencimientos"
+                                    ></productos-vencimientos>
                                 </v-card-text>
                             </v-card>
                         </v-col>
@@ -326,6 +397,7 @@
 </template>
 
 <script>
+import ProductoUnidadesPresentaciones from "../../../components/productos/productoUnidadesPresentaciones.vue";
 import ProductosExistencias from "../../../components/tienda/productos/productosExistencias.vue";
 import FormTextArea from "../../../components/forms/form-text-area.vue";
 import FormTextField from "../../../components/forms/form-text-field.vue";
@@ -340,11 +412,16 @@ export default {
         ProductosVencimientos,
         FormTextField,
         FormTextArea,
+        ProductoUnidadesPresentaciones,
     },
     mounted() {
-        this.$nextTick(() => {
-            this.$refs["codigo"].$refs["field"].$refs.input.select();
-        });
+        if (this.id) {
+            this.productoObtener();
+        } else {
+            this.$nextTick(() => {
+                this.$refs["codigo"].$refs["field"].$refs.input.select();
+            });
+        }
     },
     data: () => ({
         isLoading: false,
@@ -352,7 +429,8 @@ export default {
         isFound: true,
         saved: false,
         codigo: "",
-        costo: 0,
+        costo: -1,
+        tab: 0,
         data: {
             idproducto: 0,
             codigo: "",
@@ -375,6 +453,7 @@ export default {
                     vencimiento: "",
                 },
             ],
+            vencimientos: [],
             recalcular_costo: false,
         },
         error: {
@@ -394,61 +473,39 @@ export default {
         },
     }),
     methods: {
-        generarCodigo() {
+        codigoGenerar() {
             let cod = Math.floor(Math.random() * (999999 - 9999 + 1)) + 9999;
             this.data.codigo = cod * 2;
+            this.$refs["producto"].$refs["field"].$refs.input.focus();
         },
-        skEnfocarTextField(n) {
-            this.$refs[n].$refs["field"].$refs.input.select();
-            this.$refs[n].$refs["field"].$refs.input.focus();
-        },
-        skBuscarCodigo() {
-            this.$refs.buscarCodigo.$refs.input.select();
-            this.$refs.buscarCodigo.$refs.input.focus();
-        },
-        async skBuscar(e) {
-            if (e) {
-                e.preventDefault();
-            }
-            if (this.$refs.formCodigo.validate()) {
-                this.isLoading = true;
-                this.$axios
-                    .get("/productos/" + this.codigo)
-                    .then((result) => {
-                        this.isLoading = false;
-                        this.data = result.data;
-                        this.isNew = result.data.nombre == "";
-                        this.isFound = true;
-                        if (this.isNew) {
-                            this.productoNuevo();
-                        } else {
-                            //setTimeout(() => {
-                            //    this.$refs.existencia.$refs.input.select();
-                            //    this.$refs.existencia.$refs.input.focus();
-                            //}, 10);
-                        }
-                    })
-                    .catch((err) => {
-                        //this.error.msg = "Usuario no encontrado";
-                        //this.error.status = true;
-                        //setTimeout(() => {
-                        //  this.$router.go(-1);
-                        //}, 3000);
-                    });
+        textfieldEnfocar(n, p = "largo") {
+            if (p == "largo") {
+                this.$refs[n].$refs["field"].$refs.input.select();
+                this.$refs[n].$refs["field"].$refs.input.focus();
+            } else {
+                this.$nextTick(() => {
+                    this.$refs[n][0].$refs.input.select();
+                    this.$refs[n][0].$refs.input.focus();
+                });
             }
         },
-        skLimpiar() {
-            this.codigo = "";
-            this.isLoading = false;
-            this.isNew = false;
-            this.isFound = false;
-            this.$refs.buscarCodigo.$refs.input.focus();
-        },
-
-        productoNuevo() {
-            this.$nextTick(() => {
-                this.$refs.nombre.$refs.input.focus();
-            });
+        async productoObtener() {
+            this.isLoading = true;
+            await this.$axios
+                .get("/productos/" + this.id)
+                .then((result) => {
+                    this.isLoading = false;
+                    this.data = result.data;
+                    this.isNew = result.data.nombre == "";
+                    this.isFound = true;
+                })
+                .catch((err) => {
+                    //this.error.msg = "Usuario no encontrado";
+                    //this.error.status = true;
+                    //setTimeout(() => {
+                    //  this.$router.go(-1);
+                    //}, 3000);
+                });
         },
         confirmar() {
             if (this.$refs.form.validate()) {
@@ -461,7 +518,6 @@ export default {
                 await this.$axios
                     .post("/productos", this.data)
                     .then((result) => {
-                        this.skLimpiar();
                         this.saved = true;
                         setTimeout(() => {
                             this.saved = false;
