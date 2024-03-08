@@ -19,6 +19,7 @@ class ProductosController extends Controller
     {
         $query = Producto::query();
         $query->select("productos.*");
+
         if ($request->query("search") != "") {
 
             if (is_numeric($request->query('search'))) {
@@ -34,6 +35,10 @@ class ProductosController extends Controller
             }
         }
         $query->with("precios");
+        $query->with(['vencimientos' => function ($query) {
+            $query->orderBy("vencimiento", "desc");
+            return $query->limit(5);
+        }]);
         if ($request->query("limit")) {
             $items = $query->paginate($request->query("limit"));
         } else {
@@ -155,12 +160,13 @@ class ProductosController extends Controller
 
         return $producto;
     }
-    public function detalles(Request $request, $idproducto, $group, $inicio, $fin)
+    public function ventas(Request $request, $idproducto, $group, $inicio, $fin)
     {
         $producto = Producto::with('precios')->find($idproducto);
         if (!$producto) {
             return response("Producto no encontrado", 404);
         }
+
 
         $presentaciones = [];
         foreach ($producto->precios as $key => $precio) {

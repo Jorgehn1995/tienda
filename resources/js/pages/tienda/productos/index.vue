@@ -68,10 +68,14 @@
                                             item.idproducto
                                         "
                                     >
-                                        {{ item.nombre }} {{ item.marca }}
-                                        {{ item.dimension }}
+                                        {{ item.nombre }} {{ item.dimension }}
                                     </a>
                                 </v-card-title>
+                                <v-card-subtitle>
+                                    <strong>
+                                        {{ item.marca }}
+                                    </strong>
+                                </v-card-subtitle>
                                 <v-card-text class="px-2">
                                     <v-row dense style="height: 100%">
                                         <v-col cols="4" md="4">
@@ -89,7 +93,8 @@
                                         </v-col>
                                         <v-col cols="4" md="4">
                                             <v-chip
-                                                color="green"
+                                                color="green--text"
+                                                class="v-chip--active"
                                                 dark
                                                 small
                                                 v-if="item.existencia > 0"
@@ -102,9 +107,7 @@
                                                 {{ item.unidades }}
                                             </v-chip>
                                         </v-col>
-                                        <v-col cols="4" md="4">
-                                            01/02/2024
-                                        </v-col>
+                                        <v-col cols="4" md="4"> </v-col>
                                     </v-row>
                                 </v-card-text>
                                 <v-card-actions>
@@ -112,6 +115,7 @@
                                         text
                                         outlined
                                         @click="toggle($event, index, item)"
+                                        v-if="false"
                                     >
                                         <v-icon
                                             v-if="isSelected(item.idproducto)"
@@ -124,49 +128,63 @@
                                         Más Info
                                     </v-btn>
                                     <v-spacer></v-spacer>
-                                    <v-btn depressed>
-                                        <v-icon left>mdi-plus</v-icon>
-                                        Stock
+                                    <v-btn outlined color="green">
+                                        <v-icon left
+                                            >mdi-package-variant-closed-plus</v-icon
+                                        >
                                     </v-btn>
-                                    <v-btn depressed>
-                                        <v-icon left>
-                                            mdi-calendar-outline
-                                        </v-icon>
-                                        Vencimiento
-                                    </v-btn>
-                                    <v-btn depressed>
-                                        <v-icon left> mdi-cart-variant </v-icon>
-                                        Reporte
-                                    </v-btn>
+
                                     <v-btn
-                                        depressed
+                                        outlined
                                         :to="
                                             '/tienda/productos/editar?id=' +
                                             item.idproducto
                                         "
                                     >
                                         <v-icon left>mdi-pencil-outline</v-icon>
-                                        Editar
                                     </v-btn>
-                                    <v-btn depressed>
-                                        <v-icon left>mdi-delete-outline</v-icon>
-                                        Eliminar
-                                    </v-btn>
+
                                     <v-options
                                         :title="item.nombre"
                                         icon="mdi-dots-horizontal"
-                                        v-if="false"
                                     >
+                                        <template v-slot:activator="{ open }">
+                                            <v-btn outlined @click="open">
+                                                <v-icon left>
+                                                    mdi-dots-horizontal
+                                                </v-icon>
+                                            </v-btn>
+                                        </template>
                                         <template v-slot:options>
+                                            <v-list-item>
+                                                <v-list-item-title>
+                                                    Ver Producto
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                            <v-list-item>
+                                                <v-list-item-title>
+                                                    Imprimir
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                            <v-list-item>
+                                                <v-list-item-title>
+                                                    Agregar Existencias
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                            <v-list-item>
+                                                <v-list-item-title>
+                                                    Revisar Vencimientos
+                                                </v-list-item-title>
+                                            </v-list-item>
                                             <v-list-item
                                                 :to="
-                                                    '/tienda/productos/editar?codigo=' +
-                                                    item.codigo
+                                                    '/tienda/productos/editar?id=' +
+                                                    item.idproducto
                                                 "
                                             >
-                                                <v-list-item-title
-                                                    >Editar</v-list-item-title
-                                                >
+                                                <v-list-item-title>
+                                                    Editar
+                                                </v-list-item-title>
                                             </v-list-item>
                                             <v-divider></v-divider>
                                             <v-list-item

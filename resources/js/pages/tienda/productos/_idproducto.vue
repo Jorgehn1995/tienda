@@ -14,13 +14,19 @@
                             elevation="0"
                             outlined
                         >
-                            <div class="px-2 pt-1">
+                            <div
+                                class="d-flex justify-center align-center"
+                                style="font-size: 1.5em !important"
+                            >
                                 <v-card-subtitle>
                                     <v-icon left>mdi-barcode</v-icon>
                                     {{ producto.codigo }}
                                 </v-card-subtitle>
                             </div>
-                            <v-card-title class="pt-1">
+                            <v-card-title
+                                class="d-flex justify-center align-center"
+                                style="font-size: 1.5em !important"
+                            >
                                 {{ producto.nombre }} {{ producto.marca }}
                                 {{ producto.dimension }}
                             </v-card-title>
@@ -37,6 +43,10 @@
                                     <v-card-title>
                                         Presentaciones
                                     </v-card-title>
+                                    <v-card-subtitle>
+                                        Revisa las presentaciones del producto,
+                                        sus costos y ganancias
+                                    </v-card-subtitle>
                                     <v-divider inset> </v-divider>
                                     <v-simple-table>
                                         <template v-slot:default>
@@ -45,19 +55,19 @@
                                                     <th class="text-left">
                                                         Presentacion
                                                     </th>
-                                                    <th class="text-left">
+                                                    <th class="text-center">
                                                         {{ producto.unidades }}
                                                     </th>
-                                                    <th class="text-left">
+                                                    <th class="text-center">
                                                         Costo
                                                     </th>
-                                                    <th class="text-left">
+                                                    <th class="text-center">
                                                         Precio
                                                     </th>
-                                                    <th class="text-left">
+                                                    <th class="text-center">
                                                         Ganancia
                                                     </th>
-                                                    <th class="text-left">
+                                                    <th class="text-center">
                                                         Margen
                                                     </th>
                                                 </tr>
@@ -72,47 +82,190 @@
                                                     <td>
                                                         {{ precio.nombre }}
                                                     </td>
-                                                    <td>
-                                                        {{ precio.cantidad }}
-                                                        {{ producto.unidades }}
+                                                    <td class="text-center">
+                                                        <span
+                                                            style="
+                                                                white-space: nowrap;
+                                                            "
+                                                        >
+                                                            {{
+                                                                precio.cantidad
+                                                            }}
+                                                            {{
+                                                                producto.unidades
+                                                            }}
+                                                        </span>
                                                     </td>
                                                     <td>
-                                                        Q
-                                                        {{ precio.costo }}
+                                                        <mostrar-precio
+                                                            v-model="
+                                                                precio.costo
+                                                            "
+                                                        ></mostrar-precio>
                                                     </td>
                                                     <td>
-                                                        Q
-                                                        {{ precio.precio }}
+                                                        <mostrar-precio
+                                                            v-model="
+                                                                precio.precio
+                                                            "
+                                                        ></mostrar-precio>
                                                     </td>
 
                                                     <td>
-                                                        Q
-                                                        {{
-                                                            precio.precio -
-                                                            precio.costo
-                                                        }}
+                                                        <mostrar-precio
+                                                            :value="
+                                                                precio.precio -
+                                                                precio.costo
+                                                            "
+                                                        ></mostrar-precio>
                                                     </td>
                                                     <td>
-                                                        {{
-                                                            Math.round(
-                                                                ((precio.precio -
-                                                                    precio.costo) /
-                                                                    precio.precio) *
-                                                                    100
-                                                            )
-                                                        }}%
-                                                        <v-progress-circular
-                                                            color="primary"
-                                                            class="ml-1"
-                                                            :value="
-                                                                Math.round(
-                                                                    ((precio.precio -
-                                                                        precio.costo) /
-                                                                        precio.precio) *
-                                                                        100
-                                                                )
+                                                        <div
+                                                            class="d-flex justify-space-between"
+                                                        >
+                                                            <div>
+                                                                <v-progress-circular
+                                                                    color="primary"
+                                                                    class="ml-1"
+                                                                    :value="
+                                                                        Math.round(
+                                                                            ((precio.precio -
+                                                                                precio.costo) /
+                                                                                precio.precio) *
+                                                                                100
+                                                                        )
+                                                                    "
+                                                                ></v-progress-circular>
+                                                            </div>
+                                                            <div>
+                                                                {{
+                                                                    Math.round(
+                                                                        ((precio.precio -
+                                                                            precio.costo) /
+                                                                            precio.precio) *
+                                                                            100
+                                                                    )
+                                                                }}%
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </template>
+                                    </v-simple-table>
+                                </v-card>
+                            </v-col>
+                            <v-col cols="12" md="12">
+                                <v-card
+                                    outlined
+                                    elevation="0"
+                                    class="rounded-lg"
+                                >
+                                    <v-card-title>
+                                        Existencias Actuales
+                                    </v-card-title>
+                                    <v-card-subtitle>
+                                        Revisa las existencias actuales del
+                                        producto y cuales serán los ingresos y
+                                        ganancias previstas
+                                    </v-card-subtitle>
+                                    <v-divider inset> </v-divider>
+                                    <v-simple-table>
+                                        <template v-slot:default>
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">
+                                                        Presentacion
+                                                    </th>
+
+                                                    <th class="text-center">
+                                                        Existencias
+                                                    </th>
+
+                                                    <th class="text-center">
+                                                        Costos
+                                                    </th>
+                                                    <th class="text-center">
+                                                        Ingresos
+                                                        <br />
+                                                        Previstos
+                                                    </th>
+                                                    <th class="text-center">
+                                                        Ganancia
+                                                        <br />
+                                                        Previstas
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr
+                                                    v-for="(
+                                                        precio, i
+                                                    ) in producto.precios"
+                                                    :key="precio.idprecio"
+                                                >
+                                                    <td>
+                                                        <mostrar-presentacion
+                                                            :nombre="
+                                                                precio.nombre
                                                             "
-                                                        ></v-progress-circular>
+                                                            :cantidad="
+                                                                precio.cantidad
+                                                            "
+                                                            :medidas="
+                                                                producto.unidades
+                                                            "
+                                                        ></mostrar-presentacion>
+                                                    </td>
+
+                                                    <td class="text-center">
+                                                        <strong>
+                                                            {{
+                                                                cantidades[
+                                                                    precio
+                                                                        .idprecio
+                                                                ] || 0
+                                                            }}
+                                                        </strong>
+                                                    </td>
+                                                    <td>
+                                                        <mostrar-precio
+                                                            :value="
+                                                                (cantidades[
+                                                                    precio
+                                                                        .idprecio
+                                                                ] || 0) *
+                                                                precio.costo
+                                                            "
+                                                        ></mostrar-precio>
+                                                    </td>
+
+                                                    <td>
+                                                        <mostrar-precio
+                                                            :value="
+                                                                (cantidades[
+                                                                    precio
+                                                                        .idprecio
+                                                                ] || 0) *
+                                                                precio.precio
+                                                            "
+                                                        ></mostrar-precio>
+                                                    </td>
+                                                    <td>
+                                                        <mostrar-precio
+                                                            :value="
+                                                                (cantidades[
+                                                                    precio
+                                                                        .idprecio
+                                                                ] || 0) *
+                                                                    precio.precio -
+                                                                (cantidades[
+                                                                    precio
+                                                                        .idprecio
+                                                                ] || 0) *
+                                                                    precio.costo
+                                                            "
+                                                        ></mostrar-precio>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -127,7 +280,7 @@
                                     outlined
                                 >
                                     <v-card-title>
-                                        Fechas de Ventas
+                                        Ventas del Producto
                                     </v-card-title>
                                     <v-card-subtitle>
                                         Rango de fechas donde se analizan las
@@ -215,10 +368,142 @@
                                                 </v-btn>
                                             </v-col>
                                         </v-row>
+                                        <v-simple-table>
+                                            <template v-slot:default>
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-left">
+                                                            Presentacion
+                                                        </th>
+                                                        <th class="text-left">
+                                                            Vendidos
+                                                        </th>
+                                                        <th>
+                                                            {{
+                                                                producto.unidades
+                                                            }}
+                                                            <br />
+                                                            Vendidas
+                                                        </th>
+                                                        <th>Costos</th>
+                                                        <th>Total</th>
+                                                        <th>Ganancia</th>
+                                                        <th>Porcentaje</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        v-for="(
+                                                            precio, i
+                                                        ) in ventas.precios"
+                                                        :key="precio.idprecio"
+                                                    >
+                                                        <td>
+                                                            <mostrar-presentacion
+                                                                :nombre="
+                                                                    precio.nombre
+                                                                "
+                                                                :cantidad="
+                                                                    precio.cantidad
+                                                                "
+                                                                :medidas="
+                                                                    producto.unidades
+                                                                "
+                                                            ></mostrar-presentacion>
+                                                        </td>
+
+                                                        <td>
+                                                            {{
+                                                                precio.vendidos_cantidad
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                precio.vendidos_unidades
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            Q
+                                                            {{
+                                                                precio.vendidos_costos
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            Q
+                                                            {{
+                                                                precio.vendidos_total
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            Q
+                                                            {{
+                                                                precio.vendidos_ganancia
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                (precio.vendidos_total /
+                                                                    producto.vendidos_total) *
+                                                                    100 +
+                                                                "%"
+                                                            }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <strong
+                                                                >Total
+                                                                Ventas</strong
+                                                            >
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                {{
+                                                                    producto.vendidos_cantidad
+                                                                }}
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                {{
+                                                                    producto.vendidos_unidades
+                                                                }}
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Q{{
+                                                                    producto.vendidos_costos
+                                                                }}
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Q{{
+                                                                    producto.vendidos_total
+                                                                }}
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                Q{{
+                                                                    producto.vendidos_ganancia
+                                                                }}
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                100
+                                                            </strong>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </template>
+                                        </v-simple-table>
                                     </v-card-text>
                                 </v-card>
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="6" v-if="false">
                                 <v-card
                                     outlined
                                     elevation="0"
@@ -288,7 +573,7 @@
                                     </v-card-text>
                                 </v-card>
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="6" v-if="false">
                                 <v-card
                                     outlined
                                     elevation="0"
@@ -359,7 +644,7 @@
                                     </v-card-text>
                                 </v-card>
                             </v-col>
-                            <v-col cols="12" md="12">
+                            <v-col cols="12" md="12" v-if="false">
                                 <v-card
                                     outlined
                                     elevation="0"
@@ -400,138 +685,6 @@
                                     </v-card-text>
                                 </v-card>
                             </v-col>
-                            <v-col cols="12" md="12">
-                                <v-card
-                                    outlined
-                                    elevation="0"
-                                    class="rounded-lg"
-                                >
-                                    <v-card-title>
-                                        Presentaciones Vendidas
-                                    </v-card-title>
-
-                                    <v-card-subtitle> </v-card-subtitle>
-                                    <v-divider inset> </v-divider>
-                                    <v-simple-table>
-                                        <template v-slot:default>
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-left">
-                                                        Presentacion
-                                                    </th>
-                                                    <th class="text-left">
-                                                        Vendidos
-                                                    </th>
-                                                    <th>
-                                                        {{ producto.unidades }}
-                                                        <br />
-                                                        Vendidas
-                                                    </th>
-                                                    <th>Costos</th>
-                                                    <th>Total</th>
-                                                    <th>Ganancia</th>
-                                                    <th>Porcentaje</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr
-                                                    v-for="(
-                                                        precio, i
-                                                    ) in producto.precios"
-                                                    :key="precio.idprecio"
-                                                >
-                                                    <td>
-                                                        {{ precio.nombre }}
-                                                    </td>
-
-                                                    <td>
-                                                        {{
-                                                            precio.vendidos_cantidad
-                                                        }}
-                                                    </td>
-                                                    <td>
-                                                        {{
-                                                            precio.vendidos_unidades
-                                                        }}
-                                                    </td>
-                                                    <td>
-                                                        Q
-                                                        {{
-                                                            precio.vendidos_costos
-                                                        }}
-                                                    </td>
-                                                    <td>
-                                                        Q
-                                                        {{
-                                                            precio.vendidos_total
-                                                        }}
-                                                    </td>
-                                                    <td>
-                                                        Q
-                                                        {{
-                                                            precio.vendidos_ganancia
-                                                        }}
-                                                    </td>
-                                                    <td>
-                                                        {{
-                                                            (precio.vendidos_total /
-                                                                producto.vendidos_total) *
-                                                                100 +
-                                                            "%"
-                                                        }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <strong
-                                                            >Total
-                                                            Ventas</strong
-                                                        >
-                                                    </td>
-                                                    <td>
-                                                        <strong>
-                                                            {{
-                                                                producto.vendidos_cantidad
-                                                            }}
-                                                        </strong>
-                                                    </td>
-                                                    <td>
-                                                        <strong>
-                                                            {{
-                                                                producto.vendidos_unidades
-                                                            }}
-                                                        </strong>
-                                                    </td>
-                                                    <td>
-                                                        <strong>
-                                                            Q{{
-                                                                producto.vendidos_costos
-                                                            }}
-                                                        </strong>
-                                                    </td>
-                                                    <td>
-                                                        <strong>
-                                                            Q{{
-                                                                producto.vendidos_total
-                                                            }}
-                                                        </strong>
-                                                    </td>
-                                                    <td>
-                                                        <strong>
-                                                            Q{{
-                                                                producto.vendidos_ganancia
-                                                            }}
-                                                        </strong>
-                                                    </td>
-                                                    <td>
-                                                        <strong> 100 </strong>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </template>
-                                    </v-simple-table>
-                                </v-card>
-                            </v-col>
                         </v-row>
                     </v-col>
                     <v-col cols="12" md="4" lg="3">
@@ -548,12 +701,20 @@
 </template>
 
 <script>
+import MostrarPresentacion from "../../../components/productos/mostrarPresentacion.vue";
+import MostrarPrecio from "../../../components/productos/mostrarPrecio.vue";
 import GraficaBarras from "../../../components/graficas/grafica-barras.vue";
 import TrendPercent from "../../../components/common/TrendPercent.vue";
 import GraficaPie from "../../../components/graficas/grafica-pie.vue";
 import moment from "moment";
 export default {
-    components: { GraficaPie, TrendPercent, GraficaBarras },
+    components: {
+        GraficaPie,
+        TrendPercent,
+        GraficaBarras,
+        MostrarPrecio,
+        MostrarPresentacion,
+    },
     mounted() {
         this.fecha.push(moment().add(-7, "days").format("YYYY-MM-DD"));
         this.fecha.push(moment().format("YYYY-MM-DD"));
@@ -589,6 +750,7 @@ export default {
             labels: [],
             series: [],
         },
+        cantidades: {},
         palette: "palette1",
         updates: 0,
         moment: moment,
@@ -597,22 +759,43 @@ export default {
         async init() {
             this.isLoading = true;
             await this.$axios
-                .get("productos/id/" + this.idproducto)
+                .get("productos/" + this.idproducto)
                 .then((result) => {
                     this.producto = result.data;
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+            this.calcularExistencias();
             this.isLoading = false;
+        },
+        calcularExistencias() {
+            let presentaciones = JSON.parse(
+                JSON.stringify(this.producto.precios)
+            );
+            presentaciones = presentaciones.reverse();
+
+            let existencias = this.producto.existencia;
+            let presentacionesDisponibles = [];
+
+            presentaciones.forEach((presentacion) => {
+                let cantidadPresentaciones = Math.floor(
+                    existencias / presentacion.cantidad
+                );
+                presentacionesDisponibles[presentacion.idprecio] =
+                    cantidadPresentaciones;
+                existencias -= cantidadPresentaciones * presentacion.cantidad;
+            });
+
+            this.cantidades = presentacionesDisponibles;
         },
         async obtenerVentas() {
             this.isLoadingSales = true;
             await this.$axios
                 .get(
-                    "productos/detalles/" +
+                    "productos/" +
                         this.idproducto +
-                        "/" +
+                        "/ventas/" +
                         this.format +
                         "/" +
                         this.fecha[0] +
