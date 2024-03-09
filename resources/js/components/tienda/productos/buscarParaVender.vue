@@ -1,5 +1,12 @@
 <template>
     <div>
+        <busqueda-text-field
+            v-if="false"
+            :elevation="0"
+            :outlined="false"
+            prefix="productos_search"
+        >
+        </busqueda-text-field>
         <productos-busqueda-precios
             :elevation="0"
             @porcodigo="agregarProducto"
@@ -8,45 +15,6 @@
             @multi="$emit('multi', $event)"
         ></productos-busqueda-precios>
         <v-card elevation="0" outlined tile>
-            <v-card-title> Resultados de Busqueda </v-card-title>
-            <v-card-subtitle>
-                <div class="ml-1">
-                    <v-divider vertical></v-divider>
-                    <span class="caption">Seleccionar</span>
-                    <v-chip
-                        label
-                        color="grey--text"
-                        class="ml-1 v-chip--active"
-                    >
-                        <v-icon>mdi-arrow-down-bold-box-outline</v-icon>
-                    </v-chip>
-
-                    <v-chip
-                        label
-                        color="grey--text"
-                        class="ml-1 v-chip--active"
-                    >
-                        <v-icon>mdi-arrow-up-bold-box-outline</v-icon>
-                    </v-chip>
-                    <v-divider class="px-1" vertical></v-divider>
-                    <span class="caption">Restar</span>
-                    <v-chip
-                        label
-                        color="grey--text"
-                        class="ml-1 v-chip--active"
-                    >
-                        <v-icon>mdi-arrow-left-bold-box-outline</v-icon>
-                    </v-chip>
-                    <v-chip
-                        label
-                        color="grey--text"
-                        class="ml-1 v-chip--active"
-                    >
-                        <v-icon>mdi-arrow-right-bold-box-outline</v-icon>
-                    </v-chip>
-                    <span class="caption">Sumar</span>
-                </div>
-            </v-card-subtitle>
             <v-card-text>
                 <v-row dense>
                     <v-col cols="12">
@@ -174,6 +142,7 @@
 </template>
 
 <script>
+import BusquedaTextField from "../../busqueda/busquedaTextField.vue";
 import ProductosBusquedaPrecios from "../../v6/productos/productosBusquedaPrecios.vue";
 import ProductosMostrarPrecio from "./productosMostrarPrecio.vue";
 import ProductosBuscador from "./productosBuscador.vue";
@@ -182,6 +151,7 @@ export default {
         ProductosBuscador,
         ProductosMostrarPrecio,
         ProductosBusquedaPrecios,
+        BusquedaTextField,
     },
     data: () => ({
         isLoading: false,

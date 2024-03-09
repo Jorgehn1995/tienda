@@ -1,7 +1,174 @@
 <template>
     <div>
+        <v-navigation-drawer permanent app right width="350">
+            <template v-slot:prepend>
+                <v-list-item>
+                    <v-list-item-content>
+                        <v-list-item-title class="text-h6">
+                            Orden Actual
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            {{ venta.articulos || 0 }} Productos
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>
+
+                <v-divider></v-divider>
+
+                <venta-lista-venta v-model="carrito"></venta-lista-venta>
+            </template>
+
+            <template v-slot:append>
+                <v-card class="mx-2 rounded-lg mb-2" elevation="2">
+                    <v-list dense color="transparent">
+                        <v-list-item>
+                            <v-list-item-subtitle class="">
+                                Subtotal
+                            </v-list-item-subtitle>
+                            <v-list-item-title class="text-right">
+                                <mostrar-precio
+                                    v-model="venta.subtotal"
+                                ></mostrar-precio>
+                            </v-list-item-title>
+                        </v-list-item>
+
+                        <v-list-item @click="isDiscount = true">
+                            <v-list-item-subtitle class="">
+                                Descuentos
+                            </v-list-item-subtitle>
+                            <v-list-item-title class="text-right">
+                                <mostrar-precio
+                                    v-model="venta.descuento"
+                                ></mostrar-precio>
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-divider></v-divider>
+                        <v-list-item>
+                            <v-list-item-subtitle class="align-right">
+                                <span class="font-weight-black"> TOTAL </span>
+                            </v-list-item-subtitle>
+                            <v-list-item-title class="text-right">
+                                <mostrar-precio v-model="venta.total">
+                                    <template v-slot:moneda>
+                                        <span
+                                            class="text-h5 font-weight-bold teal--text"
+                                        >
+                                            Q
+                                        </span>
+                                    </template>
+                                    <template v-slot:entero="{ entero }">
+                                        <span
+                                            class="text-h4 font-weight-bold teal--text"
+                                        >
+                                            {{ entero }}
+                                        </span>
+                                    </template>
+                                    <template v-slot:decimal="{ decimal }">
+                                        <span
+                                            class="text-h5 font-weight-bold teal--text"
+                                        >
+                                            {{ decimal }}
+                                        </span>
+                                    </template>
+                                </mostrar-precio>
+                            </v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-card>
+
+                <div class="pa-2 pt-1 text-center">
+                    <v-btn
+                        class="buy-button"
+                        dark
+                        block
+                        color="teal"
+                        href="https://store.vuetifyjs.com/products/lux-admin-pro/"
+                        target="_blank"
+                    >
+                        Procesar Venta
+                    </v-btn>
+                </div>
+            </template>
+        </v-navigation-drawer>
+
+        <v-container>
+            <v-row dense>
+                <v-col cols="12" md="6">
+                    <v-card outlined class="rounded-lg">
+                        <v-card-title> Cliente </v-card-title>
+                        <v-divider></v-divider>
+                        <v-card-text> Datos del ciente </v-card-text>
+                    </v-card>
+                </v-col>
+                <v-col cols="12" md="6">
+                    <v-card outlined class="rounded-lg">
+                        <v-card-title> Descuento </v-card-title>
+                        <v-divider></v-divider>
+                        <v-card-text> Datos del ciente </v-card-text>
+                    </v-card>
+                </v-col>
+                <v-col cols="12" md="12">
+                    <v-card outlined class="rounded-lg">
+                        <v-card-title> Resultados de Busqueda </v-card-title>
+                        <v-card-subtitle>
+                            <div class="ml-1">
+                                <v-divider vertical></v-divider>
+                                <span class="caption">Seleccionar</span>
+                                <v-chip
+                                    label
+                                    color="grey--text"
+                                    class="ml-1 v-chip--active"
+                                >
+                                    <v-icon
+                                        >mdi-arrow-down-bold-box-outline</v-icon
+                                    >
+                                </v-chip>
+
+                                <v-chip
+                                    label
+                                    color="grey--text"
+                                    class="ml-1 v-chip--active"
+                                >
+                                    <v-icon
+                                        >mdi-arrow-up-bold-box-outline</v-icon
+                                    >
+                                </v-chip>
+                                <v-divider class="px-1" vertical></v-divider>
+                                <span class="caption">Restar</span>
+                                <v-chip
+                                    label
+                                    color="grey--text"
+                                    class="ml-1 v-chip--active"
+                                >
+                                    <v-icon
+                                        >mdi-arrow-left-bold-box-outline</v-icon
+                                    >
+                                </v-chip>
+                                <v-chip
+                                    label
+                                    color="grey--text"
+                                    class="ml-1 v-chip--active"
+                                >
+                                    <v-icon
+                                        >mdi-arrow-right-bold-box-outline</v-icon
+                                    >
+                                </v-chip>
+                                <span class="caption">Sumar</span>
+                            </div>
+                        </v-card-subtitle>
+                        <v-card-text class="pb-0">
+                            <buscar-para-vender
+                                @producto="agregarProducto"
+                                @suma="sumar($event)"
+                                @multi="multi($event)"
+                            ></buscar-para-vender>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-container>
         <v-row dense no-gutters>
-            <v-col cols="12" md="6" height="100%">
+            <v-col cols="12" height="100%">
                 <v-card tile elevation="0" v-if="false">
                     <v-card-text>
                         <v-list-item>
@@ -14,13 +181,8 @@
                         </v-list-item>
                     </v-card-text>
                 </v-card>
-                <buscar-para-vender
-                    @producto="agregarProducto"
-                    @suma="sumar($event)"
-                    @multi="multi($event)"
-                ></buscar-para-vender>
             </v-col>
-            <v-col cols="12" md="6" height="100%">
+            <v-col cols="12" md="6" height="100%" v-if="false">
                 <v-card tile class="pb-2" elevation="0" color="teal">
                     <v-row no-gutters dense>
                         <v-col cols="12" md="4">
@@ -355,7 +517,7 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-        <v-bottom-navigation app>
+        <v-bottom-navigation app v-if="false">
             <v-btn
                 large
                 color="primary"
@@ -372,6 +534,7 @@
 </template>
 
 <script>
+import MostrarPrecio from "../../../components/productos/mostrarPrecio.vue";
 import VentaListaVenta from "../../../components/tienda/venta/ventaListaVenta.vue";
 import BuscarParaVender from "../../../components/tienda/productos/buscarParaVender.vue";
 
@@ -383,6 +546,7 @@ export default {
         ProductosPrecios,
         BuscarParaVender,
         VentaListaVenta,
+        MostrarPrecio,
     },
     mounted() {},
     data: () => ({

@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ImpresionesController;
+use App\Http\Controllers\PresentacionesController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuariosController;
@@ -79,7 +80,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     /**
      * Presentaciones
      */
-    Route::get('/presentaciones', [ProductosController::class, 'porPresentacion'])->name('api.productos.index');
+    Route::get('/presentaciones', [PresentacionesController::class, 'index'])->name('api.presentaciones.index');
 
 
     /**

@@ -1,63 +1,57 @@
 <template>
     <div>
-        <v-row dense>
-            <v-col cols="12">
-                <v-card outlined elevation="3" tile>
-                    <v-card-text>
-                        <v-row dense>
-                            <v-col cols="12" sm="8" class="py-0">
-                                <v-text-field
-                                    height="60"
-                                    style="font-size: 25px"
-                                    label="Código de Barras [CTRL+Q]"
-                                    v-shortkey="['ctrl', 'q']"
-                                    @shortkey.native="skBuscarCodigo"
-                                    v-model="search"
-                                    ref="buscarCodigo"
-                                    prepend-icon="mdi-barcode"
-                                    placeholder="Ingrese el Codigo"
-                                    @keyup.enter="realizarBusqueda(0)"
-                                    @click:append-outer="cerrar()"
-                                    :append-outer-icon="
-                                        close ? 'mdi-chevron-right' : ''
-                                    "
-                                >
-                                </v-text-field>
-                            </v-col>
+        <v-card :outlined="false" :elevation="elevation" tile>
+            <v-card-text class="pa-0">
+                <v-row dense>
+                    <v-col cols="12" sm="8" class="py-0">
+                        <v-text-field
+                            height="60"
+                            style="font-size: 25px"
+                            label="Código de Barras [CTRL+Q]"
+                            v-shortkey="['ctrl', 'q']"
+                            @shortkey.native="skBuscarCodigo"
+                            v-model="search"
+                            ref="buscarCodigo"
+                            prepend-icon="mdi-barcode"
+                            placeholder="Ingrese el Codigo"
+                            @keyup.enter="realizarBusqueda(0)"
+                            @click:append-outer="cerrar()"
+                            :append-outer-icon="
+                                close ? 'mdi-chevron-right' : ''
+                            "
+                        >
+                        </v-text-field>
+                    </v-col>
 
-                            <v-col
-                                cols="6"
-                                sm="2"
-                                class="d-flex justify-center align-center py-0"
-                            >
-                                <v-btn
-                                    outlined
-                                    block
-                                    color="accent"
-                                    @click="realizarBusqueda(0)"
-                                    :loading="isLoading"
-                                    v-shortkey="['ctrl', 'b']"
-                                    @shortkey.native="realizarBusqueda(0)"
-                                >
-                                    Buscar [CTRL+B]
-                                    <v-icon right
-                                        >mdi-cloud-search-outline</v-icon
-                                    >
-                                </v-btn>
-                            </v-col>
+                    <v-col
+                        cols="6"
+                        sm="2"
+                        class="d-flex justify-center align-center py-0"
+                    >
+                        <v-btn
+                            outlined
+                            block
+                            color="accent"
+                            @click="realizarBusqueda(0)"
+                            :loading="isLoading"
+                            v-shortkey="['ctrl', 'b']"
+                            @shortkey.native="realizarBusqueda(0)"
+                        >
+                            Buscar [CTRL+B]
+                            <v-icon right>mdi-cloud-search-outline</v-icon>
+                        </v-btn>
+                    </v-col>
 
-                            <v-col
-                                cols="6"
-                                sm="2"
-                                class="d-flex justify-center py-0 align-center"
-                            >
-                                <slot> </slot>
-                            </v-col>
-                        </v-row>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
+                    <v-col
+                        cols="6"
+                        sm="2"
+                        class="d-flex justify-center py-0 align-center"
+                    >
+                        <slot> </slot>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </v-card>
     </div>
 </template>
 
@@ -84,6 +78,14 @@ export default {
             type: Number,
             default: 1000,
         },
+        elevation: {
+            type: Number,
+            default: 3,
+        },
+        outlined: {
+            type: Boolean,
+            default: true,
+        },
     },
     mounted() {
         if (this.final) {
@@ -99,7 +101,7 @@ export default {
         updates: 0,
     }),
     methods: {
-        realizarBusqueda() {
+        realizarBusqueda(n = this.time) {
             this.isLoading = true;
             if (this.timer) {
                 clearTimeout(this.timer);
@@ -108,7 +110,7 @@ export default {
             this.timer = setTimeout(() => {
                 this.final = this.search;
                 this.isLoading = false;
-            }, this.time);
+            }, n);
         },
         actualizarRuta(parametro, nuevoValor, del = false) {
             let query = this.$route.query;

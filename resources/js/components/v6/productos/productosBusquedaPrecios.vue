@@ -1,73 +1,46 @@
 <template>
     <div>
-        <div class="">
-            <v-row dense>
-                <v-col cols="12">
-                    <v-form ref="formCodigo" @submit="skEstablecerBusqueda">
-                        <v-card outlined :elevation="elevation" tile>
-                            <v-card-text>
-                                <v-row dense>
-                                    <v-col cols="12" class="pb-0">
-                                        <v-text-field
-                                            height="60"
-                                            style="font-size: 25px"
-                                            label="Código de Barras o Nombre del Producto [CTRL+Q]"
-                                            outlined
-                                            v-shortkey="['ctrl', 'q']"
-                                            @shortkey.native="skEnfocarCodigo"
-                                            v-model="search"
-                                            :rules="[rules.requerido]"
-                                            ref="buscarCodigo"
-                                            prepend-icon="mdi-barcode"
-                                            placeholder="Ingrese el Codigo [CTRL+Q]"
-                                            @keypress.enter="
-                                                skEstablecerBusqueda
-                                            "
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col
-                                        cols="12"
-                                        class="d-flex align-center"
-                                    >
-                                        <v-btn
-                                            outlined
-                                            color="primary"
-                                            class="ml-2"
-                                            @click="skEstablecerBusqueda"
-                                            :loading="isLoading"
-                                        >
-                                            Buscar [ENTER]
-                                        </v-btn>
-
-                                        <v-btn
-                                            outlined
-                                            color="grey"
-                                            class="ml-2"
-                                            @click="skLimpiar"
-                                            :loading="isLoading"
-                                            v-shortkey="['ctrl', 'l']"
-                                            @shortkey.native="skLimpiar"
-                                        >
-                                            Limpiar[CTRL + L]
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
-                    </v-form>
-                </v-col>
-                <v-col
-                    cols="12"
-                    class="d-flex justify-center align-center"
-                    v-if="isLoading"
-                >
-                    <v-progress-circular
-                        color="primary"
-                        indeterminate
-                    ></v-progress-circular>
-                </v-col>
-            </v-row>
-        </div>
+        <v-form ref="formCodigo" @submit="skEstablecerBusqueda">
+            <v-card :elevation="elevation" tile>
+                <v-card-text>
+                    <v-row dense>
+                        <v-col cols="12" sm="8" md="9" class="pb-0">
+                            <v-text-field
+                                class="rounded-lg"
+                                height="60"
+                                style="font-size: 25px"
+                                label="Código de Barras o Nombre del Producto [CTRL+Q]"
+                                outlined
+                                v-shortkey="['ctrl', 'q']"
+                                @shortkey.native="skEnfocarCodigo"
+                                v-model="search"
+                                :rules="[rules.requerido]"
+                                ref="buscarCodigo"
+                                prepend-icon="mdi-barcode"
+                                placeholder="Ingrese el Codigo [CTRL+Q]"
+                                @keypress.enter="skEstablecerBusqueda"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="4" md="3">
+                            <div
+                                class="d-flex justify-center align-center pt-2"
+                            >
+                                <v-btn
+                                    outlined
+                                    block
+                                    color="primary"
+                                    class="ml-2"
+                                    @click="skEstablecerBusqueda"
+                                    :loading="isLoading"
+                                >
+                                    Buscar [ENTER]
+                                </v-btn>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </v-form>
     </div>
 </template>
 
@@ -147,7 +120,7 @@ export default {
             if (this.$refs.formCodigo.validate()) {
                 this.isLoading = true;
                 this.$axios
-                    .get("/productos/presentaciones?codigo=" + this.search)
+                    .get("/presentaciones?codigo=" + this.search)
                     .then((result) => {
                         this.isLoading = false;
                         this.$emit("portexto", result.data);
@@ -165,7 +138,7 @@ export default {
             if (this.$refs.formCodigo.validate()) {
                 this.isLoading = true;
                 this.$axios
-                    .get("/productos/presentaciones?search=" + this.search)
+                    .get("/presentaciones?search=" + this.search)
                     .then((result) => {
                         this.isLoading = false;
                         this.$emit("portexto", result.data.data);

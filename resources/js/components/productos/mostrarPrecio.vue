@@ -1,14 +1,23 @@
 <template>
-    <div style="white-space: nowrap; min-width: 80px" class="px-1">
-        <div class="d-flex justify-space-between font-weight-black">
-            <span> Q </span>
-            <span>
-                <span class="money"> {{ precio[0] }}. </span>
-                <span class="super">
-                    {{ precio[1] }}
-                </span>
+    <div
+        style="white-space: nowrap; min-width: 80px"
+        class="px-1 d-flex justify-space-between font-weight-black"
+    >
+        <span>
+            <slot name="moneda"> Q </slot>
+        </span>
+        <span>
+            <span class="money">
+                <slot name="entero" v-bind:entero="precio[0]">
+                    {{ precio[0] }}.
+                </slot>
             </span>
-        </div>
+            <span class="super">
+                <slot name="decimal" v-bind:decimal="precio[1]">
+                    {{ precio[1] }}
+                </slot>
+            </span>
+        </span>
     </div>
 </template>
 
