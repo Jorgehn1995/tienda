@@ -28,6 +28,18 @@
                 v-model="carrito"
             ></venta-carrito>
 
+            <div
+                v-if="carrito.length == 0"
+                class="d-flex justify-center align-center flex-column"
+                style="height: 250px"
+            >
+                <v-icon size="100" class="grey--text">
+                    mdi-cart-variant
+                </v-icon>
+                <br />
+                <span> Agregar productos al carrito </span>
+            </div>
+
             <template v-slot:append>
                 <v-card class="mx-2 rounded-lg mb-2" elevation="2">
                     <v-list dense color="transparent">
@@ -106,205 +118,17 @@
                 <v-col cols="12" md="12">
                     <v-card outlined class="rounded-lg">
                         <v-card-title> Resultados de Busqueda </v-card-title>
-                        <v-card-subtitle>
-                            <div class="ml-1" v-if="false">
-                                <v-divider vertical></v-divider>
-                                <span class="caption">Seleccionar</span>
-                                <v-chip
-                                    label
-                                    color="grey--text"
-                                    class="ml-1 v-chip--active"
-                                >
-                                    <v-icon
-                                        >mdi-arrow-down-bold-box-outline</v-icon
-                                    >
-                                </v-chip>
 
-                                <v-chip
-                                    label
-                                    color="grey--text"
-                                    class="ml-1 v-chip--active"
-                                >
-                                    <v-icon
-                                        >mdi-arrow-up-bold-box-outline</v-icon
-                                    >
-                                </v-chip>
-                                <v-divider class="px-1" vertical></v-divider>
-                                <span class="caption">Restar</span>
-                                <v-chip
-                                    label
-                                    color="grey--text"
-                                    class="ml-1 v-chip--active"
-                                >
-                                    <v-icon
-                                        >mdi-arrow-left-bold-box-outline</v-icon
-                                    >
-                                </v-chip>
-                                <v-chip
-                                    label
-                                    color="grey--text"
-                                    class="ml-1 v-chip--active"
-                                >
-                                    <v-icon
-                                        >mdi-arrow-right-bold-box-outline</v-icon
-                                    >
-                                </v-chip>
-                                <span class="caption">Sumar</span>
-                            </div>
-                        </v-card-subtitle>
                         <v-card-text class="pb-0">
                             <venta-busqueda
                                 :colores="colores"
                                 v-model="carrito"
                             ></venta-busqueda>
-                            <buscar-para-vender
-                                v-if="false"
-                                @producto="agregarProducto"
-                                @suma="sumar($event)"
-                                @multi="multi($event)"
-                            ></buscar-para-vender>
                         </v-card-text>
                     </v-card>
                 </v-col>
             </v-row>
         </v-container>
-        <v-row dense no-gutters>
-            <v-col cols="12" height="100%">
-                <v-card tile elevation="0" v-if="false">
-                    <v-card-text>
-                        <v-list-item>
-                            <v-list-item-subtitle class="align-right text-h6">
-                                Cliente [CTRL+C]:
-                            </v-list-item-subtitle>
-                            <v-list-item-title class="align-right">
-                                <div class="text-subtitle-1">C/F</div>
-                            </v-list-item-title>
-                        </v-list-item>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col cols="12" md="6" height="100%" v-if="false">
-                <v-card tile class="pb-2" elevation="0" color="teal">
-                    <v-row no-gutters dense>
-                        <v-col cols="12" md="4">
-                            <v-list dark color="transparent">
-                                <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
-                                        Articulos
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 white--text pr-3"
-                                    >
-                                        {{ venta.articulos }}
-                                    </v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                            <v-list dark color="transparent">
-                                <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
-                                        Subtotal
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 white--text pr-3"
-                                    >
-                                        Q {{ venta.subtotal }}
-                                    </v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                            <v-list dark color="transparent">
-                                <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
-                                        Descuento Ofertas
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 white--text pr-3"
-                                    >
-                                        Q {{ venta.ofertas }}
-                                    </v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                            <v-list dark color="transparent">
-                                <v-list-item @click="isDiscount = true">
-                                    <v-list-item-subtitle class="text-h6">
-                                        Desc. M. [CTRL + M]
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 white--text pr-3"
-                                    >
-                                        Q {{ venta.descuento }}
-                                    </v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                        <v-col cols="12 " md="8">
-                            <v-list-item v-if="false">
-                                <v-list-item-subtitle class="text-h6">
-                                    Descuento
-                                </v-list-item-subtitle>
-                                <v-list-item-title class="text-right">
-                                    <v-text-field
-                                        v-model="venta.descuento"
-                                        outlined
-                                        min="0"
-                                        type="number"
-                                        prefix="Q"
-                                        placeholder="##.##"
-                                        class="text-h6 elevation-0 white--text right-input"
-                                    ></v-text-field>
-                                </v-list-item-title>
-                            </v-list-item>
-                            <v-list color="transparent" dark>
-                                <v-list-item>
-                                    <v-list-item-subtitle
-                                        class="align-right text-h6"
-                                    >
-                                        TOTAL
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title class="text-right">
-                                        <div class="d-flex flex-column">
-                                            <div>
-                                                <span class="text-h4">Q</span>
-                                                <span
-                                                    class="white--text text--darken-2 text-h2"
-                                                >
-                                                    {{ venta.total }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                    </v-row>
-                </v-card>
-                <v-card elevation="0" tile outlined v-if="false">
-                    <div class="mx-4 my-2">
-                        <v-btn
-                            elevation="0"
-                            depressed
-                            block
-                            large
-                            color="primary"
-                            class="white--text mb-2"
-                            :disabled="carrito.length == 0"
-                            @click="finalizar()"
-                        >
-                            Procesar Venta [CTRL + Enter]
-                        </v-btn>
-                    </div>
-                </v-card>
-                <v-divider></v-divider>
-                <v-card elevation="0" tile class="venta" height="100%">
-                    <venta-lista-venta v-model="carrito"></venta-lista-venta>
-                </v-card>
-            </v-col>
-        </v-row>
         <v-dialog v-model="isEnded" max-width="400">
             <v-card>
                 <v-card-title> Finalizar Venta </v-card-title>

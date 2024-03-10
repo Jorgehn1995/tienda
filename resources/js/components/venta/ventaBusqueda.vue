@@ -10,7 +10,7 @@
             ref="panel"
         >
             <v-row dense>
-                <v-col cols="12">
+                <v-col cols="12" v-if="search">
                     <t-listar
                         ref="tabla"
                         tableID="actividades.profesores"
@@ -41,7 +41,7 @@
                                         ? 'selected-card'
                                         : 'unselected-card'
                                 "
-                                @click="agregarProducto(item, index)"
+                                @click="agregarProducto(index)"
                                 :ref="'pre' + index"
                             >
                                 <v-card-text>
@@ -232,9 +232,29 @@
                         </template>
                     </t-listar>
                 </v-col>
+                <v-col cols="12" v-else>
+                    <v-card elevation="0">
+                        <v-card-text>
+                            <div
+                                class="d-flex justify-center align-center flex-column"
+                                style="height: calc(100vh - 300px)"
+                            >
+                                <v-icon size="100" class="grey--text">
+                                    mdi-tag-search-outline
+                                </v-icon>
+                                <br />
+                                <span>
+                                    Busca un producto por codigo o por
+                                    descripción
+                                </span>
+                            </div>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
             </v-row>
         </div>
-
+        <div v-shortkey="['arrowright']" @shortkey="agregarProducto"></div>
+        <div v-shortkey="['arrowleft']" @shortkey="restarProducto"></div>
         <div v-shortkey="['arrowup']" @shortkey="presentacionArriba"></div>
         <div v-shortkey="['arrowdown']" @shortkey="presentacionAbajo"></div>
     </div>
@@ -267,6 +287,42 @@ export default {
         },
     }),
     methods: {
+        agregarProducto(ix = -1) {
+            if (ix >= 0) {
+                this.seleccionado = ix;
+            }
+            if (this.seleccionado < 0) {
+                return;
+            }
+            let i = this.$refs.tabla.data[this.seleccionado];
+            let item = JSON.parse(JSON.stringify(i));
+            item.carrito = 1;
+            let index = this.carrito.findIndex((e) => e.idprecio == i.idprecio);
+            if (index < 0) {
+                this.carrito.push(item);
+            } else {
+                this.carrito[index].carrito++;
+            }
+        },
+        restarProducto(ix = -1) {
+            if (ix >= 0) {
+                this.seleccionado = ix;
+            }
+            if (this.seleccionado < 0) {
+                return;
+            }
+            let i = this.$refs.tabla.data[this.seleccionado];
+            let item = JSON.parse(JSON.stringify(i));
+            item.carrito = 1;
+            let index = this.carrito.findIndex((e) => e.idprecio == i.idprecio);
+            if (index >= 0) {
+                if (this.carrito[index].carrito > 1) {
+                    this.carrito[index].carrito--;
+                } else {
+                    this.carrito.splice(index, 1);
+                }
+            }
+        },
         presentacionArriba() {
             if (this.seleccionado == 0) {
                 this.seleccionado = this.$refs.tabla.data.length - 1;
@@ -295,18 +351,6 @@ export default {
                 this.$refs.panel.scrollTop = faltante;
             } else {
                 this.$refs.panel.scrollTop = 0;
-            }
-        },
-        agregarProducto(i, ix) {
-            this.seleccionado = ix;
-            let item = JSON.parse(JSON.stringify(i));
-            item.carrito = 1;
-            //Encontrar
-            let index = this.carrito.findIndex((e) => e.idprecio == i.idprecio);
-            if (index < 0) {
-                this.carrito.unshift(item);
-            } else {
-                this.carrito[index].carrito++;
             }
         },
     },

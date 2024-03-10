@@ -12,6 +12,7 @@ class PresentacionesController extends Controller
     use BusquedaTrait;
     public function index(Request $request)
     {
+
         $query = Precio::query();
         $query->join("productos", "productos.idproducto", "=", "precios.idproducto");
         $query->selectRaw("precios.*, 0 as carrito");
