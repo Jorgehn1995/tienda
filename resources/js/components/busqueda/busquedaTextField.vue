@@ -5,6 +5,8 @@
                 <v-row dense>
                     <v-col cols="12" sm="8" class="py-0">
                         <v-text-field
+                            class="rounded-lg"
+                            outlined
                             height="60"
                             style="font-size: 25px"
                             label="Código de Barras [CTRL+Q]"
@@ -23,23 +25,21 @@
                         </v-text-field>
                     </v-col>
 
-                    <v-col
-                        cols="6"
-                        sm="2"
-                        class="d-flex justify-center align-center py-0"
-                    >
-                        <v-btn
-                            outlined
-                            block
-                            color="accent"
-                            @click="realizarBusqueda(0)"
-                            :loading="isLoading"
-                            v-shortkey="['ctrl', 'b']"
-                            @shortkey.native="realizarBusqueda(0)"
-                        >
-                            Buscar [CTRL+B]
-                            <v-icon right>mdi-cloud-search-outline</v-icon>
-                        </v-btn>
+                    <v-col cols="6" sm="2">
+                        <div class="d-flex justify-center align-center">
+                            <v-btn
+                                outlined
+                                block
+                                color="accent"
+                                @click="realizarBusqueda(0)"
+                                :loading="isLoading"
+                                v-shortkey="['ctrl', 'b']"
+                                @shortkey.native="realizarBusqueda(0)"
+                            >
+                                Buscar [CTRL+B]
+                                <v-icon right>mdi-cloud-search-outline</v-icon>
+                            </v-btn>
+                        </div>
                     </v-col>
 
                     <v-col

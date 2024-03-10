@@ -54,9 +54,9 @@
                 <v-row dense>
                     <v-col
                         cols="12"
-                        sm="6"
-                        md="6"
-                        lg="4"
+                        :sm="sm"
+                        :md="md"
+                        :lg="lg"
                         v-for="(item, index) in data"
                         :key="'dt' + index"
                     >
@@ -203,6 +203,18 @@ export default {
         prefix: {
             type: String,
             default: "t",
+        },
+        sm: {
+            type: Number,
+            default: 6,
+        },
+        md: {
+            type: Number,
+            default: 6,
+        },
+        lg: {
+            type: Number,
+            default: 4,
         },
     },
 

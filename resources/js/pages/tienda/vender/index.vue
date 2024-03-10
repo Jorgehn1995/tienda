@@ -1,22 +1,32 @@
 <template>
     <div>
-        <v-navigation-drawer permanent app right width="350">
+        <v-navigation-drawer permanent app right width="500">
             <template v-slot:prepend>
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-list-item-title class="text-h6">
-                            Orden Actual
-                        </v-list-item-title>
-                        <v-list-item-subtitle>
-                            {{ venta.articulos || 0 }} Productos
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-
+                <v-card tile>
+                    <v-card-text>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-subtitle>
+                                    C/F
+                                </v-list-item-subtitle>
+                                <v-list-item-title class="text-h6">
+                                    Cliente Final
+                                </v-list-item-title>
+                                <v-list-item-subtitle>
+                                    {{ venta.articulos }} Productos
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-card-text>
+                </v-card>
                 <v-divider></v-divider>
-
-                <venta-lista-venta v-model="carrito"></venta-lista-venta>
             </template>
+
+            <venta-carrito
+                @update="actualizar()"
+                :colores="colores"
+                v-model="carrito"
+            ></venta-carrito>
 
             <template v-slot:append>
                 <v-card class="mx-2 rounded-lg mb-2" elevation="2">
@@ -60,7 +70,7 @@
                                         <span
                                             class="text-h4 font-weight-bold teal--text"
                                         >
-                                            {{ entero }}
+                                            {{ entero }}.
                                         </span>
                                     </template>
                                     <template v-slot:decimal="{ decimal }">
@@ -93,25 +103,11 @@
 
         <v-container>
             <v-row dense>
-                <v-col cols="12" md="6">
-                    <v-card outlined class="rounded-lg">
-                        <v-card-title> Cliente </v-card-title>
-                        <v-divider></v-divider>
-                        <v-card-text> Datos del ciente </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-card outlined class="rounded-lg">
-                        <v-card-title> Descuento </v-card-title>
-                        <v-divider></v-divider>
-                        <v-card-text> Datos del ciente </v-card-text>
-                    </v-card>
-                </v-col>
                 <v-col cols="12" md="12">
                     <v-card outlined class="rounded-lg">
                         <v-card-title> Resultados de Busqueda </v-card-title>
                         <v-card-subtitle>
-                            <div class="ml-1">
+                            <div class="ml-1" v-if="false">
                                 <v-divider vertical></v-divider>
                                 <span class="caption">Seleccionar</span>
                                 <v-chip
@@ -157,7 +153,12 @@
                             </div>
                         </v-card-subtitle>
                         <v-card-text class="pb-0">
+                            <venta-busqueda
+                                :colores="colores"
+                                v-model="carrito"
+                            ></venta-busqueda>
                             <buscar-para-vender
+                                v-if="false"
                                 @producto="agregarProducto"
                                 @suma="sumar($event)"
                                 @multi="multi($event)"
@@ -534,6 +535,8 @@
 </template>
 
 <script>
+import VentaCarrito from "../../../components/venta/ventaCarrito.vue";
+import VentaBusqueda from "../../../components/venta/ventaBusqueda.vue";
 import MostrarPrecio from "../../../components/productos/mostrarPrecio.vue";
 import VentaListaVenta from "../../../components/tienda/venta/ventaListaVenta.vue";
 import BuscarParaVender from "../../../components/tienda/productos/buscarParaVender.vue";
@@ -547,6 +550,8 @@ export default {
         BuscarParaVender,
         VentaListaVenta,
         MostrarPrecio,
+        VentaBusqueda,
+        VentaCarrito,
     },
     mounted() {},
     data: () => ({
@@ -555,8 +560,10 @@ export default {
         isProcesed: false,
         saved: false,
         isDiscount: false,
+        colores: ["purple", "orange", "teal", "pink", "cyan"],
         carrito: [],
         venta: {
+            articulos: 0,
             cliente: 0,
             costo: 0,
             ganancia: 0,
@@ -580,34 +587,11 @@ export default {
                 this.$refs.descm.$refs.input.focus();
             }, 50);
         },
-        agregarProducto(e) {
-            let codCarrito = e.carrito;
-
-            let index = this.carrito.findIndex((e) => e.carrito == codCarrito);
-
-            if (index >= 0) {
-                this.carrito[index].cantidad =
-                    parseFloat(this.carrito[index].cantidad) + e.cantidad;
-            } else {
-                this.carrito.unshift(e);
-            }
-            index = this.carrito.findIndex((e) => e.carrito == codCarrito);
-            ///this.aplicarDescuento(index);
+        actualizar() {
+            this.calcularTotales();
         },
-        suma(cantidad) {
-            if (this.carrito.length > 0) {
-                this.carrito[0].cantidad += cantidad;
-                this.aplicarDescuento(0);
-            }
-        },
-        multi(cantidad) {
-            if (this.carrito.length > 0) {
-                this.carrito[0].cantidad = cantidad;
-                this.aplicarDescuento(0);
-            }
-        },
-
         aplicarDescuento(index) {
+            return;
             let producto = JSON.parse(JSON.stringify(this.carrito[index]));
 
             let precios = producto.producto.precios;
@@ -661,7 +645,6 @@ export default {
                 this.$refs.efectivo.$refs.input.focus();
             }, 50);
         },
-
         calcularTotales() {
             this.venta.articulos = 0;
             this.venta.subtotal = 0;
@@ -670,22 +653,21 @@ export default {
             this.venta.costo = 0;
 
             this.carrito.forEach((e) => {
-                this.venta.articulos += e.cantidad;
-                this.venta.subtotal += e.cantidad * e.precio;
-
+                this.venta.articulos =
+                    this.venta.articulos + parseInt(e.carrito);
+                this.venta.subtotal +=
+                    parseInt(e.carrito) * parseFloat(e.precio);
                 this.venta.costo +=
-                    e.cantidad * parseFloat(e.producto.costo).toFixed(2);
-                e.descuentos.forEach((d) => {
-                    this.venta.ofertas =
-                        this.venta.ofertas + d.descuento * d.cantidad;
-                });
+                    parseInt(e.cantidad) *
+                    parseFloat(e.producto.costo).toFixed(2);
             });
+
             this.venta.total =
                 this.venta.subtotal -
                 ((parseFloat(this.venta.ofertas) || 0) +
                     (parseFloat(this.venta.descuento) || 0));
 
-            this.venta.ganancia = this.total - this.venta.costo;
+            //this.venta.ganancia = this.total - this.venta.costo;
         },
         async finalizarImprimir() {
             this.isProcesed = true;
