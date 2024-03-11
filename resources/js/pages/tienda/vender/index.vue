@@ -1,10 +1,23 @@
 <template>
     <div>
-        <v-navigation-drawer permanent app right width="500">
+        <v-navigation-drawer
+            v-model="drawer"
+            :permanent="$vuetify.breakpoint.mdAndUp"
+            app
+            right
+            :width="$vuetify.breakpoint.mdAndUp ? 500 : 400"
+        >
             <template v-slot:prepend>
                 <v-card tile>
                     <v-card-text>
                         <v-list-item>
+                            <v-list-item-action
+                                v-if="!$vuetify.breakpoint.mdAndUp"
+                            >
+                                <v-btn icon @click="drawer = !drawer">
+                                    <v-icon>mdi-chevron-left</v-icon>
+                                </v-btn>
+                            </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-subtitle>
                                     C/F
@@ -21,25 +34,23 @@
                 </v-card>
                 <v-divider></v-divider>
             </template>
-            <template v-slot:default ref="content">
-                <div
-                    v-if="carrito.length == 0"
-                    class="d-flex justify-center align-center flex-column"
-                    style="height: 250px"
-                >
-                    <v-icon size="100" class="grey--text">
-                        mdi-cart-variant
-                    </v-icon>
-                    <br />
-                    <span> Agregar productos al carrito </span>
-                </div>
-                <venta-carrito
-                    ref="carrito"
-                    @update="actualizar()"
-                    :colores="colores"
-                    v-model="carrito"
-                ></venta-carrito>
-            </template>
+            <div
+                v-if="carrito.length == 0"
+                class="d-flex justify-center align-center flex-column"
+                style="height: 250px"
+            >
+                <v-icon size="100" class="grey--text">
+                    mdi-cart-variant
+                </v-icon>
+                <br />
+                <span> Agregar productos al carrito </span>
+            </div>
+            <venta-carrito
+                ref="carrito"
+                @update="actualizar()"
+                :colores="colores"
+                v-model="carrito"
+            ></venta-carrito>
 
             <template v-slot:append>
                 <v-card class="mx-2 rounded-lg mb-2" elevation="2">
@@ -113,6 +124,18 @@
                 </div>
             </template>
         </v-navigation-drawer>
+        <v-btn
+            v-if="!$vuetify.breakpoint.mdAndUp"
+            fab
+            @click="drawer = !drawer"
+            color="primary"
+            fixed
+            right
+            bottom
+            x-large
+        >
+            <v-icon>mdi-cart</v-icon>
+        </v-btn>
 
         <v-container>
             <v-row dense>
@@ -378,8 +401,18 @@ export default {
         VentaBusqueda,
         VentaCarrito,
     },
-    mounted() {},
+    beforeMount() {
+        if (this.$vuetify.breakpoint.smAndDown) {
+            this.drawer = false;
+        }
+    },
+    mounted() {
+        let div = document.getElementsByClassName(
+            "v-navigation-drawer__content"
+        );
+    },
     data: () => ({
+        drawer: true,
         isLoading: false,
         isEnded: false,
         isProcesed: false,
@@ -501,6 +534,7 @@ export default {
                 content[0].scrollTop = content[0].scrollHeight;
             });
         },
+
         async finalizarImprimir() {
             this.isProcesed = true;
             await this.$axios
@@ -546,14 +580,6 @@ export default {
                 });
             this.isProcesed = false;
         },
-        limpiar() {
-            this.carrito = [];
-            this.venta.efectivo = 0;
-            this.venta.cambio = 0;
-            this.isEnded = false;
-            this.isProcesed = false;
-            this.calcularTotales();
-        },
     },
 
     computed: {
@@ -587,5 +613,29 @@ export default {
 <style scoped>
 .right-input >>> input {
     text-align: right;
+}
+.shadow-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px; /* Ajusta la altura de la sombra según sea necesario */
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0) 100%
+    ) !important;
+}
+.shadow-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 10px; /* Ajusta la altura de la sombra según sea necesario */
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0) 100%
+    ) !important;
 }
 </style>

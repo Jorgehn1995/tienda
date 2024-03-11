@@ -3,9 +3,10 @@
         <busqueda-text-field
             prefix="v_search"
             :elevation="0"
+            :actions="false"
         ></busqueda-text-field>
         <div
-            style="height: calc(100vh - 250px); overflow-y: auto"
+            :style="'height: calc(100vh - ' + height + '); overflow-y: auto'"
             class="px-1"
             ref="panel"
         >
@@ -368,6 +369,9 @@ export default {
         },
         search() {
             return this.$route.query["v_search"];
+        },
+        height() {
+            return this.$vuetify.breakpoint.xsOnly ? "320px" : "250px";
         },
     },
     watch: {

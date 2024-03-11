@@ -25,8 +25,8 @@
                         </v-text-field>
                     </v-col>
 
-                    <v-col cols="6" sm="2">
-                        <div class="d-flex justify-center align-center">
+                    <v-col :cols="actions ? 6 : 12" :sm="actions ? 2 : 4">
+                        <div class="d-flex justify-center align-center mb-2">
                             <v-btn
                                 outlined
                                 block
@@ -46,6 +46,7 @@
                         cols="6"
                         sm="2"
                         class="d-flex justify-center py-0 align-center"
+                        v-if="actions"
                     >
                         <slot> </slot>
                     </v-col>
@@ -83,6 +84,10 @@ export default {
             default: 3,
         },
         outlined: {
+            type: Boolean,
+            default: true,
+        },
+        actions: {
             type: Boolean,
             default: true,
         },
