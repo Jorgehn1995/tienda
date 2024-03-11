@@ -21,24 +21,25 @@
                 </v-card>
                 <v-divider></v-divider>
             </template>
-
-            <venta-carrito
-                @update="actualizar()"
-                :colores="colores"
-                v-model="carrito"
-            ></venta-carrito>
-
-            <div
-                v-if="carrito.length == 0"
-                class="d-flex justify-center align-center flex-column"
-                style="height: 250px"
-            >
-                <v-icon size="100" class="grey--text">
-                    mdi-cart-variant
-                </v-icon>
-                <br />
-                <span> Agregar productos al carrito </span>
-            </div>
+            <template v-slot:default ref="content">
+                <div
+                    v-if="carrito.length == 0"
+                    class="d-flex justify-center align-center flex-column"
+                    style="height: 250px"
+                >
+                    <v-icon size="100" class="grey--text">
+                        mdi-cart-variant
+                    </v-icon>
+                    <br />
+                    <span> Agregar productos al carrito </span>
+                </div>
+                <venta-carrito
+                    ref="carrito"
+                    @update="actualizar()"
+                    :colores="colores"
+                    v-model="carrito"
+                ></venta-carrito>
+            </template>
 
             <template v-slot:append>
                 <v-card class="mx-2 rounded-lg mb-2" elevation="2">
@@ -492,6 +493,13 @@ export default {
                     (parseFloat(this.venta.descuento) || 0));
 
             //this.venta.ganancia = this.total - this.venta.costo;
+            let content = document.getElementsByClassName(
+                "v-navigation-drawer__content"
+            );
+
+            this.$nextTick(() => {
+                content[0].scrollTop = content[0].scrollHeight;
+            });
         },
         async finalizarImprimir() {
             this.isProcesed = true;
