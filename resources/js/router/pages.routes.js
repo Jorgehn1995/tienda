@@ -134,13 +134,14 @@ export default [
         },
     },
     {
-        path: "/tienda/vender",
+        path: "/tienda/vender/cajas/:idcaja",
         name: "",
-        component: () => import("@/pages/tienda/vender/index.vue"),
+        component: () => import("@/pages/tienda/vender/cajas/_idcaja.vue"),
         meta: {
             layout: "autorizado",
         },
     },
+
     /**
      * REPORTES
      */

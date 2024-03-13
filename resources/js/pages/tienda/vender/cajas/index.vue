@@ -144,7 +144,7 @@ export default {
         async vender(id, nombre) {
             localStorage.setItem(this.keys.id, id);
             localStorage.setItem(this.keys.nombre, nombre);
-            this.$router.push("/tienda/vender/caja/" + id);
+            this.$router.push("/tienda/vender/cajas/" + id);
         },
     },
     computed: {

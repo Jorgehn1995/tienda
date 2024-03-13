@@ -20,7 +20,7 @@
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-subtitle>
-                                    C/F
+                                    {{ cajaNombre }}
                                 </v-list-item-subtitle>
                                 <v-list-item-title class="text-h6">
                                     Cliente Final
@@ -377,9 +377,7 @@
                     ¿Cómo desea proceder?
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn @click="nuevaVenta()" outlined>
-                        Nueva Venta
-                    </v-btn>
+                    <v-btn @click="nuevaVenta()" outlined> Nueva Venta </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" outlined>Generar Factura</v-btn>
                     <v-btn color="primary" dark>Generar Recibo</v-btn>
@@ -392,14 +390,14 @@
 </template>
 
 <script>
-import VentaCarrito from "../../../components/venta/ventaCarrito.vue";
-import VentaBusqueda from "../../../components/venta/ventaBusqueda.vue";
-import MostrarPrecio from "../../../components/productos/mostrarPrecio.vue";
-import VentaListaVenta from "../../../components/tienda/venta/ventaListaVenta.vue";
-import BuscarParaVender from "../../../components/tienda/productos/buscarParaVender.vue";
+import VentaCarrito from "../../../../components/venta/ventaCarrito.vue";
+import VentaBusqueda from "../../../../components/venta/ventaBusqueda.vue";
+import MostrarPrecio from "../../../../components/productos/mostrarPrecio.vue";
+import VentaListaVenta from "../../../../components/tienda/venta/ventaListaVenta.vue";
+import BuscarParaVender from "../../../../components/tienda/productos/buscarParaVender.vue";
 
-import ProductosPrecios from "../../../components/tienda/productos/productosPrecios.vue";
-import VNiceModal from "../../../components/tienda/generales/v-nice-modal.vue";
+import ProductosPrecios from "../../../../components/tienda/productos/productosPrecios.vue";
+import VNiceModal from "../../../../components/tienda/generales/v-nice-modal.vue";
 export default {
     components: {
         VNiceModal,
@@ -419,6 +417,7 @@ export default {
         let div = document.getElementsByClassName(
             "v-navigation-drawer__content"
         );
+        this.verificarCaja();
     },
     data: () => ({
         drawer: true,
@@ -451,6 +450,18 @@ export default {
         },
     }),
     methods: {
+        verificarCaja() {
+            this.$axios
+                .get("/cajas/" + this.idcaja)
+                .then((r) => {
+                    if (!r.data.idcaja) {
+                        this.$router.push("/tienda/vender/cajas");
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
         descuentoManual() {
             this.isDiscount = !this.isDiscount;
             setTimeout(() => {
@@ -579,6 +590,12 @@ export default {
         },
         efectivo() {
             return this.venta.efectivo;
+        },
+        idcaja() {
+            return this.$route.params.idcaja;
+        },
+        cajaNombre() {
+            return localStorage.getItem("CAJA_NOMBRE");
         },
     },
     watch: {
