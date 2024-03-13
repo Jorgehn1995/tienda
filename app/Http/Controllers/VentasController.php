@@ -25,6 +25,7 @@ class VentasController extends Controller
             $venta = new Venta();
             $venta->cajero_nombre = Auth::User()->nombre;
             $venta->documento = $doc;
+            $venta->idcaja = $v["idcaja"];
             $venta->costos = $v["costo"];
             $venta->ganancias = $v["ganancia"];
             $venta->subtotal = $v["subtotal"];

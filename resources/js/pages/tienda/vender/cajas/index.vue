@@ -115,7 +115,7 @@ export default {
             await this.$axios
                 .get("/cajas/" + this.caja.id)
                 .then((result) => {
-                    if (result.data.idcaja) {
+                    if (result.data.idcaja && !result.data.cierre) {
                         this.vender(result.data.idcaja, result.data.nombre);
                     }
                     this.caja.fecha = result.data.fecha;

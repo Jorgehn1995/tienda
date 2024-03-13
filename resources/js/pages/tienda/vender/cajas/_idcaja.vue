@@ -430,6 +430,7 @@ export default {
         colores: ["purple", "orange", "teal", "pink", "cyan"],
         carrito: [],
         venta: {
+            idcaja: 0,
             articulos: 0,
             cliente: 0,
             costo: 0,
@@ -454,8 +455,10 @@ export default {
             this.$axios
                 .get("/cajas/" + this.idcaja)
                 .then((r) => {
-                    if (!r.data.idcaja) {
+                    if (!r.data.idcaja || r.data.cierre) {
                         this.$router.push("/tienda/vender/cajas");
+                    } else {
+                        this.venta.idcaja = r.data.idcaja;
                     }
                 })
                 .catch((err) => {
@@ -541,7 +544,9 @@ export default {
         },
         limpiar() {
             this.carrito = [];
+            let idcaja = this.venta.idcaja;
             this.venta = {
+                idcaja: idcaja,
                 articulos: 0,
                 cliente: 0,
                 costo: 0,
