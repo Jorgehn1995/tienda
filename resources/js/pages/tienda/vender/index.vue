@@ -116,10 +116,10 @@
                         dark
                         block
                         color="teal"
-                        href="https://store.vuetifyjs.com/products/lux-admin-pro/"
+                        @click="finalizar"
                         target="_blank"
                     >
-                        Procesar Venta
+                        Procesar Venta [CTRL + ENTER]
                     </v-btn>
                 </div>
             </template>
@@ -145,6 +145,7 @@
 
                         <v-card-text class="pb-0">
                             <venta-busqueda
+                                ref="busqueda"
                                 :colores="colores"
                                 v-model="carrito"
                             ></venta-busqueda>
@@ -154,49 +155,47 @@
             </v-row>
         </v-container>
         <v-dialog v-model="isEnded" max-width="400">
-            <v-card>
+            <v-card class="rounded-lg">
                 <v-card-title> Finalizar Venta </v-card-title>
                 <v-card-text>
-                    <v-list>
+                    <v-list dense>
                         <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
+                            <v-list-item-subtitle>
                                 Articulos
                             </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
+                            <v-list-item-title class="text-right grey--text">
                                 {{ venta.articulos }}
                             </v-list-item-title>
                         </v-list-item>
                         <v-divider inset></v-divider>
                         <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
+                            <v-list-item-subtitle>
                                 Subtotal
                             </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                Q {{ venta.subtotal }}
+                            <v-list-item-title class="text-right grey--text">
+                                <mostrar-precio
+                                    v-model="venta.subtotal"
+                                ></mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
+                            <v-list-item-subtitle>
                                 Descuento Ofertas
                             </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                Q {{ venta.ofertas }}
+                            <v-list-item-title class="text-right grey--text">
+                                <mostrar-precio
+                                    v-model="venta.ofertas"
+                                ></mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
+                            <v-list-item-subtitle>
                                 Descuento Manual
                             </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                Q {{ venta.descuento }}
+                            <v-list-item-title class="text-right grey--text">
+                                <mostrar-precio
+                                    v-model="venta.descuento"
+                                ></mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>
                         <v-divider></v-divider>
@@ -206,14 +205,29 @@
                             </v-list-item-subtitle>
                             <v-list-item-title class="text-right">
                                 <div class="d-flex flex-column">
-                                    <div>
-                                        <span class="text-h4">Q</span>
-                                        <span
-                                            class="green--text text--darken-2 text-h2"
-                                        >
-                                            {{ venta.total }}
-                                        </span>
-                                    </div>
+                                    <mostrar-precio v-model="venta.total">
+                                        <template v-slot:moneda>
+                                            <span
+                                                class="text-h5 font-weight-bold teal--text"
+                                            >
+                                                Q
+                                            </span>
+                                        </template>
+                                        <template v-slot:entero="{ entero }">
+                                            <span
+                                                class="text-h4 font-weight-bold teal--text"
+                                            >
+                                                {{ entero }}.
+                                            </span>
+                                        </template>
+                                        <template v-slot:decimal="{ decimal }">
+                                            <span
+                                                class="text-h5 font-weight-bold teal--text"
+                                            >
+                                                {{ decimal }}
+                                            </span>
+                                        </template>
+                                    </mostrar-precio>
                                 </div>
                             </v-list-item-title>
                         </v-list-item>
@@ -230,7 +244,7 @@
                                     type="number"
                                     prefix="Q"
                                     placeholder="##.##"
-                                    class="text-h6 elevation-0 grey--text right-input"
+                                    class="text-h6 elevation-0 grey--text right-input rounded-lg"
                                 ></v-text-field>
                             </v-list-item-title>
                         </v-list-item>
@@ -239,22 +253,14 @@
                                 Cambio
                             </v-list-item-subtitle>
                             <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
+                                class="text-right text-h6 grey--text"
                             >
-                                Q {{ venta.cambio }}
+                                <mostrar-precio
+                                    v-model="venta.cambio"
+                                ></mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>
                     </v-list>
-                    <v-btn
-                        block
-                        large
-                        color="green"
-                        text
-                        :loading="isProcesed"
-                        @click="procesar()"
-                    >
-                        Finalizar e Imprimir
-                    </v-btn>
                     <v-btn
                         block
                         large
@@ -268,14 +274,13 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-        <div v-shortkey="['ctrl', 'enter']" @shortkey="atajoFinalizar()"></div>
-        <div v-shortkey="['ctrl', 'm']" @shortkey="descuentoManual()"></div>
-        <v-dialog v-model="isDiscount" max-width="350">
-            <v-card>
+        <v-dialog v-model="isDiscount" max-width="400">
+            <v-card class="rounded-lg">
                 <v-card-title> Descuento </v-card-title>
                 <v-card-text>
                     <p>Ingresa el descuento en quetzales</p>
                     <v-text-field
+                        class="rounded-lg"
                         type="number"
                         ref="descm"
                         outlined
@@ -285,78 +290,74 @@
                     <v-divider></v-divider>
                     <v-list>
                         <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
+                            <v-list-item-subtitle>
                                 Articulos
                             </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
+                            <v-list-item-title class="text-right grey--text">
                                 {{ venta.articulos }}
                             </v-list-item-title>
                         </v-list-item>
                         <v-divider inset></v-divider>
                         <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
+                            <v-list-item-subtitle>
                                 Subtotal
                             </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                Q {{ venta.subtotal }}
+                            <v-list-item-title class="text-right grey--text">
+                                <mostrar-precio
+                                    v-model="venta.subtotal"
+                                ></mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>
                         <v-list-item @click="isDiscount = true">
-                            <v-list-item-subtitle class="text-h6">
+                            <v-list-item-subtitle>
                                 Descuento Ofertas
                             </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                Q {{ venta.ofertas }}
+                            <v-list-item-title class="text-right grey--text">
+                                <mostrar-precio
+                                    v-model="venta.ofertas"
+                                ></mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-subtitle class="text-h6">
+                            <v-list-item-subtitle>
                                 Descuento Manual
                             </v-list-item-subtitle>
-                            <v-list-item-title
-                                class="text-right text-h6 grey--text pr-3"
-                            >
-                                Q {{ venta.descuento }}
-                            </v-list-item-title>
-                        </v-list-item>
-                        <v-list-item v-if="false">
-                            <v-list-item-subtitle class="text-h6">
-                                Descuento
-                            </v-list-item-subtitle>
-                            <v-list-item-title class="text-right">
-                                <v-text-field
+                            <v-list-item-title class="text-right grey--text">
+                                <mostrar-precio
                                     v-model="venta.descuento"
-                                    outlined
-                                    min="0"
-                                    type="number"
-                                    prefix="Q"
-                                    placeholder="##.##"
-                                    class="text-h6 elevation-0 grey--text right-input"
-                                ></v-text-field>
+                                ></mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>
+
                         <v-divider></v-divider>
                         <v-list-item>
                             <v-list-item-subtitle class="align-right text-h6">
                                 TOTAL
                             </v-list-item-subtitle>
                             <v-list-item-title class="text-right">
-                                <div class="d-flex flex-column">
-                                    <div>
-                                        <span class="text-h4">Q</span>
+                                <mostrar-precio v-model="venta.total">
+                                    <template v-slot:moneda>
                                         <span
-                                            class="green--text text--darken-2 text-h2"
+                                            class="text-h5 font-weight-bold teal--text"
                                         >
-                                            {{ venta.total }}
+                                            Q
                                         </span>
-                                    </div>
-                                </div>
+                                    </template>
+                                    <template v-slot:entero="{ entero }">
+                                        <span
+                                            class="text-h4 font-weight-bold teal--text"
+                                        >
+                                            {{ entero }}.
+                                        </span>
+                                    </template>
+                                    <template v-slot:decimal="{ decimal }">
+                                        <span
+                                            class="text-h5 font-weight-bold teal--text"
+                                        >
+                                            {{ decimal }}
+                                        </span>
+                                    </template>
+                                </mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>
                     </v-list>
@@ -366,19 +367,27 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-        <v-bottom-navigation app v-if="false">
-            <v-btn
-                large
-                color="primary"
-                tile
-                dark
-                style="white--text"
-                @click="finalizar()"
-            >
-                <span class="white--text"> PROCESAR VENTA </span>
-                <span class="white--text"><strong>[CTRL+ENTER]</strong></span>
-            </v-btn>
-        </v-bottom-navigation>
+        <v-dialog v-model="isDone" max-width="400">
+            <v-card class="rounded-lg">
+                <v-card-title> Venta Procesada </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                    Su venta se ha procesado con exito
+                    <br />
+                    ¿Cómo desea proceder?
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn @click="nuevaVenta()" outlined>
+                        Nueva Venta
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" outlined>Generar Factura</v-btn>
+                    <v-btn color="primary" dark>Generar Recibo</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <div v-shortkey="['ctrl', 'enter']" @shortkey="atajoFinalizar()"></div>
+        <div v-shortkey="['ctrl', 'm']" @shortkey="descuentoManual()"></div>
     </div>
 </template>
 
@@ -415,6 +424,7 @@ export default {
         drawer: true,
         isLoading: false,
         isEnded: false,
+        isDone: false,
         isProcesed: false,
         saved: false,
         isDiscount: false,
@@ -432,6 +442,9 @@ export default {
             efectivo: 0,
             cambio: 0,
         },
+        proceso: {
+            documento: "",
+        },
         error: {
             status: false,
             msg: "",
@@ -448,49 +461,11 @@ export default {
         actualizar() {
             this.calcularTotales();
         },
-        aplicarDescuento(index) {
-            return;
-            let producto = JSON.parse(JSON.stringify(this.carrito[index]));
-
-            let precios = producto.producto.precios;
-            producto.descuentos = [];
-
-            let fecha_estado = false;
-            let limite = -1;
-            let cantidad_inicial = producto.cantidad;
-            let precio_inicial = producto.cantidad * producto.precio;
-            precios.forEach((p) => {
-                fecha_estado =
-                    this.$moment(this.$moment().format("Y-M-D")).isSameOrBefore(
-                        this.$moment(p.fecha).format("Y-M-D")
-                    ) || !p.fecha;
-                if (fecha_estado) {
-                    let aplica = Math.floor(cantidad_inicial / p.cantidad);
-                    if (aplica >= 1) {
-                        if (aplica > p.limite && limite > 0) {
-                            aplica = p.limite;
-                        }
-                        let descuento = p.cantidad * producto.precio - p.precio;
-                        let restantes = cantidad_inicial - aplica * p.cantidad;
-                        let info = {
-                            texto: p.nombre,
-                            descuento: descuento,
-                            cantidad: aplica,
-                            unidades: p.cantidad,
-                            limite: p.limite,
-                        };
-                        producto.descuentos.push(info);
-                        cantidad_inicial = restantes;
-                    }
-                }
-            });
-            this.carrito[index].descuentos = producto.descuentos;
-        },
         atajoFinalizar() {
             if (!this.isEnded) {
                 this.finalizar();
             } else {
-                this.finalizarImprimir();
+                this.procesar();
             }
         },
         finalizar() {
@@ -516,8 +491,7 @@ export default {
                 this.venta.subtotal +=
                     parseInt(e.carrito) * parseFloat(e.precio);
                 this.venta.costo +=
-                    parseInt(e.cantidad) *
-                    parseFloat(e.producto.costo).toFixed(2);
+                    parseInt(e.carrito) * parseFloat(e.costo).toFixed(2);
             });
 
             this.venta.total =
@@ -525,7 +499,7 @@ export default {
                 ((parseFloat(this.venta.ofertas) || 0) +
                     (parseFloat(this.venta.descuento) || 0));
 
-            //this.venta.ganancia = this.total - this.venta.costo;
+            this.venta.ganancia = this.venta.total - this.venta.costo;
             let content = document.getElementsByClassName(
                 "v-navigation-drawer__content"
             );
@@ -535,7 +509,7 @@ export default {
             });
         },
 
-        async finalizarImprimir() {
+        async procesar() {
             this.isProcesed = true;
             await this.$axios
                 .post("/ventas/vender", {
@@ -543,9 +517,10 @@ export default {
                     carrito: this.carrito,
                 })
                 .then((result) => {
-                    this.$axios.get("/impresiones/recibos/abrir").then((e) => {
-                        this.limpiar();
-                    });
+                    this.proceso = result.data;
+                    this.isEnded = false;
+                    this.isDone = true;
+                    this.limpiar();
                 })
                 .catch((err) => {
                     console.log("error");
@@ -553,7 +528,23 @@ export default {
 
             this.isProcesed = false;
         },
-        async procesar() {
+        limpiar() {
+            this.carrito = [];
+            this.venta = {
+                articulos: 0,
+                cliente: 0,
+                costo: 0,
+                ganancia: 0,
+                subtotal: 0,
+                ofertas: 0,
+                descuento: 0,
+                total: 0,
+                efectivo: 0,
+                cambio: 0,
+            };
+            this.$route.replace(this.$route.path);
+        },
+        async generarRecibo() {
             this.isProcesed = true;
             await this.$axios
                 .post("/ventas/vender", {
@@ -568,7 +559,7 @@ export default {
                 });
             this.isProcesed = false;
         },
-        async recibo(id) {
+        async generarFactura(id) {
             this.isProcesed = true;
             await this.$axios
                 .post("/impresiones/recibos/" + id)

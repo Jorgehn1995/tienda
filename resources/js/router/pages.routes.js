@@ -126,6 +126,14 @@ export default [
      * VENDER
      */
     {
+        path: "/tienda/vender/cajas",
+        name: "",
+        component: () => import("@/pages/tienda/vender/cajas/index.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
+    {
         path: "/tienda/vender",
         name: "",
         component: () => import("@/pages/tienda/vender/index.vue"),

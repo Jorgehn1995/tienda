@@ -17,49 +17,49 @@ class VentasController extends Controller
 
         try {
             DB::beginTransaction();
-            $t = $request->venta;
-            $c = $request->carrito;
+            $v = $request->venta;
+            $carrito = $request->carrito;
 
             $doc = strtoupper(uniqid());
 
             $venta = new Venta();
             $venta->cajero_nombre = Auth::User()->nombre;
             $venta->documento = $doc;
-            $venta->costos = $t["costo"];
-            $venta->ganancias = $t["ganancia"];
-            $venta->subtotal = $t["subtotal"];
-            $venta->descuento = $t["descuento"];
-            $venta->total = $t["total"];
-            $venta->promociones = $t["ofertas"];
-            $venta->efectivo = $t["efectivo"];
-            $venta->cambio = $t["cambio"];
-            $venta->articulos = $t["articulos"];
+            $venta->costos = $v["costo"];
+            $venta->ganancias = $v["ganancia"];
+            $venta->subtotal = $v["subtotal"];
+            $venta->descuento = $v["descuento"];
+            $venta->total = $v["total"];
+            $venta->promociones = $v["ofertas"];
+            $venta->efectivo = $v["efectivo"];
+            $venta->cambio = $v["cambio"];
+            $venta->articulos = $v["articulos"];
             $venta->save();
 
 
 
 
-            foreach ($c as $key => $producto) {
-                $id = $producto["carrito"];
+            foreach ($carrito as $key => $precio) {
+                $id = $precio["idprecio"];
 
                 $detalle = new Detalle();
                 $detalle->idventa = $venta->idventa;
-                $detalle->idprecio = $producto["idprecio"];
-                $detalle->idproducto = $producto["idproducto"];
-                $detalle->codigo = $producto["codigo"];
-                $detalle->nombre_producto = $producto["nombre"] . " " . $producto["marca"] . " " . $producto["dimension"];
-                $detalle->presentacion = $producto["presentacion"];
-                $detalle->cantidad = $producto["cantidad"];
-                $detalle->precio = $producto["precio"];
-                $detalle->total = $producto["cantidad"] * $producto["precio"];
-                $detalle->unidades_presentacion = $producto["unidades"];
+                $detalle->idprecio = $precio["idprecio"];
+                $detalle->idproducto = $precio["idproducto"];
+                $detalle->codigo = $precio["producto"]["codigo"];
+                $detalle->nombre_producto = $precio["producto"]["nombre"] . " " . $precio["producto"]["marca"] . " " . $precio["producto"]["dimension"];
+                $detalle->presentacion = $precio["nombre"];
+                $detalle->cantidad = $precio["cantidad"];
+                $detalle->precio = $precio["precio"];
+                $detalle->total = $precio["carrito"] * $precio["precio"];
+                $detalle->unidades_presentacion = $precio["cantidad"];
                 $detalle->unidades_vendidas = $detalle->unidades_presentacion * $detalle->cantidad;
-                $detalle->costo = $producto["costo"] * $producto["cantidad"];
+                $detalle->costo = $precio["costo"] * $precio["carrito"];
                 $detalle->ganancia = $detalle->total - $detalle->costo;
                 $detalle->save();
 
                 $precio = Precio::with("producto")->find($id);
-                $producto = Producto::with("precios")->find($producto["idproducto"]);
+                $producto = Producto::with("precios")->find($precio["idproducto"]);
                 $unidades = $precio->cantidad;
                 $cantidad = $detalle->cantidad;
 
