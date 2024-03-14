@@ -98,6 +98,14 @@ export default [
         },
     },
     {
+        path: "/tienda/productos/existencias",
+        name: "",
+        component: () => import("@/pages/tienda/productos/existencias.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
+    {
         path: "/tienda/productos/:idproducto",
         name: "",
         component: () => import("@/pages/tienda/productos/_idproducto.vue"),

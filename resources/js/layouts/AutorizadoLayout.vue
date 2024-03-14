@@ -57,7 +57,7 @@
                             color="primary"
                             v-shortkey="['f4']"
                             @shortkey="to('/tienda/vender')"
-                            to="/tienda/vender"
+                            to="/tienda/vender/cajas"
                         >
                             <span v-if="$vuetify.breakpoint.smAndDown">
                                 <v-icon> mdi-cart-outline </v-icon>

@@ -42,13 +42,10 @@
                         </div>
                     </v-col>
 
-                    <v-col
-                        cols="6"
-                        sm="2"
-                        class="d-flex justify-center py-0 align-center"
-                        v-if="actions"
-                    >
-                        <slot> </slot>
+                    <v-col cols="6" sm="2" v-if="actions">
+                        <div class="d-flex justify-center align-center mb-2">
+                            <slot> </slot>
+                        </div>
                     </v-col>
                 </v-row>
             </v-card-text>

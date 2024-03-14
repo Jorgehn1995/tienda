@@ -34,7 +34,10 @@ class ProductosController extends Controller
                     ->orWhere("existencia", "LIKE", $search->like);
             }
         }
-        $query->with("precios");
+        $query->with(["precios" => function ($query) {
+            $query->select("precios.*");
+            $query->selectRaw("0 as costo_nuevo, 0 as stock_nuevo, '' as vencimiento");
+        }]);
         $query->with(['vencimientos' => function ($query) {
             $query->orderBy("vencimiento", "desc");
             return $query->limit(5);

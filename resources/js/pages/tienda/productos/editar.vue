@@ -646,7 +646,6 @@ export default {
                     })
                     .catch((err) => {
                         console.log(err);
-                        //this.error.status = true;
                     });
                 this.isSaving = false;
             }

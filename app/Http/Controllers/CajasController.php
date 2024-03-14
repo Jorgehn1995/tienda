@@ -10,12 +10,14 @@ class CajasController extends Controller
 {
     public function ver(Request $request, $id)
     {
-        $caja = Caja::find($id);
+        $caja = Caja::whereDate("fecha", date("Y-m-d"))->where("idcaja", $id)->first();
+
         if (!$caja) {
             $caja = new Caja();
             $caja->usuario = Auth::User()->usuario;
             $caja->fecha = date("Y-m-d h:i:s");
         }
+
         return $caja;
     }
     public function crear(Request $request)

@@ -1,18 +1,27 @@
 <template>
     <div>
-        <busqueda-text-field prefix="productos_search">
-            <v-btn
-                dark
-                block
-                color="teal"
-                to="/tienda/productos/editar"
-                v-shortkey="['ctrl', 'l']"
-                :loading="isLoading"
-            >
-                Agregar [CTRL+A]
-                <v-icon right>mdi-plus</v-icon>
-            </v-btn>
-        </busqueda-text-field>
+        <v-card tile>
+            <v-card-text>
+                <busqueda-text-field
+                    :elevation="0"
+                    prefix="productos_search"
+                    class="mt-2"
+                >
+                    <v-btn
+                        dark
+                        block
+                        color="teal"
+                        to="/tienda/productos/editar"
+                        v-shortkey="['ctrl', 'l']"
+                        :loading="isLoading"
+                    >
+                        Agregar [CTRL+A]
+                        <v-icon right>mdi-plus</v-icon>
+                    </v-btn>
+                </busqueda-text-field>
+            </v-card-text>
+        </v-card>
+
         <v-container>
             <div class="d-flex flex-grow-1 flex-column">
                 <v-row class="flex-grow-0" dense>
