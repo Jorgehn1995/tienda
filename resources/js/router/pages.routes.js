@@ -199,6 +199,17 @@ export default [
             layout: "autorizado",
         },
     },
+    /**
+     * CAJAS
+     */
+    {
+        path: "/tienda/cajas",
+        name: "",
+        component: () => import("@/pages/tienda/cajas/index.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
 
     /**
      * REPORTES

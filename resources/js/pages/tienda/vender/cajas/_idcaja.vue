@@ -453,9 +453,9 @@ export default {
     methods: {
         verificarCaja() {
             this.$axios
-                .get("/cajas/" + this.idcaja)
+                .get("/cajas/disponibles/" + localStorage.getItem("CASH_ID"))
                 .then((r) => {
-                    if (!r.data.idcaja || r.data.cierre) {
+                    if (!r.data.idcaja) {
                         this.$router.push("/tienda/vender/cajas");
                     } else {
                         this.venta.idcaja = r.data.idcaja;

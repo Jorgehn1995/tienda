@@ -79,13 +79,12 @@
                     class="rounded-lg"
                     outlined
                     elevation="0"
-                    to="/tienda/productos"
                 >
                     <v-card-title>Ventas</v-card-title>
                     <v-divider></v-divider>
                     <v-card-text class="px-0 pt-0">
                         <v-list color="transparent">
-                            <v-list-item>
+                            <v-list-item to="/tienda/vender/cajas">
                                 <v-list-item-icon>
                                     <v-icon>mdi-cart-variant</v-icon>
                                 </v-list-item-icon>
@@ -99,7 +98,7 @@
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item>
+                            <v-list-item to="/tienda/cajas">
                                 <v-list-item-icon>
                                     <v-icon> mdi-safe </v-icon>
                                 </v-list-item-icon>

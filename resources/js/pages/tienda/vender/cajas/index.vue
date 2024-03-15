@@ -91,6 +91,7 @@ export default {
         },
         caja: {
             idcaja: "",
+            codigo: "",
             idusuario: 0,
             nombre: "",
             usuario: "",
@@ -106,16 +107,15 @@ export default {
     methods: {
         async init() {
             this.isLoading.init = true;
+            this.caja.codigo = localStorage.getItem("CASH_ID");
             if (localStorage.getItem(this.keys.id)) {
                 this.caja.id = localStorage.getItem(this.keys.id);
                 this.caja.nombre = localStorage.getItem(this.keys.nombre);
-            } else {
-                this.caja.id == "new";
             }
             await this.$axios
-                .get("/cajas/" + this.caja.id)
+                .get("/cajas/disponibles/" + this.caja.codigo)
                 .then((result) => {
-                    if (result.data.idcaja && !result.data.cierre) {
+                    if (result.data.idcaja) {
                         this.vender(result.data.idcaja, result.data.nombre);
                     }
                     this.caja.fecha = result.data.fecha;

@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth:api']], function () {
      */
     Route::get('/cajas', [CajasController::class, 'index'])->name('api.presentaciones.index');
     Route::get('/cajas/{id}', [CajasController::class, 'ver'])->name('api.cajas.ver');
+    Route::get('/cajas/disponibles/{codigo}', [CajasController::class, 'disponibles'])->name('api.cajas.ver');
     Route::post('/cajas', [CajasController::class, 'crear'])->name('api.cajas.crear');
 
 
