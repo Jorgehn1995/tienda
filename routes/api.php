@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth:api']], function () {
      * VENCIMIENTOS
      */
     Route::get('/vencimientos', [VencimientosController::class, 'index'])->name('api.vencimientos.index');
+    Route::post('/vencimientos', [VencimientosController::class, 'revisar'])->name('api.vencimientos.index');
 
     /**
      * CAJAS

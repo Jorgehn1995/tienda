@@ -1,29 +1,41 @@
 <template>
     <div>
         <v-card tile>
-            <v-card-text>
+            <v-card-text class="mb-0 pb-0">
                 <busqueda-text-field
                     :elevation="0"
                     prefix="vencimientos_search"
                     label="Fecha a Analizar"
                     class="mt-2"
                     type="date"
+                    :actions="false"
                 >
-                    <v-btn
-                        dark
-                        block
-                        outlined
-                        color="info"
-                        to="/tienda/productos/editar"
-                        v-shortkey="['ctrl', 'l']"
-                        :loading="isLoading"
-                    >
-                        Imprimir
-                        <v-icon right>mdi-printer</v-icon>
-                    </v-btn>
                 </busqueda-text-field>
             </v-card-text>
+            <v-tabs color="primary" centered>
+                <v-tab
+                    :to="
+                        '/tienda/productos/vencimientos/pendientes?vencimientos_search=' +
+                        this.$route.query.vencimientos_search
+                    "
+                    replace
+                >
+                    <v-icon left>mdi-progress-clock</v-icon>
+                    Pendientes
+                </v-tab>
+                <v-tab
+                    :to="
+                        '/tienda/productos/vencimientos/revisados?vencimientos_search=' +
+                        this.$route.query.vencimientos_search
+                    "
+                    replace
+                >
+                    <v-icon left>mdi-clipboard-check-outline</v-icon>
+                    Revisados
+                </v-tab>
+            </v-tabs>
         </v-card>
+
         <router-view :fecha="formato_fecha"></router-view>
     </div>
 </template>

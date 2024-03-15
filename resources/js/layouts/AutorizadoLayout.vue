@@ -89,7 +89,7 @@ import ToolbarApps from "../components/toolbar/ToolbarApps";
 import ToolbarLanguage from "../components/toolbar/ToolbarLanguage";
 import ToolbarCurrency from "../components/toolbar/ToolbarCurrency";
 import ToolbarNotifications from "../components/toolbar/ToolbarNotifications";
-
+import { v4 as uuidv4 } from "uuid";
 export default {
     components: {
         MainMenu,
@@ -103,13 +103,17 @@ export default {
         if (this.$cookie.get("auth") == "false") {
             this.$router.push("/");
         }
+        let unique = localStorage.getItem("CASH_ID");
+        if (!unique) {
+            localStorage.setItem("CASH_ID", uuidv4());
+        }
     },
     data() {
         return {
             drawer: null,
             showSearch: false,
-
             navigation: config.navigation,
+            uuidv4,
         };
     },
     computed: {

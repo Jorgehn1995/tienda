@@ -207,18 +207,9 @@
                                                 <div
                                                     class="d-flex justify-center align-center"
                                                 >
-                                                    <v-btn
-                                                        class="mt-3 mb-1"
-                                                        outlined
-                                                        :to="
-                                                            '/tienda/productos/existencias?productos_search=idproducto:' +
-                                                            item.idproducto
-                                                        "
-                                                    >
-                                                        <v-icon
-                                                            >mdi-clipboard-check-outline</v-icon
-                                                        >
-                                                    </v-btn>
+                                                    <vencimientos-revision
+                                                        v-model="item"
+                                                    ></vencimientos-revision>
                                                 </div>
                                             </v-col>
                                         </v-row>
@@ -234,11 +225,12 @@
 </template>
 
 <script>
+import VencimientosRevision from "../../../../components/tienda/vencimientos/vencimientosRevision.vue";
 import moment from "moment";
 
 import TListar from "../../../../components/tienda/generales/t-listar.vue";
 export default {
-    components: { TListar },
+    components: { TListar, VencimientosRevision },
     props: {
         fecha: {
             type: String,

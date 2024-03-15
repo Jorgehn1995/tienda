@@ -142,6 +142,17 @@ export default [
                     layout: "autorizado",
                 },
             },
+            {
+                path: "revisados",
+                name: "",
+                component: () =>
+                    import(
+                        "@/pages/tienda/productos/vencimientos/revisados.vue"
+                    ),
+                meta: {
+                    layout: "autorizado",
+                },
+            },
         ],
     },
     {
