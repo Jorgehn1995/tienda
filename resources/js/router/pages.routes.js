@@ -1,3 +1,5 @@
+import moment from "moment/moment";
+
 export default [
     /**
      * RUTAS PARA EL SISTEMA
@@ -104,6 +106,43 @@ export default [
         meta: {
             layout: "autorizado",
         },
+    },
+    {
+        path: "/tienda/productos/vencimientos",
+        name: "",
+        component: () => import("@/pages/tienda/productos/vencimientos.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+        children: [
+            {
+                path: "/",
+                redirect: (to) => {
+                    // the function receives the target route as the argument
+                    // we return a redirect path/location here.
+                    return {
+                        path: "pendientes",
+                        query: {
+                            vencimientos_search: moment().format("Y-MM-DD"),
+                        },
+                    };
+                },
+                meta: {
+                    layout: "autorizado",
+                },
+            },
+            {
+                path: "pendientes",
+                name: "",
+                component: () =>
+                    import(
+                        "@/pages/tienda/productos/vencimientos/pendientes.vue"
+                    ),
+                meta: {
+                    layout: "autorizado",
+                },
+            },
+        ],
     },
     {
         path: "/tienda/productos/:idproducto",

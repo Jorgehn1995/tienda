@@ -8,6 +8,7 @@ use App\Http\Controllers\PresentacionesController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\VencimientosController;
 use App\Http\Controllers\VentasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -82,6 +83,11 @@ Route::group(['middleware' => ['auth:api']], function () {
      * Presentaciones
      */
     Route::get('/presentaciones', [PresentacionesController::class, 'index'])->name('api.presentaciones.index');
+
+    /**
+     * VENCIMIENTOS
+     */
+    Route::get('/vencimientos', [VencimientosController::class, 'index'])->name('api.vencimientos.index');
 
     /**
      * CAJAS

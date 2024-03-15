@@ -5,11 +5,12 @@
                 <v-row dense>
                     <v-col cols="12" sm="8" class="py-0">
                         <v-text-field
+                            :type="type"
                             class="rounded-lg"
                             outlined
                             height="60"
                             style="font-size: 25px"
-                            label="Código de Barras [CTRL+Q]"
+                            :label="label + ' [CTRL+Q]'"
                             v-shortkey="['ctrl', 'q']"
                             @shortkey.native="skBuscarCodigo"
                             v-model="search"
@@ -88,12 +89,27 @@ export default {
             type: Boolean,
             default: true,
         },
+        autofocus: {
+            type: Boolean,
+            default: true,
+        },
+        type: {
+            type: String,
+            default: "text",
+        },
+        label: {
+            type: String,
+            default: "Código de Barras",
+        },
     },
     mounted() {
         if (this.final) {
             this.search = this.final;
         }
         this.ready = true;
+        if (this.autofocus) {
+            this.skBuscarCodigo();
+        }
     },
     data: () => ({
         isLoading: false,

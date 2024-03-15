@@ -120,24 +120,15 @@
                                     </v-row>
                                 </v-card-text>
                                 <v-card-actions>
-                                    <v-btn
-                                        text
-                                        outlined
-                                        @click="toggle($event, index, item)"
-                                        v-if="false"
-                                    >
-                                        <v-icon
-                                            v-if="isSelected(item.idproducto)"
-                                        >
-                                            mdi-chevron-up
-                                        </v-icon>
-                                        <v-icon v-else>
-                                            mdi-chevron-down
-                                        </v-icon>
-                                        Más Info
-                                    </v-btn>
                                     <v-spacer></v-spacer>
-                                    <v-btn outlined color="green">
+                                    <v-btn
+                                        outlined
+                                        color="green"
+                                        :to="
+                                            '/tienda/productos/existencias?productos_search=idproducto:' +
+                                            item.idproducto
+                                        "
+                                    >
                                         <v-icon left
                                             >mdi-package-variant-closed-plus</v-icon
                                         >
@@ -175,7 +166,12 @@
                                                     Imprimir
                                                 </v-list-item-title>
                                             </v-list-item>
-                                            <v-list-item>
+                                            <v-list-item
+                                                :to="
+                                                    '/tienda/productos/existencias?productos_search=idproducto:' +
+                                                    item.idproducto
+                                                "
+                                            >
                                                 <v-list-item-title>
                                                     Agregar Existencias
                                                 </v-list-item-title>
@@ -211,137 +207,6 @@
                                         </template>
                                     </v-options>
                                 </v-card-actions>
-                                <v-slide-y-transition hide-on-leave>
-                                    <div v-if="isSelected(item.idproducto)">
-                                        <v-divider></v-divider>
-                                        <v-card-text class="pt-0">
-                                            <div>
-                                                <v-row dense>
-                                                    <v-col cols="12" md="10">
-                                                        <v-subheader
-                                                            class="px-0 mb-0"
-                                                        >
-                                                            Presentaciones y
-                                                            Precios
-                                                        </v-subheader>
-                                                        <v-divider
-                                                            class="mb-1"
-                                                            inset
-                                                        ></v-divider>
-                                                        <v-simple-table dense>
-                                                            <template
-                                                                v-slot:default
-                                                            >
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th
-                                                                            class="text-left"
-                                                                        >
-                                                                            Presentacion
-                                                                        </th>
-                                                                        <th
-                                                                            class="text-left"
-                                                                        >
-                                                                            {{
-                                                                                item.unidades
-                                                                            }}
-                                                                        </th>
-                                                                        <th
-                                                                            class="text-left"
-                                                                        >
-                                                                            Costo
-                                                                        </th>
-                                                                        <th
-                                                                            class="text-left"
-                                                                        >
-                                                                            Precio
-                                                                        </th>
-                                                                        <th
-                                                                            class="text-left"
-                                                                        >
-                                                                            Ganancia
-                                                                        </th>
-                                                                        <th
-                                                                            class="text-left"
-                                                                        >
-                                                                            Margen
-                                                                        </th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr
-                                                                        v-for="(
-                                                                            precio,
-                                                                            i
-                                                                        ) in item.precios"
-                                                                        :key="
-                                                                            precio.idprecio
-                                                                        "
-                                                                    >
-                                                                        <td>
-                                                                            {{
-                                                                                precio.nombre
-                                                                            }}
-                                                                        </td>
-                                                                        <td>
-                                                                            {{
-                                                                                precio.cantidad
-                                                                            }}
-                                                                            {{
-                                                                                item.unidades
-                                                                            }}
-                                                                        </td>
-                                                                        <td>
-                                                                            Q
-                                                                            {{
-                                                                                precio.costo
-                                                                            }}
-                                                                        </td>
-                                                                        <td>
-                                                                            Q
-                                                                            {{
-                                                                                precio.precio
-                                                                            }}
-                                                                        </td>
-
-                                                                        <td>
-                                                                            Q
-                                                                            {{
-                                                                                precio.precio -
-                                                                                precio.costo
-                                                                            }}
-                                                                        </td>
-                                                                        <td>
-                                                                            {{
-                                                                                Math.round(
-                                                                                    ((precio.precio -
-                                                                                        precio.costo) /
-                                                                                        precio.precio) *
-                                                                                        100
-                                                                                )
-                                                                            }}%
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </template>
-                                                        </v-simple-table>
-                                                    </v-col>
-                                                    <v-col cols="12" md="2">
-                                                        <v-subheader
-                                                            class="px-0 mb-0"
-                                                        >
-                                                            Menu
-                                                        </v-subheader>
-                                                        <v-divider
-                                                            class="mb-1"
-                                                            inset
-                                                        ></v-divider>
-                                                    </v-col>
-                                                </v-row>
-                                            </div>
-                                        </v-card-text>
-                                    </div>
-                                </v-slide-y-transition>
                             </template>
                         </t-listar>
                     </v-col>

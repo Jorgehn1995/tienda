@@ -54,7 +54,7 @@
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item>
+                            <v-list-item to="/tienda/productos/vencimientos">
                                 <v-list-item-icon>
                                     <v-icon> mdi-calendar-clock </v-icon>
                                 </v-list-item-icon>

@@ -20,12 +20,23 @@ class ProductosController extends Controller
         $query = Producto::query();
         $query->select("productos.*");
 
-        if ($request->query("search") != "") {
+        $querySearch = $request->query("search");
 
+        if ($querySearch != "") {
+            $terminos = explode(":", $querySearch);
+            if (count($terminos) > 0) {
+                if ($terminos[0] = "idproducto") {
+                    $query->where("idproducto", $terminos[1]);
+                    $querySearch = "";
+                }
+            }
+        }
+
+        if ($querySearch != "") {
             if (is_numeric($request->query('search'))) {
-                $query->where("codigo", $request->query("search"));
+                $query->where("codigo", $querySearch);
             } else {
-                $search = $this->stringsBusqueda($request->query("search"));
+                $search = $this->stringsBusqueda($querySearch);
                 $query->orWhereRaw("MATCH (codigo,nombre,marca,dimension) AGAINST ('$search->match' IN BOOLEAN MODE) > 0")
 
                     ->orWhere("codigo", "LIKE", $search->like)
