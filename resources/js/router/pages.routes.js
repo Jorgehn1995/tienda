@@ -203,9 +203,25 @@ export default [
      * CAJAS
      */
     {
+        path: "/tienda/ventas/:codigo",
+        name: "",
+        component: () => import("@/pages/tienda/ventas/_codigo.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
+    {
         path: "/tienda/cajas",
         name: "",
         component: () => import("@/pages/tienda/cajas/index.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
+    {
+        path: "/tienda/cajas/habilitar",
+        name: "",
+        component: () => import("@/pages/tienda/cajas/habilitar.vue"),
         meta: {
             layout: "autorizado",
         },

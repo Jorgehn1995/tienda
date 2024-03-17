@@ -80,6 +80,64 @@
                     outlined
                     elevation="0"
                 >
+                    <v-card-title>Cajas</v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text class="px-0 pt-0">
+                        <v-list color="transparent">
+                            <v-list-item to="/tienda/cajas">
+                                <v-list-item-icon>
+                                    <v-icon>mdi-cart-variant</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title>
+                                        Cajas
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle>
+                                        Revisa los productos ingresados en tu
+                                        tienda
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item :to="'/tienda/ventas/' + cashID">
+                                <v-list-item-icon>
+                                    <v-icon> mdi-safe </v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title>
+                                        Habilitar Este Equipo
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle>
+                                        Agrega existencias a los productos
+                                        existentes
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item :to="'/tienda/ventas/' + cashID">
+                                <v-list-item-icon>
+                                    <v-icon> mdi-safe </v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title>
+                                        Administrar Caja
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle>
+                                        Agrega existencias a los productos
+                                        existentes
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-card
+                    color="teal darken-1"
+                    dark
+                    class="rounded-lg"
+                    outlined
+                    elevation="0"
+                >
                     <v-card-title>Ventas</v-card-title>
                     <v-divider></v-divider>
                     <v-card-text class="px-0 pt-0">
@@ -98,7 +156,7 @@
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item to="/tienda/cajas">
+                            <v-list-item :to="'/tienda/ventas/' + cashID">
                                 <v-list-item-icon>
                                     <v-icon> mdi-safe </v-icon>
                                 </v-list-item-icon>
@@ -284,6 +342,9 @@ export default {
     computed: {
         tipo() {
             return this.$cookie.get("tipo");
+        },
+        cashID() {
+            return localStorage.getItem("CASH_ID");
         },
     },
 };

@@ -11,18 +11,15 @@ class Caja extends Model
     protected $table      = "cajas";
     protected $primaryKey = "idcaja";
     protected $fillable   = [
+        'codigo',
         'nombre',
-        'fecha',
-        'monto',
         'usuario',
-        'cierre',
-        'subtotal',
-        'descuento',
-        'total'
+        'navegador',
+        'os',
     ];
     public $timestamps    = true;
-    public function institucion()
+    public function ventas()
     {
-        return $this->belongsTo("App\Models\Institucion", "idinstitucion");
+        return $this->hasMany("App\Models\Venta", "idcaja");
     }
 }
