@@ -297,6 +297,7 @@ export default {
                     .then((result) => {
                         console.log(result.data);
                         this.cajaRegistrada(result.data.codigo);
+                        this.$router.go(-1);
                     })
                     .catch((err) => {
                         this.error.status = true;

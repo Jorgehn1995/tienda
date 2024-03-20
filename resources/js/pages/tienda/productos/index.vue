@@ -125,7 +125,7 @@
                                         outlined
                                         color="green"
                                         :to="
-                                            '/tienda/productos/existencias?productos_search=idproducto:' +
+                                            '/tienda/productos/existencias?productos_search=id:' +
                                             item.idproducto
                                         "
                                     >

@@ -14,38 +14,14 @@ export const routes = [
         name: "login",
         component: () => import("@/pages/index.vue"),
         meta: {
-            title:"Iniciar Sesion",
+            title: "Iniciar Sesion",
             layout: "login",
         },
     },
-    {
-        path: "/dashboard/analytics",
-        name: "dashboard-analytics",
-        component: () =>
-            import(
-                /* webpackChunkName: "dashboard" */ "@/pages/dashboard/DashboardPage.vue"
-            ),
-    },
+
     ...PagesRoutes,
     ...UsersRoutes,
     ...LandingRoutes,
-    {
-        path: "/blank",
-        name: "blank",
-        component: () =>
-            import(/* webpackChunkName: "blank" */ "@/pages/BlankPage.vue"),
-    },
-    {
-        path: "*",
-        name: "error",
-        component: () =>
-            import(
-                /* webpackChunkName: "error" */ "@/pages/error/NotFoundPage.vue"
-            ),
-        meta: {
-            layout: "error",
-        },
-    },
 ];
 
 const router = new Router({

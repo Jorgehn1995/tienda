@@ -38,7 +38,7 @@
                             <div
                                 class="white--text title font-weight-bold text-uppercase"
                             >
-                                {{ product.name }}
+                                LERNIZ
                             </div>
                         </v-card>
 

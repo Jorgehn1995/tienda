@@ -24,8 +24,8 @@ class ProductosController extends Controller
 
         if ($querySearch != "") {
             $terminos = explode(":", $querySearch);
-            if (count($terminos) > 0) {
-                if ($terminos[0] = "idproducto") {
+            if (count($terminos) > 1) {
+                if ($terminos[0] = "id") {
                     $query->where("idproducto", $terminos[1]);
                     $querySearch = "";
                 }

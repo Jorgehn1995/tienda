@@ -1,5 +1,5 @@
 import moment from "moment/moment";
-
+import Turnos from "./turnos.routes";
 export default [
     /**
      * RUTAS PARA EL SISTEMA
@@ -12,6 +12,11 @@ export default [
             layout: "autorizado",
         },
     },
+    ...Turnos,
+
+    /**
+     * CLIENTES
+     */
     {
         path: "/tienda/clientes",
         name: "",

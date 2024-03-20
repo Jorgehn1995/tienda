@@ -7,7 +7,7 @@
                 elevation="0"
                 color="teal"
                 dark
-                v-if="!CASH_CODE"
+                v-if="!registrado"
                 to="/tienda/cajas/habilitar"
             >
                 <v-card-title> Dispositivo No Registrado </v-card-title>
@@ -58,6 +58,9 @@
                                     </td>
                                     <td>
                                         {{ caja.nombre }}
+                                        <span v-if="CASH_CODE == caja.codigo">
+                                            (Este Equipo)
+                                        </span>
                                     </td>
                                     <td>
                                         {{ caja.usuario }}
@@ -129,7 +132,7 @@ export default {
     },
     data: () => ({
         isLoading: false,
-        register: false,
+        registrado: false,
         cajas: [],
         os: {
             windows: {
@@ -153,6 +156,14 @@ export default {
                 .get("/cajas")
                 .then((result) => {
                     this.cajas = result.data;
+                    let encontrado = false;
+                    this.cajas.forEach((c) => {
+                        if (c.codigo == localStorage.getItem("CASH_CODE")) {
+                            encontrado = true;
+                        }
+                    });
+                    console.log(encontrado);
+                    this.registrado = encontrado;
                 })
                 .catch((err) => {
                     console.log(err);
