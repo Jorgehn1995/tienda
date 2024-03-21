@@ -7,6 +7,7 @@ use App\Http\Controllers\ImpresionesController;
 use App\Http\Controllers\PresentacionesController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\TurnosController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\VencimientosController;
 use App\Http\Controllers\VentasController;
@@ -102,7 +103,12 @@ Route::group(['middleware' => ['auth:api']], function () {
     //Route::get('/cajas/disponibles/{codigo}', [CajasController::class, 'disponibles'])->name('api.cajas.ver');
 
 
-
+    /**
+     * TURNOS
+     */
+    Route::get('/turnos/{caja}', [ImpresionesController::class, 'abrir'])->name('api.impresiones.abrir');
+    Route::get('/cajas/{idcaja}/turnos-disponibles', [TurnosController::class, 'disponibles'])->name('api.impresiones.abrir');
+    Route::post('/turnos', [TurnosController::class, 'crear'])->name('api.impresiones.abrir');
     /**
      * Precios
      */

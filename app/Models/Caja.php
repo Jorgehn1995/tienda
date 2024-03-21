@@ -22,4 +22,8 @@ class Caja extends Model
     {
         return $this->hasMany("App\Models\Venta", "idcaja");
     }
+    public function turnos()
+    {
+        return $this->hasMany("App\Models\Turno", "idcaja");
+    }
 }

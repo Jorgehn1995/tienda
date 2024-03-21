@@ -7,4 +7,12 @@ export default [
             layout: "autorizado",
         },
     },
+    {
+        path: "/tienda/turnos/registrar",
+        name: "",
+        component: () => import("@/pages/tienda/turnos/registrar.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
 ];
