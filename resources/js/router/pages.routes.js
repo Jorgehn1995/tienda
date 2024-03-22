@@ -189,9 +189,9 @@ export default [
      * VENDER
      */
     {
-        path: "/tienda/vender/cajas",
+        path: "/tienda/vender",
         name: "",
-        component: () => import("@/pages/tienda/vender/cajas/index.vue"),
+        component: () => import("@/pages/tienda/vender/index.vue"),
         meta: {
             layout: "autorizado",
         },

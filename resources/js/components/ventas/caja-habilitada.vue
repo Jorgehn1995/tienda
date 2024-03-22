@@ -14,8 +14,37 @@
                 </v-card-text>
             </v-card>
         </div>
-        <div v-else-if="caja.idcaja">
-            <slot v-bind:caja="caja"></slot>
+        <div v-else-if="caja.estado">
+            <slot
+                v-bind:caja="caja"
+                v-bind:cambiarEstado="cambiarEstado"
+                v-bind:isLoading="isLoading.status"
+            ></slot>
+        </div>
+        <div v-else-if="!caja.estado" class="d-flex justify-center">
+            <v-card outlined class="rounded-lg" width="450">
+                <v-card-title>
+                    Caja Deshabilitada
+                    <v-icon>mdi-close</v-icon>
+                </v-card-title>
+                <v-card-subtitle>
+                    Este dispositivo ya ha sido registrado pero se encuentra
+                    deshabilitado y no puede ser utilizado para ventas
+                </v-card-subtitle>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="teal"
+                        outlined
+                        @click="cambiarEstado(caja)"
+                        :loading="isLoading.status"
+                    >
+                        <v-icon left>mdi-cellphone-link</v-icon>
+                        Habilitar Dispositivo
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
         </div>
         <div class="d-flex justify-center align-center" v-else>
             <v-card outlined class="rounded-lg" width="450">
@@ -122,18 +151,25 @@ export default {
     methods: {
         async verificar() {
             this.isLoading.verify = true;
-            console.log(this.getOS());
             if (!this.CASH_CODE) {
                 this.registrado = false;
                 this.getOS();
             } else {
                 let code = this.CASH_CODE;
-                await this.$axios
+                if (localStorage.getItem("CASH_DATA")) {
+                    this.caja = JSON.parse(localStorage.getItem("CASH_DATA"));
+                }
+                this.$axios
                     .get("/cajas/verificar/" + code)
                     .then((result) => {
                         this.registrado = true;
                         this.$emit("registrado");
+
                         this.caja = result.data;
+                        localStorage.setItem(
+                            "CASH_DATA",
+                            JSON.stringify(result.data)
+                        );
                     })
                     .catch((err) => {
                         this.registrado = false;
@@ -238,6 +274,18 @@ export default {
                     });
                 this.isLoading.save = false;
             }
+        },
+        async cambiarEstado(caja) {
+            this.isLoading.status = true;
+            await this.$axios
+                .get("/cajas/estado/" + caja.idcaja)
+                .then((result) => {
+                    caja.estado = result.data.estado;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            this.isLoading.status = false;
         },
     },
     computed: {
