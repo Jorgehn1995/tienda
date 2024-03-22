@@ -106,7 +106,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     /**
      * TURNOS
      */
-    Route::get('/turnos/{codigo}', [TurnosController::class, 'index'])->name('api.impresiones.abrir');
+    Route::get('/turnos', [TurnosController::class, 'index'])->name('api.impresiones.abrir');
+    Route::get('/turnos/{idturno}', [TurnosController::class, 'ver'])->name('api.impresiones.abrir');
     Route::get('/cajas/{idcaja}/turnos-disponibles', [TurnosController::class, 'disponibles'])->name('api.impresiones.abrir');
     Route::post('/turnos', [TurnosController::class, 'crear'])->name('api.impresiones.abrir');
     /**

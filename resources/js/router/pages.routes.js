@@ -196,14 +196,7 @@ export default [
             layout: "autorizado",
         },
     },
-    {
-        path: "/tienda/vender/cajas/:idcaja",
-        name: "",
-        component: () => import("@/pages/tienda/vender/cajas/_idcaja.vue"),
-        meta: {
-            layout: "autorizado",
-        },
-    },
+
     /**
      * CAJAS
      */

@@ -20,4 +20,8 @@ class Venta extends Model
     {
         return $this->hasMany("App\Models\Detalle", "idventa");
     }
+    public function turno()
+    {
+        return $this->belongsTo("App\Models\Turno", "idturno");
+    }
 }

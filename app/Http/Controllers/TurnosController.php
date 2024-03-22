@@ -4,18 +4,48 @@ namespace App\Http\Controllers;
 
 use App\Models\Caja;
 use App\Models\Turno;
+use App\Models\Venta;
+use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class TurnosController extends Controller
 {
-    public function index($caja)
+    public function index(Request $request)
     {
-        $turnos = Turno::join("cajas", "cajas.idcaja", "=", "turnos.idcaja")
-            ->whereDate("apertura", date("Y-m-d"))
-            ->where("cajas.codigo", $caja)
-            ->get();
-        return $turnos;
+
+        $query = Turno::query();
+
+
+        $codigo = $request->query("CASH_CODE");
+
+        if ($codigo != "") {
+            $query->join("cajas", "cajas.idcaja", "=", "turnos.idcaja");
+            $query->where("cajas.codigo", $codigo);
+        }
+        $query->orderBy("apertura", "desc");
+        $query->with("caja");
+
+
+        if ($request->query("limit")) {
+            $items = $query->paginate($request->query("limit"));
+        } else {
+            $items = $query->get();
+        }
+        foreach ($items as $key => $item) {
+            $total = Venta::where("idturno", $item->idturno)->sum("total");
+            $item->total_ventas = $total;
+        }
+        return $items;
+    }
+    public function ver(Request $request, $idturno)
+    {
+        $turno = Turno::with(["ventas", "ventas.detalles"])->find($idturno);
+        if (!$turno) {
+            return response("Turno no encontrado", 404);
+        }
+
+        return $turno;
     }
     public function disponibles($idcaja)
     {

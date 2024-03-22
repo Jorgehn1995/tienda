@@ -26,4 +26,8 @@ class Turno extends Model
     {
         return $this->belongsTo("App\Models\Caja", "idcaja");
     }
+    public function ventas()
+    {
+        return $this->hasMany("App\Models\Venta", "idturno");
+    }
 }
