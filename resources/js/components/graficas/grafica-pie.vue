@@ -33,6 +33,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        dark: {
+            type: Boolean,
+            default: false,
+        },
         palette: {
             type: String,
             default: "palette4",
@@ -49,6 +53,7 @@ export default {
             };
             let options = {
                 chart: {
+                    background: "transparent",
                     width: 380,
                     type: "pie",
                     id: this.id,
@@ -56,8 +61,22 @@ export default {
                 },
 
                 labels: this.labels,
+                colors: [
+                    this.$vuetify.theme.currentTheme.primary,
+                    this.$vuetify.theme.currentTheme.secondary,
+                    this.$vuetify.theme.currentTheme.accent,
+                    this.$vuetify.theme.currentTheme.surface,
+                    this.$vuetify.theme.currentTheme.background,
+                ],
                 theme: {
+                    mode: this.dark ? "dark" : "light",
                     palette: this.palette,
+                    monochrome: {
+                        enabled: false,
+                        color: "#2f64f7",
+                        shadeTo: "light",
+                        shadeIntensity: 0.65,
+                    },
                 },
                 dataLabels: {},
                 legend: {

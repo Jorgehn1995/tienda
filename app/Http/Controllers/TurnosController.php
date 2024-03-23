@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Caja;
 use App\Models\Turno;
 use App\Models\Venta;
+use App\Models\Detalle;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -40,12 +41,38 @@ class TurnosController extends Controller
     }
     public function ver(Request $request, $idturno)
     {
-        $turno = Turno::with(["ventas", "ventas.detalles"])->find($idturno);
+        $turno = Turno::with(["caja", "ventas", "ventas.detalles"])->find($idturno);
         if (!$turno) {
             return response("Turno no encontrado", 404);
         }
+        $totales = [];
+        $totales["articulos"] = $turno->ventas->sum("articulos");
+        $totales["subtotal"] = $turno->ventas->sum("subtotal");
+        $totales["descuento"] = $turno->ventas->sum("descuento");
+        $totales["total"] = $turno->ventas->sum("total");
 
-        return $turno;
+
+        // Consulta para obtener los datos de las ventas
+        $ventas = Detalle::select("nombre_producto", DB::raw('SUM(unidades_presentacion) as cantidad_vendida'))
+            ->groupBy('nombre_producto')
+            ->get();
+
+        // Preparar los datos para la gráfica
+        $nombres = [];
+        $cantidades = [];
+
+        foreach ($ventas as $venta) {
+            $nombres[] = $venta->nombre_producto;
+            $cantidades[] = (float)$venta->cantidad_vendida;
+        }
+
+
+
+        return [
+            "turno" => $turno,
+            "totales" => $totales,
+            'grafica' => ['etiquetas' => $nombres, 'serie' => $cantidades]
+        ];
     }
     public function disponibles($idcaja)
     {

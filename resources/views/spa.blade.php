@@ -9,8 +9,9 @@
         <title>{{env('APP_NAME')}}</title>
 
         <!-- Quicksand Font -->
-        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;600;700&display=swap" rel="stylesheet">
+
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900;1,100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
         <link href="{{ mix('dist/css/app.css') }}" rel="stylesheet">
     </head>

@@ -21,10 +21,10 @@
                                     {{ moment().format("D/M/Y") }}
                                 </v-list-item-subtitle>
                                 <v-list-item-title class="text-h6">
-                                    Nombre Tienda
+                                    Farmacias Oasis
                                 </v-list-item-title>
                                 <v-list-item-subtitle>
-                                    Sistema Lerniz
+                                    San Luis Jilotepeque
                                 </v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
@@ -165,13 +165,20 @@
         <v-container>
             <v-row dense>
                 <v-col cols="12">
-                    <v-card class="rounded-lg" elevation="0" outlined>
-                        <v-card-text>
-                            <v-img
-                                src="/images/LOGO.jpg"
-                                contain
-                                height="200"
-                            ></v-img>
+                    <v-card
+                        class="rounded-lg"
+                        elevation="0"
+                        outlined
+                        height="200"
+                    >
+                        <v-card-text class="pt-6">
+                            <div>
+                                <v-img
+                                    src="/images/LG.png"
+                                    contain
+                                    height="100"
+                                ></v-img>
+                            </div>
                         </v-card-text>
                     </v-card>
                 </v-col>

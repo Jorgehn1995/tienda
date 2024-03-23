@@ -7,19 +7,24 @@
             <slot name="moneda"> Q </slot>
         </span>
         <span>
-            <span class="money" :style="'font-size:' + size + 'px !important'">
-                <slot name="entero" v-bind:entero="precio[0]">
-                    {{ precio[0] }}.
-                </slot>
-            </span>
-            <span
-                class="decimal"
-                :style="'font-size:' + (size - 5) + 'px !important'"
-            >
-                <slot name="decimal" v-bind:decimal="precio[1]">
-                    {{ precio[1] }}
-                </slot>
-            </span>
+            <div class="d-flex flex-row">
+                <div
+                    class="money"
+                    :style="'font-size:' + size + 'px !important'"
+                >
+                    <slot name="entero" v-bind:entero="precio[0]">
+                        {{ precio[0] }}.
+                    </slot>
+                </div>
+                <div
+                    :class="decimalSize != size ? 'decimal' : ''"
+                    :style="'font-size:' + decimalSize + 'px !important'"
+                >
+                    <slot name="decimal" v-bind:decimal="precio[1]">
+                        {{ precio[1] }}
+                    </slot>
+                </div>
+            </div>
         </span>
     </div>
 </template>
@@ -45,6 +50,9 @@ export default {
                 this.$emit("input", n);
             },
         },
+        decimalSize() {
+            return this.size < 15 ? this.size : this.size - 4;
+        },
     },
 };
 </script>
@@ -52,6 +60,6 @@ export default {
 <style>
 .decimal {
     vertical-align: super;
-    padding-top: 12px !important;
+    margin-top: -3px;
 }
 </style>

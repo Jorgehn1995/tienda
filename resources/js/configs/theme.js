@@ -33,13 +33,24 @@ export default {
     // light theme colors
     light: {
         background: "#ffffff",
-        surface: "#0b0e26",
-        primary: "#0eaa7e",
-        secondary: "#a0b9c8",
-        accent: "#048ba8",
+        surface: "#1a1a1a",
+        primary: "#2f64f7",
+        secondary: "#1BC577",
+        accent: "#fc305c",
         error: "#ef476f",
         info: "#2196F3",
         success: "#06d6a0",
         warning: "#ffd166",
     },
+    //light: {
+    //    background: "#ffffff",
+    //    surface: "#0b0e26",
+    //    primary: "#0eaa7e",
+    //    secondary: "#a0b9c8",
+    //    accent: "#048ba8",
+    //    error: "#ef476f",
+    //    info: "#2196F3",
+    //    success: "#06d6a0",
+    //    warning: "#ffd166",
+    //},
 };

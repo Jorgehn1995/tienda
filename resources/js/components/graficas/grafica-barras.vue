@@ -38,6 +38,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        dark: {
+            type: Boolean,
+            default: false,
+        },
         palette: {
             type: String,
             default: "palette4",
@@ -66,6 +70,7 @@ export default {
                 },
                 theme: {
                     palette: this.palette,
+                    mode: this.dark ? "dark" : "light",
                 },
                 responsive: [
                     {
