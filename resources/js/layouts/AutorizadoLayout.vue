@@ -52,7 +52,11 @@
                     </v-list-item-icon>
                     <v-list-item-title> Vender</v-list-item-title>
                 </v-list-item>
-                <v-list-item link to="/tienda/usuarios">
+                <v-list-item
+                    link
+                    to="/tienda/usuarios"
+                    active-class="primary--text"
+                >
                     <v-list-item-icon>
                         <v-icon>mdi-account-circle-outline</v-icon>
                     </v-list-item-icon>

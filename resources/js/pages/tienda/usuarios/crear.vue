@@ -2,7 +2,7 @@
     <v-container>
         <div>
             <v-row>
-                <v-col cols="12" sm="8" md="4" offset-sm="2" offset-md="4">
+                <v-col cols="12" sm="8" md="6" offset-sm="2" offset-md="3">
                     <v-form ref="form">
                         <v-card outlined elevation="0" class="rounded-lg">
                             <v-card-title> Agregar Usuario </v-card-title>
@@ -67,6 +67,7 @@
                                 <v-spacer></v-spacer>
                                 <v-btn
                                     color="primary"
+                                    class="px-2"
                                     @click="confirmar()"
                                     :loading="isLoading"
                                 >
