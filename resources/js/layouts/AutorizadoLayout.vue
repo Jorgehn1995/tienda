@@ -52,7 +52,7 @@
                     </v-list-item-icon>
                     <v-list-item-title> Vender</v-list-item-title>
                 </v-list-item>
-                <v-list-item link>
+                <v-list-item link to="/tienda/usuarios">
                     <v-list-item-icon>
                         <v-icon>mdi-account-circle-outline</v-icon>
                     </v-list-item-icon>
@@ -167,6 +167,7 @@
         <v-app-bar
             app
             clipped-left
+            clipped-right
             color="surface"
             elevation="3"
             height="64"
@@ -264,10 +265,17 @@ export default {
         ToolbarCurrency,
         ToolbarNotifications,
     },
+    beforeMount() {
+        if (this.$vuetify.breakpoint.smAndDown) {
+            this.drawer = false;
+            console.log(this.drawer);
+        }
+    },
     mounted() {
         if (this.$cookie.get("auth") == "false") {
             this.$router.push("/");
         }
+
         //let unique = localStorage.getItem("CASH_ID");
         //if (!unique) {
         //    localStorage.setItem("CASH_ID", uuidv4());

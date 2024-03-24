@@ -8,17 +8,17 @@ export default [
         },
     },
     {
-        path: "/tienda/turnos/:idturno",
+        path: "/tienda/turnos/registrar",
         name: "",
-        component: () => import("@/pages/tienda/turnos/_idturno.vue"),
+        component: () => import("@/pages/tienda/turnos/registrar.vue"),
         meta: {
             layout: "autorizado",
         },
     },
     {
-        path: "/tienda/turnos/registrar",
+        path: "/tienda/turnos/:idturno",
         name: "",
-        component: () => import("@/pages/tienda/turnos/registrar.vue"),
+        component: () => import("@/pages/tienda/turnos/_idturno.vue"),
         meta: {
             layout: "autorizado",
         },
