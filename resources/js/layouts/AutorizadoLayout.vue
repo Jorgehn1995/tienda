@@ -4,9 +4,161 @@
         class="d-flex flex-grow-1"
         @shortkey="onKeyup"
     >
-        <!-- Toolbar -->
+        <v-navigation-drawer v-model="drawer" clipped app>
+            <template v-slot:prepend>
+                <v-card tile>
+                    <v-card-text>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-subtitle>
+                                    {{ moment().format("D/M/Y") }}
+                                </v-list-item-subtitle>
+                                <v-list-item-title class="text-h6">
+                                    Farmacias Oasis
+                                </v-list-item-title>
+                                <v-list-item-subtitle>
+                                    San Luis Jilotepeque
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-card-text>
+                </v-card>
+                <v-divider></v-divider>
+            </template>
+            <v-list color="transparent">
+                <v-list-item to="/tienda" active-class="primary--text">
+                    <v-list-item-icon>
+                        <v-icon>mdi-home</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Inicio</v-list-item-title>
+                </v-list-item>
+                <v-list-item link to="/tienda/turnos">
+                    <v-list-item-icon>
+                        <v-icon>mdi-sun-clock-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title> Turnos</v-list-item-title>
+                </v-list-item>
+                <v-list-item link>
+                    <v-list-item-icon>
+                        <v-icon>mdi-cart-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title> Vender</v-list-item-title>
+                </v-list-item>
+                <v-list-item link>
+                    <v-list-item-icon>
+                        <v-icon>mdi-account-circle-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title> Usuarios</v-list-item-title>
+                </v-list-item>
+
+                <v-list-group
+                    color="transparent"
+                    no-action
+                    prepend-icon="mdi-package-variant-closed"
+                >
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title>Productos</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+                    <v-list-item>
+                        <v-list-item-icon>
+                            <v-icon>mdi-clipboard-list-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title> Ver Productos</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item link>
+                        <v-list-item-icon>
+                            <v-icon>mdi-package-variant-closed-plus</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title>
+                            Agregar Existencias
+                        </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item link>
+                        <v-list-item-icon>
+                            <v-icon>mdi-calendar-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title>
+                            Revisar Vencimientos
+                        </v-list-item-title>
+                    </v-list-item>
+                </v-list-group>
+                <v-list-group
+                    no-action
+                    prepend-icon="mdi-package-variant-closed"
+                >
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title>Cajas</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+                    <v-list-item>
+                        <v-list-item-icon>
+                            <v-icon>mdi-clipboard-list-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title> Listar Cajas</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item link>
+                        <v-list-item-icon>
+                            <v-icon>mdi-package-variant-closed-plus</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title>
+                            Habilitar/Deshabilitar Caja
+                        </v-list-item-title>
+                    </v-list-item>
+                </v-list-group>
+                <v-list-item link>
+                    <v-list-item-icon>
+                        <v-icon>mdi-sun-clock-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title> Turnos</v-list-item-title>
+                </v-list-item>
+                <v-list-group
+                    no-action
+                    prepend-icon="mdi-package-variant-closed"
+                >
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title>Reportes</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+                    <v-list-item>
+                        <v-list-item-icon>
+                            <v-icon>mdi-clipboard-list-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title> Ventas</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-icon>
+                            <v-icon>mdi-clipboard-list-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title> Productos</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-icon>
+                            <v-icon>mdi-clipboard-list-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title> Cajas</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item link>
+                        <v-list-item-icon>
+                            <v-icon>mdi-package-variant-closed-plus</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title> Usuarios </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item link>
+                        <v-list-item-icon>
+                            <v-icon>mdi-package-variant-closed-plus</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title> Vencimientos </v-list-item-title>
+                    </v-list-item>
+                </v-list-group>
+            </v-list>
+        </v-navigation-drawer>
         <v-app-bar
             app
+            clipped-left
             color="surface"
             elevation="3"
             height="64"
@@ -23,7 +175,6 @@
                 <div class="d-flex flex-grow-1 align-center">
                     <div class="d-flex flex-grow-1 align-center">
                         <v-app-bar-nav-icon
-                            v-if="false"
                             @click.stop="drawer = !drawer"
                             class="primary mr-2"
                         ></v-app-bar-nav-icon>
@@ -38,10 +189,24 @@
                             <div
                                 class="white--text title font-weight-bold text-uppercase"
                             >
-                                LERNIZ
+                                <v-img
+                                    v-if="$vuetify.breakpoint.mdAndUp"
+                                    src="/images/lg_bar.png"
+                                    contain
+                                    width="100"
+                                    height="50"
+                                ></v-img>
+
+                                <v-img
+                                    v-else
+                                    src="/images/lg_bar_sm.png"
+                                    contain
+                                    width="50"
+                                    height="50"
+                                ></v-img>
                             </div>
                         </v-card>
-
+                        <v-spacer class="d-none d-lg-block"></v-spacer>
                         <v-btn
                             class="mr-2"
                             v-shortkey="['f1']"
@@ -54,7 +219,8 @@
                             <span v-else> Verificador [F1] </span>
                         </v-btn>
                         <v-btn
-                            color="primary"
+                            color="secondary"
+                            class="mr-2"
                             v-shortkey="['f4']"
                             @shortkey="to('/tienda/vender')"
                             to="/tienda/vender"
@@ -64,7 +230,7 @@
                             </span>
                             <span v-else> Vender [F4] </span>
                         </v-btn>
-                        <v-spacer class="d-none d-lg-block"></v-spacer>
+
                         <v-btn to="/"> Salir </v-btn>
                     </div>
                 </div>
@@ -78,11 +244,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 // navigation menu configurations
 import config from "../configs";
-
+import moment from "moment";
 import MainMenu from "../components/navigation/MainMenu";
 import ToolbarUser from "../components/toolbar/ToolbarUser";
 import ToolbarApps from "../components/toolbar/ToolbarApps";
@@ -110,9 +276,9 @@ export default {
     },
     data() {
         return {
-            drawer: null,
             showSearch: false,
             navigation: config.navigation,
+            moment,
         };
     },
     computed: {
@@ -123,6 +289,15 @@ export default {
             "toolbarTheme",
             "isToolbarDetached",
         ]),
+        ...mapGetters({ getDrawer: "app/getDrawer" }),
+        drawer: {
+            get: function () {
+                return this.getDrawer;
+            },
+            set: function (draw) {
+                this.$store.commit("app/setDrawer", draw);
+            },
+        },
     },
     methods: {
         onKeyup(e) {
