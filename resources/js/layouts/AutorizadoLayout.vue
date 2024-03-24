@@ -25,20 +25,28 @@
                 </v-card>
                 <v-divider></v-divider>
             </template>
-            <v-list color="transparent">
-                <v-list-item to="/tienda" active-class="primary--text">
+            <v-list>
+                <v-list-item to="/tienda/inicio" active-class="primary--text">
                     <v-list-item-icon>
                         <v-icon>mdi-home</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>Inicio</v-list-item-title>
                 </v-list-item>
-                <v-list-item link to="/tienda/turnos">
+                <v-list-item
+                    link
+                    to="/tienda/turnos"
+                    active-class="primary--text"
+                >
                     <v-list-item-icon>
                         <v-icon>mdi-sun-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title> Turnos</v-list-item-title>
                 </v-list-item>
-                <v-list-item link>
+                <v-list-item
+                    link
+                    to="/tienda/vender"
+                    active-class="primary--text"
+                >
                     <v-list-item-icon>
                         <v-icon>mdi-cart-outline</v-icon>
                     </v-list-item-icon>

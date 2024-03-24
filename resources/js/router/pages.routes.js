@@ -6,7 +6,19 @@ export default [
      */
     {
         path: "/tienda",
-        name: "tienda",
+        name: "index",
+        redirect: (to) => {
+            return {
+                path: "/tienda/inicio",
+            };
+        },
+        meta: {
+            layout: "autorizado",
+        },
+    },
+    {
+        path: "/tienda/inicio",
+        name: "tienda.home",
         component: () => import("@/pages/tienda/index.vue"),
         meta: {
             layout: "autorizado",

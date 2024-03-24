@@ -1,21 +1,35 @@
 <template>
     <div>
-        <v-card class="text-center rounded-lg" elevation="0">
-            <v-card-text class="pb-0">
-                <v-card-title class="justify-center display-1 mb-2">
-                    <div
-                        style="height: 100px"
-                        class="d-flex justify-center align-center"
-                    >
-                        POS LERNIZ
-                    </div>
-                </v-card-title>
+        <v-card
+            class="text-center pa-1 rounded-lg"
+            elevation="0"
+            outlined
+            width="400"
+            max-width="400"
+        >
+            <v-card-text class="d-flex justify-center mt-2">
+                <v-img
+                    v-if="$vuetify.breakpoint.mdAndUp"
+                    src="/images/lg_bar.png"
+                    contain
+                    width="100"
+                    height="50"
+                ></v-img>
             </v-card-text>
+            <v-card-title class="justify-center subtitle-1 mx-2">
+                <span> Inicia Sesión </span>
+            </v-card-title>
+            <v-card-subtitle class="mb-4">
+                Sistemas de Gestión Empresarial
+                <kbd class="primary">Lerniz</kbd>
+                <br />
+                San Luis Jilotepeque
+            </v-card-subtitle>
 
-            <v-card-text class="pt-0">
+            <v-card-text>
                 <v-form ref="login" lazy-validation>
                     <v-row>
-                        <v-col cols="12" md="12">
+                        <v-col cols="12" md="12" class="pb-0 pt-0">
                             <v-text-field
                                 @keyup.enter="login()"
                                 v-model="usuario"
@@ -25,9 +39,8 @@
                                 placeholder="Usuario"
                                 name="correo"
                                 outlined
-                                prepend-icon="mdi-account-outline"
-                                hide-details=""
                                 class="rounded-lg"
+                                prepend-icon="mdi-account-outline"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" class="pt-0">
@@ -41,36 +54,52 @@
                                 :type="showPassword ? 'text' : 'password'"
                                 name="password"
                                 outlined
-                                placeholder="Contraseña"
+                                placeholder="Contraseña/Pin/Año de Nacimiento"
                                 :append-icon="
                                     showPassword
                                         ? 'mdi-eye-off-outline'
                                         : 'mdi-eye-outline'
                                 "
-                                @click:append="showPassword = !showPassword"
                                 class="rounded-lg"
+                                @click:append="showPassword = !showPassword"
                             ></v-text-field>
                         </v-col>
                     </v-row>
-                    <v-alert dense v-if="error.status" text type="error">
-                        {{ error.msg }}
-                    </v-alert>
 
-                    <v-row class="pb-0 my-0">
-                        <v-col cols="12" class="">
-                            <v-btn
-                                block
-                                :loading="isLoading"
-                                depressed
-                                large
-                                color="primary"
-                                @click="login()"
-                            >
-                                Acceder
-                            </v-btn>
-                        </v-col>
-                    </v-row>
+                    <v-btn
+                        block
+                        :loading="isLoading"
+                        large
+                        color="primary"
+                        @click="login()"
+                    >
+                        Iniciar Sesión
+                    </v-btn>
+                    <div class="error--text mt-2" v-if="error.status">
+                        {{ error.msg }}
+                    </div>
+                    <p class="mt-2">
+                        Si no tienes acceso contacta con un administrador
+                    </p>
                 </v-form>
+                <v-alert
+                    v-if="!estado"
+                    type="error"
+                    color="red darken-3"
+                    class="mt-2"
+                    icon="mdi-database-alert-outline"
+                    text
+                >
+                    <strong>Oh no!</strong> Estamos experimentando
+                    inconvenientes con nuestros sistemas pero ya estamos
+                    trabajando para restablecer todo a la normalidad lo antes
+                    posible, intenta ingresar en 15 minutos.
+                </v-alert>
+                <div class="mt-5" v-if="false">
+                    <router-link :to="localePath('/auth/forgot-password')">
+                        {{ $t("login.forgot") }}
+                    </router-link>
+                </div>
             </v-card-text>
         </v-card>
     </div>
