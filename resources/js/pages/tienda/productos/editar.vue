@@ -21,7 +21,7 @@
         </div>
         <div v-else>
             <div class="top-sticky" v-if="isFound && !isLoading">
-                <v-card tile color="teal" dark elevation="0">
+                <v-card tile color="primary" dark elevation="0">
                     <div
                         v-if="$vuetify.breakpoint.smAndUp"
                         class="py-2 px-2"
@@ -447,7 +447,7 @@
 
                                 <v-col cols="12" sm="6" md="3" order="2">
                                     <v-btn
-                                        color="teal"
+                                        color="primary"
                                         dark
                                         outlined
                                         @click="procesar(false)"
@@ -466,7 +466,7 @@
                                     order-sm="3"
                                 >
                                     <v-btn
-                                        color="teal"
+                                        color="primary"
                                         dark
                                         @shortkey.native="procesar()"
                                         @click="procesar()"

@@ -90,7 +90,7 @@
         </v-simple-table>
 
         <div class="mb-2">
-            <v-btn outlined @click="agregarPrecio" color="accent">
+            <v-btn outlined @click="agregarPrecio" color="primary">
                 Agregar Precio [CTRL+A]
             </v-btn>
             <v-btn

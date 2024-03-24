@@ -10,7 +10,8 @@
                     <v-btn
                         dark
                         block
-                        color="teal"
+                        large
+                        color="primary"
                         to="/tienda/productos/editar"
                         v-shortkey="['ctrl', 'l']"
                         :loading="isLoading"
@@ -89,7 +90,7 @@
                                     <v-row dense style="height: 100%">
                                         <v-col cols="4" md="4">
                                             <a
-                                                class="text-left undertext teal--text font-weight-bold text-decoration-none"
+                                                class="text-left undertext green--text font-weight-bold text-decoration-none"
                                                 style="width: 100%"
                                                 :href="
                                                     '/tienda/productos/' +

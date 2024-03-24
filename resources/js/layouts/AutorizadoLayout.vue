@@ -6,7 +6,7 @@
     >
         <v-navigation-drawer v-model="drawer" clipped app>
             <template v-slot:prepend>
-                <v-card tile>
+                <v-card tile height="122">
                     <v-card-text>
                         <v-list-item to="/verificador">
                             <v-list-item-content>
@@ -64,20 +64,20 @@
                 </v-list-item>
 
                 <v-list-group
-                    color="transparent"
                     no-action
                     prepend-icon="mdi-package-variant-closed"
+                    active-class="primary--text"
                 >
                     <template v-slot:activator>
                         <v-list-item-content>
                             <v-list-item-title>Productos</v-list-item-title>
                         </v-list-item-content>
                     </template>
-                    <v-list-item>
-                        <v-list-item-icon>
-                            <v-icon>mdi-clipboard-list-outline</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title> Ver Productos</v-list-item-title>
+                    <v-list-item
+                        to="/tienda/productos"
+                        active-class="primary--text"
+                    >
+                        <v-list-item-title> Productos</v-list-item-title>
                     </v-list-item>
                     <v-list-item link>
                         <v-list-item-icon>
