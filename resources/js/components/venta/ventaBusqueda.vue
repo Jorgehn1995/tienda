@@ -6,7 +6,7 @@
             :actions="false"
         ></busqueda-text-field>
         <div
-            :style="'height: calc(100vh - ' + height + '); overflow-y: auto'"
+            :style="'height: calc(100vh - ' + getHeight + '); overflow-y: auto'"
             class="px-1"
             ref="panel"
         >
@@ -238,7 +238,9 @@
                         <v-card-text>
                             <div
                                 class="d-flex justify-center align-center flex-column"
-                                style="height: calc(100vh - 300px)"
+                                :style="
+                                    'height: calc(100vh - ' + getHeight + 'px)'
+                                "
                             >
                                 <v-icon size="100" class="grey--text">
                                     mdi-tag-search-outline
@@ -275,6 +277,10 @@ export default {
         colores: {
             type: Array,
             default: () => [],
+        },
+        height: {
+            type: Number,
+            default: 250,
         },
     },
     data: () => ({
@@ -370,8 +376,10 @@ export default {
         search() {
             return this.$route.query["v_search"];
         },
-        height() {
-            return this.$vuetify.breakpoint.xsOnly ? "320px" : "250px";
+        getHeight() {
+            return this.$vuetify.breakpoint.xsOnly
+                ? "320px"
+                : this.height + "px";
         },
     },
     watch: {
@@ -387,6 +395,6 @@ export default {
     border: 2px solid var(--v-primary-base) !important;
 }
 .unselected-card {
-    border: 2px solid var(--v-secondary-lighten3) !important;
+    border: 2px solid var(--v-background-darken1) !important;
 }
 </style>

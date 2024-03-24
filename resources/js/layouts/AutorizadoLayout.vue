@@ -8,7 +8,7 @@
             <template v-slot:prepend>
                 <v-card tile>
                     <v-card-text>
-                        <v-list-item>
+                        <v-list-item to="/verificador">
                             <v-list-item-content>
                                 <v-list-item-subtitle>
                                     {{ moment().format("D/M/Y") }}
@@ -184,7 +184,7 @@
                     <div class="d-flex flex-grow-1 align-center">
                         <v-app-bar-nav-icon
                             @click.stop="drawer = !drawer"
-                            class="primary mr-2"
+                            class="mr-2"
                         ></v-app-bar-nav-icon>
                         <v-card
                             color="surface"
@@ -214,30 +214,21 @@
                                 ></v-img>
                             </div>
                         </v-card>
-                        <v-spacer class="d-none d-lg-block"></v-spacer>
                         <v-btn
-                            class="mr-2"
-                            v-shortkey="['f1']"
-                            @shortkey="to('/tienda/productos/verificador')"
-                            to="/tienda/productos/verificador"
-                        >
-                            <span v-if="$vuetify.breakpoint.smAndDown">
-                                <v-icon> mdi-barcode </v-icon>
-                            </span>
-                            <span v-else> Verificador [F1] </span>
-                        </v-btn>
-                        <v-btn
-                            color="secondary"
-                            class="mr-2"
+                            color="secondary darken-2"
+                            class="ml-2"
                             v-shortkey="['f4']"
                             @shortkey="to('/tienda/vender')"
                             to="/tienda/vender"
                         >
-                            <span v-if="$vuetify.breakpoint.smAndDown">
-                                <v-icon> mdi-cart-outline </v-icon>
+                            <v-icon :left="$vuetify.breakpoint.mdAndUp">
+                                mdi-cart-outline
+                            </v-icon>
+                            <span v-if="$vuetify.breakpoint.mdAndUp">
+                                Vender [F4]
                             </span>
-                            <span v-else> Vender [F4] </span>
                         </v-btn>
+                        <v-spacer class="d-none d-lg-block"></v-spacer>
 
                         <v-btn to="/"> Salir </v-btn>
                     </div>

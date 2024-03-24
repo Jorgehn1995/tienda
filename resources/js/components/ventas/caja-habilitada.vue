@@ -21,7 +21,10 @@
                 v-bind:isLoading="isLoading.status"
             ></slot>
         </div>
-        <div v-else-if="!caja.estado" class="d-flex justify-center">
+        <div
+            v-else-if="!caja.estado && caja.idcaja > 0"
+            class="d-flex justify-center"
+        >
             <v-card outlined class="rounded-lg" width="450">
                 <v-card-title>
                     Caja Deshabilitada

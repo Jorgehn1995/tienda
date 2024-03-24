@@ -139,6 +139,7 @@ export default {
                     this.turno.idcaja = result.data.idcaja;
                     this.turno.nombre = result.data.nombre;
                     this.turno.apertura = result.data.apertura;
+                    this.$emit("obtenido", this.turno);
                 })
                 .catch((err) => {
                     console.log(err);

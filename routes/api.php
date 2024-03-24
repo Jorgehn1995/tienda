@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth:api']], function () {
      */
     Route::get('/turnos', [TurnosController::class, 'index'])->name('api.impresiones.abrir');
     Route::get('/turnos/{idturno}', [TurnosController::class, 'ver'])->name('api.impresiones.abrir');
+    Route::get('/turnos/{idturno}/ventas', [TurnosController::class, 'ventas'])->name('api.impresiones.abrir');
     Route::get('/cajas/{idcaja}/turnos-disponibles', [TurnosController::class, 'disponibles'])->name('api.impresiones.abrir');
     Route::post('/turnos', [TurnosController::class, 'crear'])->name('api.impresiones.abrir');
     /**
@@ -124,6 +125,11 @@ Route::group(['middleware' => ['auth:api']], function () {
      * VENTA
      */
     Route::post('/ventas/vender', [VentasController::class, 'vender'])->name('api.ventas.vender');
+
+    /**
+     * VENTAS
+     */
+
 
     /**
      * CONSULTA

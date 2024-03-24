@@ -52,9 +52,13 @@ class TurnosController extends Controller
         $totales["total"] = $turno->ventas->sum("total");
 
 
+
         // Consulta para obtener los datos de las ventas
-        $ventas = Detalle::select("nombre_producto", DB::raw('SUM(unidades_presentacion) as cantidad_vendida'))
+        $ventas = Detalle::join("ventas", "ventas.idventa", "=", "detalles.idventa")
+            ->where("ventas.idturno", $turno->idturno)
+            ->select("detalles.nombre_producto", DB::raw('SUM(detalles.unidades_presentacion) as cantidad_vendida'))
             ->groupBy('nombre_producto')
+
             ->get();
 
         // Preparar los datos para la gráfica
@@ -74,6 +78,16 @@ class TurnosController extends Controller
             'grafica' => ['etiquetas' => $nombres, 'serie' => $cantidades]
         ];
     }
+    public function ventas(Request $request, $idturno)
+    {
+        $turno = Turno::with(["caja", "ventas", "ventas.detalles"])->find($idturno);
+        if (!$turno) {
+            return response("Turno no encontrado", 404);
+        }
+        $ventas = Venta::where("idturno", $idturno)->orderBy("created_at", "desc")->limit(10)->get();
+        return $ventas;
+    }
+
     public function disponibles($idcaja)
     {
         $caja = Caja::find($idcaja);

@@ -31,7 +31,8 @@
                             <v-btn
                                 outlined
                                 block
-                                color="accent"
+                                large
+                                color="primary"
                                 @click="realizarBusqueda(0)"
                                 :loading="isLoading"
                                 v-shortkey="['ctrl', 'b']"
