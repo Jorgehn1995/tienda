@@ -1,24 +1,24 @@
 <template>
     <div>
         <v-container>
-            <v-card
-                outlined
-                class="rounded-lg mb-2"
-                elevation="0"
-                color="teal"
-                dark
-                v-if="!registrado"
-                to="/tienda/cajas/habilitar"
-            >
-                <v-card-title> Dispositivo No Registrado </v-card-title>
-                <v-card-subtitle>
-                    Este dispositivo no esta registrado para realizar ventas,
-                    registralo para procesar ventas
-                </v-card-subtitle>
-                <v-card-text>
-                    <v-btn outlined dark> Registrar Dispositivo </v-btn>
-                </v-card-text>
-            </v-card>
+            <div class="d-flex flex-column justify-start mb-2">
+                <h1>Cajas de Cobro</h1>
+                <span class="subtitle-2 mb-2">
+                    Administra los dispositivos que estan registrados o
+                    habiliados para cobrar en tu sistema POS
+                </span>
+
+                <v-btn
+                    color="primary"
+                    to="/tienda/cajas/habilitar"
+                    max-width="250"
+                    :block="$vuetify.breakpoint.xsOnly"
+                >
+                    <v-icon left>mdi-plus</v-icon>
+                    Registrar Este Dispositivo
+                </v-btn>
+            </div>
+
             <v-card outlined class="rounded-lg" elevation="0">
                 <v-card-title> Cajas Registradas </v-card-title>
                 <v-card-subtitle>
@@ -58,9 +58,15 @@
                                     </td>
                                     <td>
                                         {{ caja.nombre }}
-                                        <span v-if="CASH_CODE == caja.codigo">
-                                            (Este Equipo)
-                                        </span>
+                                        <v-chip
+                                            label
+                                            small
+                                            class="ml-2"
+                                            color="info"
+                                            v-if="CASH_CODE == caja.codigo"
+                                        >
+                                            Este Equipo
+                                        </v-chip>
                                     </td>
                                     <td>
                                         {{ caja.usuario }}

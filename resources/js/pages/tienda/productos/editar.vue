@@ -24,9 +24,12 @@
                 <v-card tile color="primary" dark elevation="0">
                     <div
                         v-if="$vuetify.breakpoint.smAndUp"
-                        class="py-2 px-2"
+                        class="py-2 px-2 d-flex align-center flex-row"
                         style="font-family: 'Roboto'; font-size: 2em"
                     >
+                        <v-btn icon @click="$router.go(-1)" class="mr-2">
+                            <v-icon> mdi-chevron-left </v-icon>
+                        </v-btn>
                         <span v-if="!data.nombre">
                             Producto Sin Registrar
                         </span>
@@ -36,7 +39,13 @@
                             {{ data.dimension }}
                         </span>
                     </div>
-                    <div v-else class="py-2 px-2">
+                    <div
+                        v-else
+                        class="py-2 pl-1 pr-2 d-flex flex-row align-center"
+                    >
+                        <v-btn icon @click="$router.go(-1)" class="mr-2">
+                            <v-icon> mdi-chevron-left </v-icon>
+                        </v-btn>
                         <span v-if="!data.nombre">
                             Producto Sin Registrar
                         </span>

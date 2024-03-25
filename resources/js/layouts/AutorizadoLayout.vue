@@ -74,58 +74,33 @@
                         </v-list-item-content>
                     </template>
                     <v-list-item
-                        to="/tienda/productos"
+                        to="/tienda/productos/inicio"
                         active-class="primary--text"
                     >
                         <v-list-item-title> Productos</v-list-item-title>
                     </v-list-item>
-                    <v-list-item link>
-                        <v-list-item-icon>
-                            <v-icon>mdi-package-variant-closed-plus</v-icon>
-                        </v-list-item-icon>
+                    <v-list-item link to="/tienda/productos/existencias">
                         <v-list-item-title>
                             Agregar Existencias
                         </v-list-item-title>
                     </v-list-item>
-                    <v-list-item link>
-                        <v-list-item-icon>
-                            <v-icon>mdi-calendar-outline</v-icon>
-                        </v-list-item-icon>
+                    <v-list-item link to="/tienda/productos/vencimientos">
                         <v-list-item-title>
                             Revisar Vencimientos
                         </v-list-item-title>
                     </v-list-item>
                 </v-list-group>
-                <v-list-group
-                    no-action
-                    prepend-icon="mdi-package-variant-closed"
+                <v-list-item
+                    link
+                    to="/tienda/cajas"
+                    active-class="primary--text"
                 >
-                    <template v-slot:activator>
-                        <v-list-item-content>
-                            <v-list-item-title>Cajas</v-list-item-title>
-                        </v-list-item-content>
-                    </template>
-                    <v-list-item>
-                        <v-list-item-icon>
-                            <v-icon>mdi-clipboard-list-outline</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title> Listar Cajas</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item link>
-                        <v-list-item-icon>
-                            <v-icon>mdi-package-variant-closed-plus</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title>
-                            Habilitar/Deshabilitar Caja
-                        </v-list-item-title>
-                    </v-list-item>
-                </v-list-group>
-                <v-list-item link>
                     <v-list-item-icon>
-                        <v-icon>mdi-sun-clock-outline</v-icon>
+                        <v-icon>mdi-cash-register</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title> Turnos</v-list-item-title>
+                    <v-list-item-title> Cajas</v-list-item-title>
                 </v-list-item>
+
                 <v-list-group
                     no-action
                     prepend-icon="mdi-package-variant-closed"

@@ -10,7 +10,8 @@
                     <v-btn
                         dark
                         block
-                        color="teal"
+                        color="primary"
+                        large
                         to="/tienda/productos/editar"
                         v-shortkey="['ctrl', 'l']"
                         :loading="isLoading"
