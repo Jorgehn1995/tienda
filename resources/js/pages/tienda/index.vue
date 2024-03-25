@@ -171,6 +171,7 @@ import TurnoHabilitado from "../../components/ventas/turno-habilitado.vue";
 import CajaHabilitada from "../../components/ventas/caja-habilitada.vue";
 import VentaBusqueda from "../../components/venta/ventaBusqueda.vue";
 import moment from "moment";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
     components: {
@@ -193,32 +194,66 @@ export default {
         moment,
     }),
     methods: {
+        ...mapActions({ solicitar: "datos/solicitar" }),
         async obtenerVentas(turno) {
             this.isLoading.ventas = true;
-            await this.$axios
-                .get("/turnos/" + turno.idturno + "/ventas")
-                .then((result) => {
-                    this.ventas = result.data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            if (turno.idturno > 0) {
+                if (!this.obtener("/turnos/" + turno.idturno + "/ventas")) {
+                    await this.solicitar(
+                        "/turnos/" + turno.idturno + "/ventas"
+                    );
+                } else {
+                    this.solicitar("/turnos/" + turno.idturno + "/ventas")
+                        .then((result) => {
+                            this.ventas = result;
+                        })
+                        .catch((err) => {
+                            //console.log(err);
+                        });
+                }
+
+                this.ventas = this.obtener(
+                    "/turnos/" + turno.idturno + "/ventas"
+                );
+            }
+
             this.isLoading.ventas = false;
         },
         async obtenerVencidos() {
             this.isLoading.vencimientos = true;
-            await this.$axios
-                .get("/vencimientos?search=" + this.fecha + "&tipo=pendientes")
-                .then((result) => {
-                    this.vencimientos = result.data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+
+            if (
+                !this.obtener(
+                    "/vencimientos?search=" + this.fecha + "&tipo=pendientes"
+                )
+            ) {
+                await this.solicitar(
+                    "/vencimientos?search=" + this.fecha + "&tipo=pendientes"
+                );
+                this.vencimientos = this.obtener(
+                    "/vencimientos?search=" + this.fecha + "&tipo=pendientes"
+                );
+            } else {
+                this.solicitar(
+                    "/vencimientos?search=" + this.fecha + "&tipo=pendientes"
+                )
+                    .then((result) => {
+                        this.vencimientos = result;
+                    })
+                    .catch((err) => {
+                        //
+                    });
+            }
+
+            this.vencimientos = this.obtener(
+                "/vencimientos?search=" + this.fecha + "&tipo=pendientes"
+            );
             this.isLoading.vencimientos = false;
         },
     },
     computed: {
+        ...mapGetters({ obtener: "datos/obtener" }),
+
         tipo() {
             return this.$cookie.get("tipo");
         },
