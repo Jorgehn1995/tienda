@@ -62,6 +62,37 @@
                                     No hay productos que necesiten revisión
                                 </h4>
                             </div>
+                            <div v-else>
+                                <v-list color="transparent">
+                                    <v-list-item
+                                        v-for="(v, i) in vencimientos"
+                                        :key="'venci' + i"
+                                    >
+                                        <v-list-item-avatar>
+                                            <v-avatar color="primary lighten-2">
+                                                <span>
+                                                    {{ i + 1 }}
+                                                </span>
+                                            </v-avatar>
+                                        </v-list-item-avatar>
+                                        <v-list-item-content>
+                                            <v-list-item-title>
+                                                {{ v.producto.nombre }}
+                                                {{ v.producto.marca }}
+                                                {{ v.producto.dimension }}
+                                            </v-list-item-title>
+                                            <v-list-item-subtitle>
+                                                Vencimiento
+                                                {{
+                                                    moment(
+                                                        v.vencimiento
+                                                    ).format("DD/MM/Y")
+                                                }}
+                                            </v-list-item-subtitle>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-list>
+                            </div>
                         </v-card-text>
                     </v-card>
                     <caja-habilitada v-slot="{ caja }">
