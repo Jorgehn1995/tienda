@@ -121,4 +121,28 @@ class TurnosController extends Controller
         $turno->save();
         return $turno;
     }
+    public function cerrar(Request $request, $idturno)
+    {
+        $caja = Caja::find($request->turno["idcaja"]);
+        if (!$caja) {
+            return response("La caja no existe", 404);
+        }
+
+        $turno = Turno::with("caja")
+            ->where("idturno", $idturno)
+            ->where("idcaja", $caja->idcaja)
+            ->first();
+
+        if (!$turno) {
+            return response("Turno no encontrado", 404);
+        }
+        $turno->subtotal = $request->totales["subtotal"];
+        $turno->descuento = $request->totales["descuento"];
+        $turno->total = $request->totales["total"];
+        $turno->nombre_cierre = Auth::User()->usuario;
+        $turno->cierre = date("Y-m-d h:i:s");
+        $turno->save();
+
+        return $turno;
+    }
 }
