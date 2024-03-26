@@ -126,6 +126,7 @@ Route::group(['middleware' => ['auth:api']], function () {
      * VENTA
      */
     Route::post('/ventas/vender', [VentasController::class, 'vender'])->name('api.ventas.vender');
+    Route::delete('/venta/{idventa}/anular', [VentasController::class, 'anular'])->name('api.ventas.vender');
 
     /**
      * VENTAS

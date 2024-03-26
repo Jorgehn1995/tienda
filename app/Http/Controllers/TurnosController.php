@@ -46,16 +46,19 @@ class TurnosController extends Controller
             return response("Turno no encontrado", 404);
         }
         $totales = [];
-        $totales["articulos"] = $turno->ventas->sum("articulos");
-        $totales["subtotal"] = $turno->ventas->sum("subtotal");
-        $totales["descuento"] = $turno->ventas->sum("descuento");
-        $totales["total"] = $turno->ventas->sum("total");
+        $totales["documentos"] = $turno->ventas->count();
+        $totales["anulados"] = $turno->ventas->where("anulado", 0)->count();
+        $totales["articulos"] = $turno->ventas->where("anulado", 0)->sum("articulos");
+        $totales["subtotal"] = $turno->ventas->where("anulado", 0)->sum("subtotal");
+        $totales["descuento"] = $turno->ventas->where("anulado", 0)->sum("descuento");
+        $totales["total"] = $turno->ventas->where("anulado", 0)->sum("total");
 
 
+        $idventas = Venta::select("idventa")->where("anulado", 0)->where("idturno", $turno->idturno)->get();
 
         // Consulta para obtener los datos de las ventas
         $ventas = Detalle::join("ventas", "ventas.idventa", "=", "detalles.idventa")
-            ->where("ventas.idturno", $turno->idturno)
+            ->whereIn("detalles.idventa", $idventas)
             ->select("detalles.nombre_producto", DB::raw('SUM(detalles.unidades_presentacion) as cantidad_vendida'))
             ->groupBy('nombre_producto')
 

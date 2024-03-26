@@ -50,7 +50,7 @@ class VentasController extends Controller
                 $detalle->codigo = $precio["producto"]["codigo"];
                 $detalle->nombre_producto = $precio["producto"]["nombre"] . " " . $precio["producto"]["marca"] . " " . $precio["producto"]["dimension"];
                 $detalle->presentacion = $precio["nombre"];
-                $detalle->cantidad = $precio["cantidad"];
+                $detalle->cantidad = $precio["carrito"];
                 $detalle->precio = $precio["precio"];
                 $detalle->total = $precio["carrito"] * $precio["precio"];
                 $detalle->unidades_presentacion = $precio["cantidad"];
@@ -74,6 +74,29 @@ class VentasController extends Controller
             DB::rollBack();
             return response($e, 404);
         }
+        return $venta;
+    }
+    public function anular(Request $request, $idventa)
+    {
+        $venta = Venta::with("detalles")->find($idventa);
+
+        if (!$venta) {
+            return response("No se ha encontrado la venta", 404);
+        }
+        if ($venta->anulado) {
+            return response("la venta ya ha sido anulada", 404);
+        }
+
+        $detalles = Detalle::where("idventa", $venta->idventa)->get();
+        foreach ($detalles as $key => $detalle) {
+            $producto = Producto::find($detalle->idproducto);
+            if ($producto) {
+                $producto->existencia = $producto->existencia + $detalle->unidades_vendidas;
+                $producto->save();
+            }
+        }
+        $venta->anulado = 1;
+        $venta->save();
         return $venta;
     }
 }
