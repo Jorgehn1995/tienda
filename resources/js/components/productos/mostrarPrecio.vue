@@ -1,6 +1,6 @@
 <template>
     <div
-        style="white-space: nowrap; min-width: 80px; overflow-y: hidden"
+        style="white-space: nowrap; min-width: 80px"
         class="px-1 d-flex justify-space-between font-weight-black"
     >
         <span :style="'font-size:' + size + 'px !important'">

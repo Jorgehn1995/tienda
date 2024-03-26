@@ -25,6 +25,7 @@
                                 <div
                                     style="height: 250px"
                                     class="d-flex justify-center align-center flex-column"
+                                    v-if="ventas.length == 0"
                                 >
                                     <v-icon size="80"
                                         >mdi-chart-box-outline</v-icon
@@ -32,7 +33,7 @@
                                     <h6>No hay productos para mostrar</h6>
                                 </div>
                                 <grafica-pie
-                                    v-if="ventas.length > 0"
+                                    v-else
                                     :dark="true"
                                     :labels="grafica.labels"
                                     :series="grafica.series"
