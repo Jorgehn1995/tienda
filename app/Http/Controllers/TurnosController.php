@@ -34,7 +34,7 @@ class TurnosController extends Controller
             $items = $query->get();
         }
         foreach ($items as $key => $item) {
-            $total = Venta::where("idturno", $item->idturno)->sum("total");
+            $total = Venta::where("anulado", 0)->where("idturno", $item->idturno)->sum("total");
             $item->total_ventas = $total;
         }
         return $items;
