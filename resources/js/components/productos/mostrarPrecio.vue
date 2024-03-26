@@ -1,12 +1,12 @@
 <template>
     <div
-        style="white-space: nowrap; min-width: 80px"
+        style="white-space: nowrap; min-width: 80px; overflow-y: hidden"
         class="px-1 d-flex justify-space-between font-weight-black"
     >
         <span :style="'font-size:' + size + 'px !important'">
             <slot name="moneda"> Q </slot>
         </span>
-        <span>
+        <div>
             <div class="d-flex flex-row">
                 <div
                     class="money"
@@ -25,7 +25,7 @@
                     </slot>
                 </div>
             </div>
-        </span>
+        </div>
     </div>
 </template>
 
@@ -51,7 +51,7 @@ export default {
             },
         },
         decimalSize() {
-            return this.size < 15 ? this.size : this.size - 4;
+            return this.size < 15 ? this.size : this.size - 3;
         },
     },
 };

@@ -22,7 +22,17 @@
                                 Cantidad de unidades vendidas por cada producto
                             </v-card-subtitle>
                             <v-card-text>
+                                <div
+                                    style="height: 250px"
+                                    class="d-flex justify-center align-center flex-column"
+                                >
+                                    <v-icon size="80"
+                                        >mdi-chart-box-outline</v-icon
+                                    >
+                                    <h6>No hay productos para mostrar</h6>
+                                </div>
                                 <grafica-pie
+                                    v-if="ventas.length > 0"
                                     :dark="true"
                                     :labels="grafica.labels"
                                     :series="grafica.series"
@@ -329,6 +339,19 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <tr
+                                                        v-if="
+                                                            ventas.length == 0
+                                                        "
+                                                    >
+                                                        <td
+                                                            colspan="8"
+                                                            class="text-center"
+                                                        >
+                                                            No hay ventas para
+                                                            mostrar
+                                                        </td>
+                                                    </tr>
                                                     <tr
                                                         v-for="(
                                                             venta, i

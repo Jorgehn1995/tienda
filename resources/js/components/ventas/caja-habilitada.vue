@@ -112,6 +112,7 @@ import FormTextField from "../forms/form-text-field.vue";
 import rules from "@/configs/rules";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
+import { mapActions, mapGetters } from "vuex";
 export default {
     components: { FormTextField, FormTextArea },
 
@@ -152,6 +153,7 @@ export default {
         uuidv4,
     }),
     methods: {
+        ...mapActions({ solicitar: "datos/solicitar" }),
         async verificar() {
             this.isLoading.verify = true;
             if (!this.CASH_CODE) {
@@ -159,27 +161,29 @@ export default {
                 this.getOS();
             } else {
                 let code = this.CASH_CODE;
-                if (localStorage.getItem("CASH_DATA")) {
-                    this.caja = JSON.parse(localStorage.getItem("CASH_DATA"));
+                this.caja = this.obtener("/cajas/verificar/" + code);
+
+                if (!this.caja.idcaja) {
+                    this.caja = await this.solicitar(
+                        "/cajas/verificar/" + code
+                    );
+                } else {
+                    this.solicitar("/cajas/verificar/" + code)
+                        .then((r) => {
+                            this.registrado = true;
+                            this.$emit("registrado");
+                            this.caja = r;
+                            localStorage.setItem(
+                                "CASH_DATA",
+                                JSON.stringify(this.caja)
+                            );
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            this.registrado = false;
+                            this.getOS();
+                        });
                 }
-                this.$axios
-                    .get("/cajas/verificar/" + code)
-                    .then((result) => {
-                        this.registrado = true;
-                        this.$emit("registrado");
-
-                        this.caja = result.data;
-                        localStorage.setItem(
-                            "CASH_DATA",
-                            JSON.stringify(result.data)
-                        );
-                    })
-                    .catch((err) => {
-                        this.registrado = false;
-                        this.getOS();
-
-                        console.log(err);
-                    });
             }
             this.isLoading.verify = false;
         },
@@ -292,6 +296,7 @@ export default {
         },
     },
     computed: {
+        ...mapGetters({ obtener: "datos/obtener" }),
         fecha() {
             return moment(this.caja.fecha).format("DD/MM/YYYY HH:mm");
         },

@@ -82,28 +82,11 @@
                                 <span class="font-weight-black"> TOTAL </span>
                             </v-list-item-subtitle>
                             <v-list-item-title class="text-right">
-                                <mostrar-precio v-model="venta.total">
-                                    <template v-slot:moneda>
-                                        <span
-                                            class="text-h5 font-weight-bold teal--text"
-                                        >
-                                            Q
-                                        </span>
-                                    </template>
-                                    <template v-slot:entero="{ entero }">
-                                        <span
-                                            class="text-h4 font-weight-bold teal--text"
-                                        >
-                                            {{ entero }}.
-                                        </span>
-                                    </template>
-                                    <template v-slot:decimal="{ decimal }">
-                                        <span
-                                            class="text-h5 font-weight-bold teal--text"
-                                        >
-                                            {{ decimal }}
-                                        </span>
-                                    </template>
+                                <mostrar-precio
+                                    class="primary--text"
+                                    v-model="venta.total"
+                                    :size="20"
+                                >
                                 </mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>
@@ -115,7 +98,7 @@
                         class="buy-button"
                         dark
                         block
-                        color="teal"
+                        color="primary"
                         @click="finalizar"
                         target="_blank"
                     >
@@ -205,28 +188,10 @@
                             </v-list-item-subtitle>
                             <v-list-item-title class="text-right">
                                 <div class="d-flex flex-column">
-                                    <mostrar-precio v-model="venta.total">
-                                        <template v-slot:moneda>
-                                            <span
-                                                class="text-h5 font-weight-bold teal--text"
-                                            >
-                                                Q
-                                            </span>
-                                        </template>
-                                        <template v-slot:entero="{ entero }">
-                                            <span
-                                                class="text-h4 font-weight-bold teal--text"
-                                            >
-                                                {{ entero }}.
-                                            </span>
-                                        </template>
-                                        <template v-slot:decimal="{ decimal }">
-                                            <span
-                                                class="text-h5 font-weight-bold teal--text"
-                                            >
-                                                {{ decimal }}
-                                            </span>
-                                        </template>
+                                    <mostrar-precio
+                                        v-model="venta.total"
+                                        :size="18"
+                                    >
                                     </mostrar-precio>
                                 </div>
                             </v-list-item-title>
@@ -335,28 +300,10 @@
                                 TOTAL
                             </v-list-item-subtitle>
                             <v-list-item-title class="text-right">
-                                <mostrar-precio v-model="venta.total">
-                                    <template v-slot:moneda>
-                                        <span
-                                            class="text-h5 font-weight-bold teal--text"
-                                        >
-                                            Q
-                                        </span>
-                                    </template>
-                                    <template v-slot:entero="{ entero }">
-                                        <span
-                                            class="text-h4 font-weight-bold teal--text"
-                                        >
-                                            {{ entero }}.
-                                        </span>
-                                    </template>
-                                    <template v-slot:decimal="{ decimal }">
-                                        <span
-                                            class="text-h5 font-weight-bold teal--text"
-                                        >
-                                            {{ decimal }}
-                                        </span>
-                                    </template>
+                                <mostrar-precio
+                                    v-model="venta.total"
+                                    :size="18"
+                                >
                                 </mostrar-precio>
                             </v-list-item-title>
                         </v-list-item>

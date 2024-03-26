@@ -78,7 +78,7 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn text>
+                    <v-btn text @click="$router.go(-1)">
                         <v-icon left>mdi-chevron-left</v-icon>
                         Regresar
                     </v-btn>
