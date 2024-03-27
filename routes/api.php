@@ -4,6 +4,7 @@ use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\CajasController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ImpresionesController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PresentacionesController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ReportesController;
@@ -125,6 +126,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     /**
      * VENTA
      */
+    Route::post('/ventas/{idventa}/recibo', [PDFController::class, 'recibo'])->name('api.ventas.vender');
     Route::post('/ventas/vender', [VentasController::class, 'vender'])->name('api.ventas.vender');
     Route::delete('/venta/{idventa}/anular', [VentasController::class, 'anular'])->name('api.ventas.vender');
 

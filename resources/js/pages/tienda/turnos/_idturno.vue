@@ -348,9 +348,6 @@
                                                         <th class="text-right">
                                                             Total
                                                         </th>
-                                                        <th class="text-right">
-                                                            Ops.
-                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -371,6 +368,12 @@
                                                         v-for="(
                                                             venta, i
                                                         ) in ventas"
+                                                        @click="
+                                                            showTransaction(
+                                                                venta
+                                                            )
+                                                        "
+                                                        class="cursor-pointer"
                                                     >
                                                         <td>
                                                             {{ i + 1 }}
@@ -471,19 +474,6 @@
                                                                     venta.total
                                                                 "
                                                             ></mostrar-precio>
-                                                        </td>
-                                                        <td class="text-right">
-                                                            <v-btn
-                                                                color="primary"
-                                                                outlined
-                                                                @click="
-                                                                    showTransaction(
-                                                                        venta
-                                                                    )
-                                                                "
-                                                            >
-                                                                Ver
-                                                            </v-btn>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -742,10 +732,10 @@
                         @actualizado="init"
                         class="mr-2"
                     ></venta-anular>
-                    <v-btn color="primary">
-                        <v-icon left>mdi-printer</v-icon>
-                        Recibo
-                    </v-btn>
+                    <venta-recibo
+                        class="mr-2"
+                        v-model="transaccion"
+                    ></venta-recibo>
                     <v-btn color="secondary" disabled>
                         <v-icon left>mdi-printer</v-icon>
                         Factura
@@ -877,6 +867,7 @@
 </template>
 
 <script>
+import VentaRecibo from "../../../components/venta/venta-recibo.vue";
 import VentaAnular from "../../../components/venta/venta-anular.vue";
 import VOptions from "../../../components/tienda/generales/v-options.vue";
 import FormTextField from "../../../components/forms/form-text-field.vue";
@@ -892,6 +883,7 @@ export default {
         FormTextField,
         VOptions,
         VentaAnular,
+        VentaRecibo,
     },
     mounted() {
         this.init();

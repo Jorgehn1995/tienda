@@ -16,7 +16,7 @@ class Detalle extends Model
     {
         return $this->belongsTo("App\Models\Venta", "idventa");
     }
-    public function presentaciones()
+    public function presentacion()
     {
         return $this->belongsTo("App\Models\Precio", "idprecio");
     }
