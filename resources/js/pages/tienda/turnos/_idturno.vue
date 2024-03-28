@@ -730,6 +730,7 @@
                     <venta-anular
                         v-model="transaccion"
                         @actualizado="init"
+                        :disabled="!!turno.cierre"
                         class="mr-2"
                     ></venta-anular>
                     <venta-recibo

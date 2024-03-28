@@ -50,7 +50,11 @@
                     <strong>Estado:</strong>
                 </td>
                 <td>
-                    Procesado
+                    @if ($venta->anulado)
+                        Anulado
+                    @else
+                        Procesado
+                    @endif
                 </td>
             </tr>
         </tbody>

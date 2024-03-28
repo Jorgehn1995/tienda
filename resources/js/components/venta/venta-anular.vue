@@ -3,7 +3,7 @@
         <v-btn
             color="error"
             @click="isOpen = true"
-            :disabled="venta.anulado == 1"
+            :disabled="venta.anulado == 1 || disabled"
         >
             <v-icon left>mdi-cart-remove</v-icon>
             Anular
@@ -49,6 +49,10 @@ export default {
         value: {
             type: Object,
             required: true,
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     data: () => ({
