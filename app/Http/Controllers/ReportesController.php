@@ -16,7 +16,7 @@ class ReportesController extends Controller
 
             ->get();
 
-        $ventas = Venta::whereIn("idventa", $identificadores)->with("detalles")
+        $ventas = Venta::with("turno.caja")->whereIn("idventa", $identificadores)->with("detalles")
             ->orderBy("created_at", "desc")
             ->get();
 

@@ -1,125 +1,142 @@
 <template>
     <div>
-        <v-card tile>
-            <v-card-text>
-                <v-row dense>
-                    <v-col cols="12" md="5">
-                        <v-text-field
-                            v-model="inicio"
-                            type="date"
-                            outlined
-                            placeholder="Fecha de Inicio"
-                            hide-details=""
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="5">
-                        <v-text-field
-                            v-model="fin"
-                            type="date"
-                            outlined
-                            placeholder="Fecha de Inicio"
-                            hide-details=""
-                        ></v-text-field>
-                    </v-col>
-                    <v-col
-                        cols="12"
-                        md="2"
-                        class="d-flex justify-center align-center"
-                    >
-                        <v-btn color="primary" block large @click="cargar()">
-                            Consultar
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-        </v-card>
         <v-container>
-            <v-row>
+            <v-row dense>
+                <v-col cols="12" sm="6" md="4">
+                    <widget-small
+                        title="Costos"
+                        description="Costos de las ventas realizadas"
+                        :size="18"
+                    >
+                        <mostrar-precio
+                            :size="30"
+                            v-model="totales.costos"
+                        ></mostrar-precio>
+                    </widget-small>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <widget-small
+                        color="green"
+                        dark
+                        title="Ganancias"
+                        description="Ganancias obtenidas sobre las ventas realizadas"
+                        :size="18"
+                    >
+                        <mostrar-precio
+                            :size="30"
+                            v-model="totales.ganancias"
+                        ></mostrar-precio>
+                    </widget-small>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <widget-small
+                        color="primary"
+                        title="Total"
+                        dark
+                        description="Total de Ventas Realizadas"
+                        :size="18"
+                    >
+                        <mostrar-precio
+                            :size="30"
+                            v-model="totales.total"
+                        ></mostrar-precio>
+                    </widget-small>
+                </v-col>
                 <v-col cols="12 " md="4">
-                    <v-card>
+                    <v-card class="rounded-lg" elevation="0">
                         <v-card-title> Totales </v-card-title>
                         <v-card-text class="mx-0">
-                            <v-list>
+                            <v-list dense>
                                 <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
+                                    <v-list-item-title>
                                         Fecha de Inicio
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 grey--text pr-3"
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle
+                                        class="text-right grey--text"
                                     >
                                         {{ formato_inicio }}
-                                    </v-list-item-title>
+                                    </v-list-item-subtitle>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
+                                    <v-list-item-title>
                                         Fecha de Finalización
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 grey--text pr-3"
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle
+                                        class="text-right grey--text"
                                     >
                                         {{ formato_fin }}
-                                    </v-list-item-title>
+                                    </v-list-item-subtitle>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
+                                    <v-list-item-title>
                                         Articulos
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 grey--text pr-3"
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle
+                                        class="text-right grey--text"
                                     >
                                         {{ totales.articulos }}
-                                    </v-list-item-title>
+                                    </v-list-item-subtitle>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
+                                    <v-list-item-title>
                                         Subtotal
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 grey--text pr-3"
-                                    >
-                                        Q {{ totales.subtotal }}
                                     </v-list-item-title>
+                                    <v-list-item-subtitle
+                                        class="text-right grey--text"
+                                    >
+                                        <mostrar-precio
+                                            :value="totales.subtotal"
+                                        ></mostrar-precio>
+                                    </v-list-item-subtitle>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
+                                    <v-list-item-title>
                                         Descuentos
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 grey--text pr-3"
-                                    >
-                                        Q {{ totales.descuento }}
                                     </v-list-item-title>
+                                    <v-list-item-subtitle
+                                        class="text-right grey--text"
+                                    >
+                                        <mostrar-precio
+                                            :value="totales.descuento"
+                                        ></mostrar-precio>
+                                    </v-list-item-subtitle>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
+                                    <v-list-item-title>
                                         Total
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 grey--text pr-3"
-                                    >
-                                        Q {{ totales.total }}
                                     </v-list-item-title>
+                                    <v-list-item-subtitle
+                                        class="text-right grey--text"
+                                    >
+                                        <mostrar-precio
+                                            :value="totales.total"
+                                        ></mostrar-precio>
+                                    </v-list-item-subtitle>
                                 </v-list-item>
                                 <v-divider></v-divider>
                                 <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
+                                    <v-list-item-title>
                                         Costos
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 grey--text pr-3"
-                                    >
-                                        Q {{ totales.costos }}
                                     </v-list-item-title>
+                                    <v-list-item-subtitle
+                                        class="text-right grey--text"
+                                    >
+                                        <mostrar-precio
+                                            :value="totales.costos"
+                                        ></mostrar-precio>
+                                    </v-list-item-subtitle>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-list-item-subtitle class="text-h6">
+                                    <v-list-item-title>
                                         Ganancias
-                                    </v-list-item-subtitle>
-                                    <v-list-item-title
-                                        class="text-right text-h6 grey--text pr-3"
-                                    >
-                                        Q {{ totales.ganancias }}
                                     </v-list-item-title>
+                                    <v-list-item-subtitle
+                                        class="text-right grey--text"
+                                    >
+                                        <mostrar-precio
+                                            :value="totales.ganancias"
+                                        ></mostrar-precio>
+                                    </v-list-item-subtitle>
                                 </v-list-item>
                             </v-list>
                         </v-card-text>
@@ -138,151 +155,162 @@
                     </v-card>
                 </v-col>
                 <v-col cols="12 " md="8">
-                    <v-card>
-                        <v-card-title> Recibos </v-card-title>
+                    <v-card class="rounded-lg" elevation="0">
+                        <v-card-title> Transacciones Realizadas </v-card-title>
+                        <v-card-subtitle>
+                            Transacciones realizadas entre el inicio hasta el
+                            fin
+                        </v-card-subtitle>
                         <v-card-text>
-                            <v-expansion-panels
-                                accordion
-                                v-if="ventas.length > 0"
-                            >
-                                <v-expansion-panel
-                                    v-for="(venta, i) in ventas"
-                                    :key="i"
+                            <v-row dense>
+                                <v-col cols="12" md="5">
+                                    <form-text-field
+                                        v-model="inicio"
+                                        type="date"
+                                        outlined
+                                        placeholder="Fecha de Inicio"
+                                        label="Fecha de Inicio"
+                                        hide-details=""
+                                    ></form-text-field>
+                                </v-col>
+                                <v-col cols="12" md="5">
+                                    <form-text-field
+                                        v-model="fin"
+                                        type="date"
+                                        outlined
+                                        placeholder="Fecha de Inicio"
+                                        label="Fecha de Finalización"
+                                    ></form-text-field>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    md="2"
+                                    class="d-flex justify-center mt-1"
                                 >
-                                    <v-expansion-panel-header v-slot="{ open }">
-                                        <v-row no-gutters>
-                                            <v-col cols="4">
-                                                Documento {{ venta.documento }}
-                                            </v-col>
-                                            <v-col
-                                                cols="8"
-                                                class="text--secondary"
-                                            >
-                                                <v-fade-transition
-                                                    leave-absolute
-                                                >
-                                                    <span v-if="open"
-                                                        >Total: Q{{
-                                                            venta.total
-                                                        }}</span
-                                                    >
-                                                    <v-row
-                                                        v-else
-                                                        no-gutters
-                                                        style="width: 100%"
-                                                    >
-                                                        <v-col cols="6">
-                                                            {{
-                                                                $moment(
-                                                                    venta.created_at
-                                                                ).format(
-                                                                    "DD/MM/YYYY h:m a"
-                                                                )
-                                                            }}
-                                                        </v-col>
-                                                        <v-col cols="6">
-                                                            Total: Q{{
-                                                                venta.total
-                                                            }}
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-fade-transition>
-                                            </v-col>
-                                        </v-row>
-                                    </v-expansion-panel-header>
-                                    <v-expansion-panel-content>
-                                        <v-btn
-                                            color="primary"
-                                            @click="recibo(venta.documento)"
-                                            :loading="isProcesed"
+                                    <v-btn
+                                        color="primary"
+                                        block
+                                        @click="cargar()"
+                                    >
+                                        Consultar
+                                        <v-icon>mdi-chevron-right</v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                            <v-simple-table>
+                                <template v-slot:default>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">#</th>
+                                            <th class="text-left">Fecha</th>
+                                            <th class="text-left">
+                                                Caja/
+                                                <br />
+                                                Turno
+                                            </th>
+
+                                            <th class="text-left">Venta</th>
+                                            <th class="text-left">Costos</th>
+                                            <th class="text-left">Ganancias</th>
+                                            <th>
+                                                <v-icon>
+                                                    mdi-dots-vertical
+                                                </v-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-if="ventas.length == 0">
+                                            <td colspan="7" class="text-center">
+                                                No hay ventas para mostrar
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            v-else
+                                            v-for="(venta, i) in ventas"
+                                            :key="i + 'v'"
                                         >
-                                            <v-icon>mdi-printer</v-icon>
-                                            Imprimir
-                                        </v-btn>
-                                        <v-simple-table>
-                                            <template v-slot:default>
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-left">
-                                                            Cantidad
-                                                        </th>
-                                                        <th class="text-left">
-                                                            producto
-                                                        </th>
-                                                        <th class="text-left">
-                                                            Precio
-                                                        </th>
-                                                        <th class="text-left">
-                                                            Total
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr
-                                                        v-for="(
-                                                            prod, i
-                                                        ) in venta.detalles"
-                                                        :key="i + 'deta'"
-                                                    >
-                                                        <td>
-                                                            {{ prod.cantidad }}
-                                                        </td>
-                                                        <td>
-                                                            {{
-                                                                prod.nombre_producto
-                                                            }}
-                                                        </td>
-                                                        <td>
-                                                            {{ prod.precio }}
-                                                        </td>
-                                                        <td>
-                                                            {{ prod.total }}
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </template>
-                                        </v-simple-table>
-                                    </v-expansion-panel-content>
-                                </v-expansion-panel>
-                            </v-expansion-panels>
-                            <v-list-item v-else>
-                                <v-list-item-content>
-                                    <v-list-item-subtitle>
-                                        Sin ventas para mostrar
-                                    </v-list-item-subtitle>
-                                </v-list-item-content>
-                            </v-list-item>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12 " md="3" v-if="false">
-                    <v-card>
-                        <v-card-title> Productos Más Vendidos </v-card-title>
-                        <v-card-text>
-                            <v-list v-if="populares.length > 0">
-                                <v-list-item
-                                    v-for="(producto, i) in populares"
-                                    :key="'popu' + i"
-                                >
-                                    <v-list-item-content>
-                                        <v-list-item-title>
-                                            {{ producto.nombre }}
-                                        </v-list-item-title>
-                                        <v-list-item-subtitle>
-                                            {{ producto.precio }}
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-list>
-                            <v-list v-else>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Sin productos para mostrar
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-list>
+                                            <td>{{ i + 1 }}</td>
+                                            <td>
+                                                <span
+                                                    style="white-space: nowrap"
+                                                >
+                                                    {{
+                                                        moment(
+                                                            venta.created_at
+                                                        ).format("DD/MM/YY")
+                                                    }}
+                                                </span>
+                                                <span
+                                                    style="white-space: nowrap"
+                                                >
+                                                    {{
+                                                        moment(
+                                                            venta.created_at
+                                                        ).format("hh:mm a")
+                                                    }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <v-list dense>
+                                                    <v-list-item class="px-0">
+                                                        <v-list-item-content>
+                                                            <v-list-item-subtitle>
+                                                                {{
+                                                                    venta.turno
+                                                                        .caja
+                                                                        .nombre
+                                                                }}
+                                                                / Turno
+                                                                {{
+                                                                    venta.turno
+                                                                        .idturno
+                                                                }}
+                                                            </v-list-item-subtitle>
+                                                            <v-list-item-title>
+                                                                {{
+                                                                    venta.cliente_nombre ||
+                                                                    "Consumidor Final"
+                                                                }}
+                                                            </v-list-item-title>
+                                                            <v-list-item-subtitle>
+                                                                Atendió
+                                                                {{
+                                                                    venta.cajero_nombre
+                                                                }}
+                                                            </v-list-item-subtitle>
+                                                        </v-list-item-content>
+                                                    </v-list-item>
+                                                </v-list>
+                                            </td>
+
+                                            <td>
+                                                <mostrar-precio
+                                                    :size="11"
+                                                    :value="venta.total"
+                                                ></mostrar-precio>
+                                            </td>
+                                            <td>
+                                                <mostrar-precio
+                                                    :size="11"
+                                                    :value="venta.costos"
+                                                ></mostrar-precio>
+                                            </td>
+                                            <td>
+                                                <mostrar-precio
+                                                    :size="11"
+                                                    :value="venta.ganancias"
+                                                ></mostrar-precio>
+                                            </td>
+                                            <td>
+                                                <venta-detalles
+                                                    v-model="ventas[i]"
+                                                ></venta-detalles>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </template>
+                            </v-simple-table>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -292,7 +320,19 @@
 </template>
 
 <script>
+import WidgetSmall from "../../../components/common/widget-small.vue";
+import VentaDetalles from "../../../components/venta/venta-detalles.vue";
+import MostrarPrecio from "../../../components/productos/mostrarPrecio.vue";
+import moment from "moment";
+import FormTextField from "../../../components/forms/form-text-field.vue";
+
 export default {
+    components: { FormTextField, MostrarPrecio, VentaDetalles, WidgetSmall },
+    beforeMount() {
+        this.inicio = moment().format("Y-MM-DD");
+        this.fin = moment().format("Y-MM-DD");
+        this.cargar();
+    },
     data: () => ({
         isLoading: false,
         isProcesed: false,
@@ -308,11 +348,12 @@ export default {
         },
         ventas: [],
         populares: [],
+        moment,
     }),
     methods: {
-        cargar() {
+        async cargar() {
             this.isLoading = true;
-            this.$axios
+            await this.$axios
                 .get("reporte/" + this.inicio + "/" + this.fin)
                 .then((result) => {
                     this.totales = result.data.totales;
@@ -321,6 +362,7 @@ export default {
                     this.populares = result.data.populares;
                 })
                 .catch((err) => {});
+            this.isLoading = false;
         },
         async imprimir() {
             await this.$axios

@@ -3,8 +3,6 @@ import Router from "vue-router";
 
 // Routes
 import PagesRoutes from "./pages.routes";
-import UsersRoutes from "./users.routes";
-import LandingRoutes from "./landing.routes";
 
 Vue.use(Router);
 
@@ -20,8 +18,6 @@ export const routes = [
     },
 
     ...PagesRoutes,
-    ...UsersRoutes,
-    ...LandingRoutes,
 ];
 
 const router = new Router({

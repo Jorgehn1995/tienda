@@ -110,31 +110,31 @@
                             <v-list-item-title>Reportes</v-list-item-title>
                         </v-list-item-content>
                     </template>
-                    <v-list-item>
+                    <v-list-item to="/tienda/reportes">
                         <v-list-item-icon>
                             <v-icon>mdi-clipboard-list-outline</v-icon>
                         </v-list-item-icon>
                         <v-list-item-title> Ventas</v-list-item-title>
                     </v-list-item>
-                    <v-list-item>
+                    <v-list-item v-if="false">
                         <v-list-item-icon>
                             <v-icon>mdi-clipboard-list-outline</v-icon>
                         </v-list-item-icon>
                         <v-list-item-title> Productos</v-list-item-title>
                     </v-list-item>
-                    <v-list-item>
+                    <v-list-item v-if="false">
                         <v-list-item-icon>
                             <v-icon>mdi-clipboard-list-outline</v-icon>
                         </v-list-item-icon>
                         <v-list-item-title> Cajas</v-list-item-title>
                     </v-list-item>
-                    <v-list-item link>
+                    <v-list-item link v-if="false">
                         <v-list-item-icon>
                             <v-icon>mdi-package-variant-closed-plus</v-icon>
                         </v-list-item-icon>
                         <v-list-item-title> Usuarios </v-list-item-title>
                     </v-list-item>
-                    <v-list-item link>
+                    <v-list-item link v-if="false">
                         <v-list-item-icon>
                             <v-icon>mdi-package-variant-closed-plus</v-icon>
                         </v-list-item-icon>
