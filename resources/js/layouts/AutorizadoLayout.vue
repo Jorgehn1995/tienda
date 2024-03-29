@@ -8,7 +8,7 @@
             <template v-slot:prepend>
                 <v-card tile height="122">
                     <v-card-text>
-                        <v-list-item to="/verificador">
+                        <v-list-item to="/tienda/drawer">
                             <v-list-item-content>
                                 <v-list-item-subtitle>
                                     {{ moment().format("D/M/Y") }}
@@ -51,6 +51,28 @@
                         <v-icon>mdi-cart-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title> Vender</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                    link
+                    to="/tienda/productos/vencimientos"
+                    active-class="primary--text"
+                    v-if="tipo > 1"
+                >
+                    <v-list-item-icon>
+                        <v-icon>mdi-calendar-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title> Vencimientos</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                    link
+                    to="/tienda/productos/existencias"
+                    active-class="primary--text"
+                    v-if="tipo > 1"
+                >
+                    <v-list-item-icon>
+                        <v-icon>mdi-package-variant-closed-plus</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title> Agregar Producto</v-list-item-title>
                 </v-list-item>
                 <v-list-item
                     link

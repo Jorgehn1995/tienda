@@ -14,7 +14,10 @@
                 </v-card-text>
             </v-card>
         </div>
-        <div v-else-if="tipo != 1" class="d-flex justify-center">
+        <div
+            v-else-if="tipo != 1 && !caja.estado"
+            class="d-flex justify-center"
+        >
             <v-card outlined class="rounded-lg mt-2" width="450">
                 <v-card-title> Dispositivo No Reconocido </v-card-title>
                 <v-card-subtitle>

@@ -1,4 +1,13 @@
 import moment from "moment/moment";
+import Vue from "vue";
+const validarTipo = (to, from, next) => {
+    const tipo = Vue.cookie.get("tipo");
+    if (tipo == 1) {
+        next();
+    } else {
+        next("/tienda/noauth");
+    }
+};
 export default [
     /**
      * PRODUCTOS
@@ -22,6 +31,7 @@ export default [
         meta: {
             layout: "autorizado",
         },
+        beforeEnter: validarTipo,
     },
     {
         path: "/tienda/productos/editar",
@@ -30,6 +40,7 @@ export default [
         meta: {
             layout: "autorizado",
         },
+        beforeEnter: validarTipo,
     },
     {
         path: "/tienda/productos/existencias",

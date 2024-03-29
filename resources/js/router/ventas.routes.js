@@ -1,3 +1,4 @@
+import moment from "moment/moment";
 import Vue from "vue";
 const validarTipo = (to, from, next) => {
     const tipo = Vue.cookie.get("tipo");
@@ -9,39 +10,43 @@ const validarTipo = (to, from, next) => {
 };
 export default [
     /**
-     * USUARIOS
+     * VENDER
      */
     {
-        path: "/tienda/usuarios",
+        path: "/tienda/vender",
         name: "",
-        component: () => import("@/pages/tienda/usuarios/index.vue"),
+        component: () => import("@/pages/tienda/vender/index.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+    },
+
+    {
+        path: "/tienda/cajas",
+        name: "",
+        component: () => import("@/pages/tienda/cajas/index.vue"),
         meta: {
             layout: "autorizado",
         },
         beforeEnter: validarTipo,
     },
     {
-        path: "/tienda/usuarios/crear",
+        path: "/tienda/cajas/habilitar",
         name: "",
-        component: () => import("@/pages/tienda/usuarios/crear.vue"),
+        component: () => import("@/pages/tienda/cajas/habilitar.vue"),
         meta: {
             layout: "autorizado",
         },
         beforeEnter: validarTipo,
     },
+
+    /**
+     * REPORTES
+     */
     {
-        path: "/tienda/usuarios/editar",
+        path: "/tienda/reportes",
         name: "",
-        component: () => import("@/pages/tienda/usuarios/editar.vue"),
-        meta: {
-            layout: "autorizado",
-        },
-        beforeEnter: validarTipo,
-    },
-    {
-        path: "/tienda/usuarios/eliminar",
-        name: "",
-        component: () => import("@/pages/tienda/usuarios/eliminar.vue"),
+        component: () => import("@/pages/tienda/reportes/index.vue"),
         meta: {
             layout: "autorizado",
         },
