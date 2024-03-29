@@ -1,15 +1,14 @@
 <template>
-    <div>
+    <div class="d-flex justify-center">
         <v-card
             class="text-center pa-1 rounded-lg"
             elevation="0"
             outlined
-            width="400"
+            width="350"
             max-width="400"
         >
             <v-card-text class="d-flex justify-center mt-2">
                 <v-img
-                    v-if="$vuetify.breakpoint.mdAndUp"
                     src="/images/lg_bar.png"
                     contain
                     width="100"
