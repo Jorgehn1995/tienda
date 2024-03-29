@@ -14,6 +14,29 @@
                 </v-card-text>
             </v-card>
         </div>
+        <div v-else-if="tipo != 1" class="d-flex justify-center">
+            <v-card outlined class="rounded-lg mt-2" width="450">
+                <v-card-title> Dispositivo No Reconocido </v-card-title>
+                <v-card-subtitle>
+                    Este dispositivo no ha sido habilitado por un administrador
+                    para realizar operaciones de venta, solo los administradores
+                    pueden habilitar un dispositivo
+                </v-card-subtitle>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="teal"
+                        outlined
+                        disabled
+                        :loading="isLoading.status"
+                    >
+                        <v-icon left>mdi-cellphone-link</v-icon>
+                        Habilitar Dispositivo
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </div>
         <div v-else-if="caja.estado">
             <slot
                 v-bind:caja="caja"
@@ -302,6 +325,9 @@ export default {
         },
         CASH_CODE() {
             return localStorage.getItem("CASH_CODE");
+        },
+        tipo() {
+            return this.$cookie.get("tipo") || 2;
         },
     },
 };

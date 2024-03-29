@@ -9,7 +9,9 @@
                             Revisa los precios de productos
                         </v-card-subtitle>
                         <v-card-text>
-                            <venta-busqueda :height="300"></venta-busqueda>
+                            <caja-habilitada v-slot="{ caja }">
+                                <venta-busqueda :height="300"></venta-busqueda>
+                            </caja-habilitada>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -30,71 +32,76 @@
                             </div>
                         </v-card-text>
                     </v-card>
-                    <v-card
-                        class="rounded-lg mb-2"
-                        elevation="0"
-                        :to="'/tienda/productos/vencimientos'"
-                        color="primary"
-                        dark
-                    >
-                        <v-card-title> Revisión de Productos </v-card-title>
-                        <v-card-subtitle>
-                            Productos que necesitan revisión
-                        </v-card-subtitle>
-                        <v-card-text>
-                            <div
-                                class="d-flex justify-center"
-                                v-if="isLoading.vencimientos"
-                            >
-                                <v-progress-circular
-                                    indeterminate
-                                    color="primary"
-                                ></v-progress-circular>
-                            </div>
-                            <div
-                                class="d-flex flex-column justify-center mb-2"
-                                v-else-if="vencimientos.length == 0"
-                            >
-                                <v-icon size="80">
-                                    mdi-package-variant-closed-check
-                                </v-icon>
-                                <h4 class="text-center">
-                                    No hay productos que necesiten revisión
-                                </h4>
-                            </div>
-                            <div v-else>
-                                <v-list color="transparent">
-                                    <v-list-item
-                                        v-for="(v, i) in vencimientos"
-                                        :key="'venci' + i"
-                                    >
-                                        <v-list-item-avatar>
-                                            <v-avatar color="primary lighten-2">
-                                                <span>
-                                                    {{ i + 1 }}
-                                                </span>
-                                            </v-avatar>
-                                        </v-list-item-avatar>
-                                        <v-list-item-content>
-                                            <v-list-item-title>
-                                                {{ v.producto.nombre }}
-                                                {{ v.producto.marca }}
-                                                {{ v.producto.dimension }}
-                                            </v-list-item-title>
-                                            <v-list-item-subtitle>
-                                                Vencimiento
-                                                {{
-                                                    moment(
-                                                        v.vencimiento
-                                                    ).format("DD/MM/Y")
-                                                }}
-                                            </v-list-item-subtitle>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                </v-list>
-                            </div>
-                        </v-card-text>
-                    </v-card>
+                    <caja-habilitada v-slot="{ caja }">
+                        <v-card
+                            class="rounded-lg mb-2"
+                            elevation="0"
+                            :to="'/tienda/productos/vencimientos'"
+                            color="primary"
+                            dark
+                        >
+                            <v-card-title> Revisión de Productos </v-card-title>
+                            <v-card-subtitle>
+                                Productos que necesitan revisión
+                            </v-card-subtitle>
+                            <v-card-text>
+                                <div
+                                    class="d-flex justify-center"
+                                    v-if="isLoading.vencimientos"
+                                >
+                                    <v-progress-circular
+                                        indeterminate
+                                        color="primary"
+                                    ></v-progress-circular>
+                                </div>
+                                <div
+                                    class="d-flex flex-column justify-center mb-2"
+                                    v-else-if="vencimientos.length == 0"
+                                >
+                                    <v-icon size="80">
+                                        mdi-package-variant-closed-check
+                                    </v-icon>
+                                    <h4 class="text-center">
+                                        No hay productos que necesiten revisión
+                                    </h4>
+                                </div>
+                                <div v-else>
+                                    <v-list color="transparent">
+                                        <v-list-item
+                                            v-for="(v, i) in vencimientos"
+                                            :key="'venci' + i"
+                                        >
+                                            <v-list-item-avatar>
+                                                <v-avatar
+                                                    color="primary lighten-2"
+                                                >
+                                                    <span>
+                                                        {{ i + 1 }}
+                                                    </span>
+                                                </v-avatar>
+                                            </v-list-item-avatar>
+                                            <v-list-item-content>
+                                                <v-list-item-title>
+                                                    {{ v.producto.nombre }}
+                                                    {{ v.producto.marca }}
+                                                    {{ v.producto.dimension }}
+                                                </v-list-item-title>
+                                                <v-list-item-subtitle>
+                                                    Vencimiento
+                                                    {{
+                                                        moment(
+                                                            v.vencimiento
+                                                        ).format("DD/MM/Y")
+                                                    }}
+                                                </v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-list>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </caja-habilitada>
+
                     <caja-habilitada v-slot="{ caja }">
                         <turno-habilitado
                             :caja="caja"

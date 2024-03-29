@@ -56,6 +56,7 @@
                     link
                     to="/tienda/usuarios"
                     active-class="primary--text"
+                    v-if="tipo == 1"
                 >
                     <v-list-item-icon>
                         <v-icon>mdi-account-circle-outline</v-icon>
@@ -67,6 +68,7 @@
                     no-action
                     prepend-icon="mdi-package-variant-closed"
                     active-class="primary--text"
+                    v-if="tipo == 1"
                 >
                     <template v-slot:activator>
                         <v-list-item-content>
@@ -94,6 +96,7 @@
                     link
                     to="/tienda/cajas"
                     active-class="primary--text"
+                    v-if="tipo == 1"
                 >
                     <v-list-item-icon>
                         <v-icon>mdi-cash-register</v-icon>
@@ -104,6 +107,7 @@
                 <v-list-group
                     no-action
                     prepend-icon="mdi-package-variant-closed"
+                    v-if="tipo == 1"
                 >
                     <template v-slot:activator>
                         <v-list-item-content>
@@ -283,6 +287,9 @@ export default {
             set: function (draw) {
                 this.$store.commit("app/setDrawer", draw);
             },
+        },
+        tipo() {
+            return this.$cookie.get("tipo") || 2;
         },
     },
     methods: {
