@@ -264,6 +264,7 @@ import VentaAnular from "./venta-anular.vue";
 import moment from "moment";
 export default {
     components: { VentaRecibo, VentaAnular, MostrarPrecio },
+    name: "venta-detalles",
     props: {
         value: {
             type: Object,

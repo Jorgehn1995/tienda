@@ -323,22 +323,13 @@
                                                         <th class="text-left">
                                                             #
                                                         </th>
-                                                        <th>
-                                                            Tipo /
-                                                            <br />
-                                                            Documento
-                                                        </th>
+                                                        <th>Descripción</th>
                                                         <th class="text-left">
                                                             Fecha/
                                                             <br />
                                                             Hora
                                                         </th>
 
-                                                        <th>
-                                                            Cajero/
-                                                            <br />
-                                                            Articulos
-                                                        </th>
                                                         <th class="text-right">
                                                             Subtotal
                                                         </th>
@@ -348,6 +339,7 @@
                                                         <th class="text-right">
                                                             Total
                                                         </th>
+                                                        <th>Ops.</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -379,34 +371,60 @@
                                                             {{ i + 1 }}
                                                         </td>
                                                         <td>
-                                                            <span
-                                                                class="text-uppercase"
-                                                            >
-                                                                {{ venta.tipo }}
-                                                            </span>
-                                                            <br />
-                                                            <small>
-                                                                {{
-                                                                    venta.documento
-                                                                }}
-                                                            </small>
-                                                            <div>
-                                                                <v-chip
-                                                                    color="error--text"
-                                                                    class="v-chip--active"
-                                                                    small
-                                                                    v-if="
-                                                                        venta.anulado
-                                                                    "
+                                                            <v-list dense>
+                                                                <v-list-item
+                                                                    class="px-0"
                                                                 >
-                                                                    <v-icon
-                                                                        small
-                                                                    >
-                                                                        mdi-cancel
-                                                                    </v-icon>
-                                                                    Anulado
-                                                                </v-chip>
-                                                            </div>
+                                                                    <v-list-item-content>
+                                                                        <v-list-item-subtitle>
+                                                                            <span
+                                                                                class="text-uppercase"
+                                                                            >
+                                                                                {{
+                                                                                    venta.tipo
+                                                                                }}
+                                                                                {{
+                                                                                    venta.documento
+                                                                                }}
+                                                                            </span>
+                                                                        </v-list-item-subtitle>
+                                                                        <v-list-item-title>
+                                                                            {{
+                                                                                venta.cliente_nombre ||
+                                                                                "C/F"
+                                                                            }}
+                                                                            -
+                                                                            {{
+                                                                                venta.articulos
+                                                                            }}
+                                                                            articulos
+                                                                        </v-list-item-title>
+                                                                        <v-list-item-subtitle>
+                                                                            Atendió
+                                                                            {{
+                                                                                venta.cajero_nombre
+                                                                            }}
+                                                                        </v-list-item-subtitle>
+                                                                        <v-list-item-subtitle>
+                                                                            <v-chip
+                                                                                color="error--text"
+                                                                                class="v-chip--active"
+                                                                                small
+                                                                                v-if="
+                                                                                    venta.anulado
+                                                                                "
+                                                                            >
+                                                                                <v-icon
+                                                                                    small
+                                                                                >
+                                                                                    mdi-cancel
+                                                                                </v-icon>
+                                                                                Anulado
+                                                                            </v-chip>
+                                                                        </v-list-item-subtitle>
+                                                                    </v-list-item-content>
+                                                                </v-list-item>
+                                                            </v-list>
                                                         </td>
                                                         <td>
                                                             {{
@@ -426,16 +444,6 @@
                                                             }}
                                                         </td>
 
-                                                        <td>
-                                                            {{
-                                                                venta.cajero_nombre
-                                                            }}
-                                                            <br />
-                                                            {{
-                                                                venta.articulos
-                                                            }}
-                                                            articulos
-                                                        </td>
                                                         <td>
                                                             <mostrar-precio
                                                                 :size="12"
@@ -475,6 +483,16 @@
                                                                 "
                                                             ></mostrar-precio>
                                                         </td>
+                                                        <td>
+                                                            <venta-detalles
+                                                                :turno="
+                                                                    !turno.cierre
+                                                                "
+                                                                v-model="
+                                                                    ventas[i]
+                                                                "
+                                                            ></venta-detalles>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </template>
@@ -487,263 +505,7 @@
                 </v-row>
             </div>
         </div>
-        <v-dialog v-model="isOpenTransaction" width="800">
-            <v-card class="rounded-lg" elevation="0" outlined>
-                <v-card-title> Detalles de la Transacción </v-card-title>
-                <v-card-subtitle>
-                    Revisa los detalles de la transacción
-                </v-card-subtitle>
-                <v-card-text>
-                    <v-row dense>
-                        <v-col cols="12" sm="4">
-                            <v-list dense>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Documento
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                    <v-list-item-content class="text-right">
-                                        <v-list-item-title>
-                                            {{ transaccion.documento }}
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Fecha de Transacción
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                    <v-list-item-content class="text-right">
-                                        <v-list-item-title>
-                                            {{
-                                                moment(
-                                                    transaccion.created_at
-                                                ).format("DD/MM/Y")
-                                            }}
-                                            <br />
-                                            {{
-                                                moment(
-                                                    transaccion.created_at
-                                                ).format("hh:mm a")
-                                            }}
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Estado
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                    <v-list-item-content class="text-right">
-                                        <v-list-item-title>
-                                            <v-chip
-                                                color="error--text"
-                                                class="v-chip--active"
-                                                small
-                                                v-if="transaccion.anulado"
-                                            >
-                                                <v-icon left small>
-                                                    mdi-cancel
-                                                </v-icon>
-                                                Anulado
-                                            </v-chip>
-                                            <v-chip
-                                                v-else
-                                                color="primary--text"
-                                                class="v-chip--active"
-                                                small
-                                            >
-                                                <v-icon left small>
-                                                    mdi-check
-                                                </v-icon>
-                                                Procesado
-                                            </v-chip>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                        <v-col cols="12" sm="4">
-                            <v-list dense>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Articulos
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                    <v-list-item-content class="text-right">
-                                        <v-list-item-title>
-                                            {{ transaccion.articulos }}
-                                            articulos
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Cliente
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                    <v-list-item-content class="text-right">
-                                        <v-list-item-title>
-                                            {{
-                                                transaccion.cliente_nombre ||
-                                                "C/F"
-                                            }}
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Cajero
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                    <v-list-item-content class="text-right">
-                                        <v-list-item-title>
-                                            {{ transaccion.cajero_nombre }}
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                        <v-col cols="12" sm="4">
-                            <v-list dense>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Subtotal
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                    <v-list-item-content class="text-right">
-                                        <v-list-item-title>
-                                            <mostrar-precio
-                                                :value="transaccion.subtotal"
-                                            ></mostrar-precio>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Descuento
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                    <v-list-item-content class="text-right">
-                                        <v-list-item-title>
-                                            <mostrar-precio
-                                                :value="transaccion.descuento"
-                                            ></mostrar-precio>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>
-                                        <v-list-item-subtitle>
-                                            Total
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                    <v-list-item-content class="text-right">
-                                        <v-list-item-title>
-                                            <mostrar-precio
-                                                :value="transaccion.total"
-                                            ></mostrar-precio>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-simple-table>
-                                <template v-slot:default>
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left">#</th>
-                                            <th>Código</th>
-                                            <th>
-                                                Nombre
-                                                <br />
-                                                Presentacion
-                                            </th>
-                                            <th class="text-left">Precio</th>
 
-                                            <th class="text-right">Cantidad</th>
-
-                                            <th class="text-right">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-if="ventas.length == 0">
-                                            <td colspan="6" class="text-center">
-                                                No hay ventas para mostrar
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            v-for="(
-                                                detalle, i
-                                            ) in transaccion.detalles"
-                                        >
-                                            <td>
-                                                {{ i + 1 }}
-                                            </td>
-                                            <td>
-                                                <span class="text-uppercase">
-                                                    {{ detalle.codigo }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                {{ detalle.nombre_producto }}
-                                                <br />
-                                                {{ detalle.presentacion }}
-                                            </td>
-                                            <td>
-                                                <mostrar-precio
-                                                    :size="12"
-                                                    :value="detalle.precio"
-                                                ></mostrar-precio>
-                                            </td>
-                                            <td class="text-right">
-                                                {{ detalle.unidades_vendidas }}
-                                            </td>
-                                            <td>
-                                                <mostrar-precio
-                                                    :size="12"
-                                                    :value="detalle.total || 0"
-                                                ></mostrar-precio>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </template>
-                            </v-simple-table>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn depressed @click="isOpenTransaction = false">
-                        <v-icon>mdi-chevron-left</v-icon>
-                        Regresar
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <venta-anular
-                        v-model="transaccion"
-                        @actualizado="init"
-                        :disabled="!!turno.cierre"
-                        class="mr-2"
-                    ></venta-anular>
-                    <venta-recibo
-                        class="mr-2"
-                        v-model="transaccion"
-                    ></venta-recibo>
-                    <v-btn color="secondary" disabled>
-                        <v-icon left>mdi-printer</v-icon>
-                        Factura
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
         <v-dialog v-model="isOpen" max-width="350">
             <v-card outlined elevation="0" class="rounded-lg">
                 <v-card-title class="text-center d-flex justify-center">
@@ -868,6 +630,7 @@
 </template>
 
 <script>
+import VentaDetalles from "../../../components/venta/venta-detalles.vue";
 import VentaRecibo from "../../../components/venta/venta-recibo.vue";
 import VentaAnular from "../../../components/venta/venta-anular.vue";
 import VOptions from "../../../components/tienda/generales/v-options.vue";
@@ -885,6 +648,7 @@ export default {
         VOptions,
         VentaAnular,
         VentaRecibo,
+        VentaDetalles,
     },
     mounted() {
         this.init();

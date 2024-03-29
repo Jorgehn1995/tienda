@@ -1,7 +1,11 @@
 <template>
     <div>
         <v-container>
-            <v-row dense>
+            <h1>Reporte de Ventas</h1>
+            <span class="subtitle-2 mb-2">
+                Revisa el reporte de ventas por fechas
+            </span>
+            <v-row dense class="mt-2">
                 <v-col cols="12" sm="6" md="4">
                     <widget-small
                         title="Costos"
