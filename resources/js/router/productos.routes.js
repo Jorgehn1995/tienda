@@ -34,6 +34,15 @@ export default [
         beforeEnter: validarTipo,
     },
     {
+        path: "/tienda/productos/importar",
+        name: "",
+        component: () => import("@/pages/tienda/productos/importar.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+        beforeEnter: validarTipo,
+    },
+    {
         path: "/tienda/productos/editar",
         name: "",
         component: () => import("@/pages/tienda/productos/editar.vue"),
