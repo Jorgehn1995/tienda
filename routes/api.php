@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\CajasController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\ImportacionesController;
 use App\Http\Controllers\ImpresionesController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PresentacionesController;
@@ -139,4 +140,10 @@ Route::group(['middleware' => ['auth:api']], function () {
      * CONSULTA
      */
     Route::get('/reporte/{inicio}/{fin}', [ReportesController::class, 'index'])->name('api.ventas.vender');
+
+
+    /**
+     * IMPORTA4R PRODUCTOS
+     */
+    Route::post('/excel/importar', [ImportacionesController::class, 'importarProductos'])->name('api.ventas.vender');
 });
