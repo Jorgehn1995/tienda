@@ -19,6 +19,7 @@ class ImportarProductos implements ToCollection
                     if (!isset($this->data[$row[1]])) {
                         $this->data[$row[1]] = [];
                     }
+                    $row[12] = Producto::where("codigo", $row[1])->count();
                     array_push($this->data[$row[1]], $row);
                 }
             }

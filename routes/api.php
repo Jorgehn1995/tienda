@@ -146,4 +146,5 @@ Route::group(['middleware' => ['auth:api']], function () {
      * IMPORTA4R PRODUCTOS
      */
     Route::post('/excel/importar', [ImportacionesController::class, 'importarProductos'])->name('api.ventas.vender');
+    Route::post('/excel/guardar', [ImportacionesController::class, 'guardarRegistros'])->name('api.ventas.vender');
 });

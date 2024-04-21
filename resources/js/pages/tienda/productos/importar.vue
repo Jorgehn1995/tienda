@@ -34,11 +34,20 @@
             <v-icon left>mdi-cloud-upload</v-icon>
             Cargar Archivo
           </v-btn>
-          <v-btn color="primary" class="ml-1" :disabled="importado.length == 0">
+          <v-btn
+            color="primary"
+            class="ml-1"
+            :disabled="importado.length == 0"
+            @click="guardar"
+            :loading="isSaving"
+          >
             <v-icon left>mdi-content-save</v-icon>
             Guardar Productos
           </v-btn>
-
+          <v-alert color="primary" text class="mt-2" v-if="isSaved">
+            <strong>Productos Importados</strong>: Se han importado los
+            productos con exito
+          </v-alert>
           <input
             ref="uploader"
             class="d-none"
@@ -63,6 +72,10 @@
                 <thead>
                   <tr>
                     <th class="text-left">#</th>
+                    <th class="text-left">
+                      Código <br />
+                      Existente
+                    </th>
                     <th class="text-left">Codigo</th>
                     <th class="text-left">Producto</th>
                     <th class="text-left">Marca</th>
@@ -86,6 +99,12 @@
                     >
                       <td>
                         {{ item[0] }}
+                      </td>
+                      <td>
+                        <v-chip color="red" dark v-if="item[12] > 0" x-small>
+                          Si
+                        </v-chip>
+                        <span v-else> No </span>
                       </td>
                       <td>
                         <v-chip
@@ -178,19 +197,11 @@ export default {
   beforeDestroy() {},
   data() {
     return {
-      loading: false,
-      isRead: false,
       isLoading: false,
-      isError: false,
+      isSaving: false,
       subiendo: false,
-      dialog: false,
-      snackbar: false,
-      buscar: "",
-      text: "",
       isSelecting: false,
-      actividades: [],
-      alumnos: [],
-      total: 0,
+      isSaved: false,
       isImport: false,
       importado: [],
     };
@@ -217,11 +228,6 @@ export default {
         default:
           break;
       }
-    },
-    open() {
-      this.dialog = true;
-
-      this.buscar = "";
     },
 
     onButtonClick() {
@@ -266,23 +272,17 @@ export default {
         });
     },
     async guardar() {
-      this.isLoading = true;
-      await this.importar({
-        id: this.materia.idmateria + "-" + this.unidad.idunidad,
-        idunidad: this.unidad.idunidad,
-        idmateria: this.materia.idmateria,
-        inscripciones: this.estudiantes.map((e) => e.idinscripcion),
-        ...this.importado,
-      })
+      this.isSaving = true;
+      await this.$axios
+        .post("/excel/guardar", this.importado)
         .then((e) => {
-          this.$emit("guardado");
-          this.isRead = false;
+          this.importado = [];
+          this.isSaved = true;
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((r) => {
+          console.log(r);
         });
-      this.isRead = false;
-      this.isLoading = false;
+      this.isSaving = false;
     },
   },
   computed: {

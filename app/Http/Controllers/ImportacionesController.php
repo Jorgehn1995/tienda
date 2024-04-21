@@ -15,4 +15,8 @@ class ImportacionesController extends Controller
         Excel::import($import, $request->file('archivo'));
         return $import->data;
     }
+    public function guardarRegistros(Request $request)
+    {
+        return $request->all();
+    }
 }
