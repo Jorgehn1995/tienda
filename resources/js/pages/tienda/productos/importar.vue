@@ -19,6 +19,7 @@
             link
             target="_blank"
             href="/files/plantilla_productos.xlsx"
+            outlined
           >
             <v-icon left>mdi-microsoft-excel</v-icon>
             Descargar Plantilla
@@ -28,9 +29,14 @@
             class="ml-1"
             @click="onButtonClick"
             :loading="isLoading"
+            outlined
           >
             <v-icon left>mdi-cloud-upload</v-icon>
             Cargar Archivo
+          </v-btn>
+          <v-btn color="primary" class="ml-1" :disabled="importado.length == 0">
+            <v-icon left>mdi-content-save</v-icon>
+            Guardar Productos
           </v-btn>
 
           <input
@@ -41,7 +47,7 @@
             @change="subirArchivo"
           />
 
-          <div style="height: 250px">
+          <div style="height: 250px" v-if="importado.length == 0">
             <div
               class="d-flex justify-center alin-center pt-6 flex-column text-center"
             >
@@ -51,6 +57,113 @@
               >
             </div>
           </div>
+          <div v-else>
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">#</th>
+                    <th class="text-left">Codigo</th>
+                    <th class="text-left">Producto</th>
+                    <th class="text-left">Marca</th>
+                    <th class="text-left">Dimensión</th>
+                    <th class="text-left">Detalle</th>
+                    <th class="text-left">Presentacion</th>
+                    <th class="text-left">Unidades</th>
+                    <th class="text-left">Costo</th>
+
+                    <th class="text-left">
+                      Precio <br />
+                      de Venta
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template v-for="(producto, index) in importado">
+                    <tr
+                      v-for="(item, index2) in producto"
+                      :key="'item' + index + index2"
+                    >
+                      <td>
+                        {{ item[0] }}
+                      </td>
+                      <td>
+                        <v-chip
+                          :color="color(index % 5) + '--text'"
+                          class="v-chip--active"
+                          small
+                        >
+                          {{ item[1] }}
+                        </v-chip>
+                      </td>
+                      <td>
+                        <span v-if="item[2]">
+                          {{ item[2] }}
+                        </span>
+                        <span v-else class="text-center">
+                          <v-icon small>mdi-arrow-up</v-icon>
+                        </span>
+                      </td>
+                      <td>
+                        <span v-if="index2 == 0">
+                          {{ item[3] }}
+                        </span>
+                        <span v-else class="text-center">
+                          <v-icon small>mdi-arrow-up</v-icon>
+                        </span>
+                      </td>
+                      <td>
+                        <span v-if="index2 == 0">
+                          {{ item[4] }}
+                        </span>
+                        <span v-else class="text-center">
+                          <v-icon small>mdi-arrow-up</v-icon>
+                        </span>
+                      </td>
+                      <td>
+                        <span v-if="index2 == 0">
+                          {{ item[5] }}
+                        </span>
+                        <span v-else class="text-center">
+                          <v-icon small>mdi-arrow-up</v-icon>
+                        </span>
+                      </td>
+                      <td>
+                        {{ item[6] }}
+                      </td>
+                      <td class="text-right">
+                        {{ item[7] }}
+                      </td>
+                      <td>
+                        <span v-if="item[8]">
+                          <mostrar-precio
+                            :size="12"
+                            :value="item[8]"
+                          ></mostrar-precio>
+                        </span>
+                        <span v-else> --- </span>
+                      </td>
+
+                      <td>
+                        <span v-if="item[9]">
+                          <mostrar-precio
+                            :size="12"
+                            :value="item[9] * item[7]"
+                          ></mostrar-precio>
+                        </span>
+                        <span v-else>
+                          <mostrar-precio
+                            :size="12"
+                            :value="item[10]"
+                          ></mostrar-precio>
+                        </span>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </div>
         </v-card-text>
       </v-card>
     </v-container>
@@ -58,7 +171,9 @@
 </template>
 
 <script>
+import MostrarPrecio from "../../../components/productos/mostrarPrecio.vue";
 export default {
+  components: { MostrarPrecio },
   mounted() {},
   beforeDestroy() {},
   data() {
@@ -76,10 +191,33 @@ export default {
       actividades: [],
       alumnos: [],
       total: 0,
-      importado: {},
+      isImport: false,
+      importado: [],
     };
   },
   methods: {
+    color(i) {
+      switch (i) {
+        case 0:
+          return "primary";
+          break;
+        case 2:
+          return "secondary";
+          break;
+        case 3:
+          return "accent";
+          break;
+        case 4:
+          return "surface";
+          break;
+        case 5:
+          return "grey";
+          break;
+
+        default:
+          break;
+      }
+    },
     open() {
       this.dialog = true;
 
@@ -119,18 +257,11 @@ export default {
       return this.$axios
         .post("/excel/importar", data)
         .finally(() => {
+          this.isImport = true;
           this.subiendo = false;
         })
         .then((response) => {
-          if (
-            response.data.idmateria == this.materia.idmateria &&
-            response.data.idunidad == this.unidad.idunidad
-          ) {
-            this.importado = response.data;
-            this.isRead = true;
-          } else {
-            this.isError = true;
-          }
+          this.importado = response.data;
           e.target.value = "";
         });
     },

@@ -2,6 +2,8 @@
 
 namespace App\Imports;
 
+use App\Models\Producto;
+use Maatwebsite\Excel\Cell;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
@@ -14,7 +16,10 @@ class ImportarProductos implements ToCollection
         foreach ($rows as $key => $row) {
             if ($key > 0) {
                 if ($row[1] || $row[2]) {
-                    $this->data[$key] = $row;
+                    if (!isset($this->data[$row[1]])) {
+                        $this->data[$row[1]] = [];
+                    }
+                    array_push($this->data[$row[1]], $row);
                 }
             }
         }
