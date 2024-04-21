@@ -156,7 +156,7 @@
             <v-col cols="12" md="12">
               <v-card outlined elevation="0" class="rounded-lg" height="100%">
                 <v-card-title>
-                  Precios de Venta
+                  Precios de Venta Adicionales
                   <v-chip
                     label
                     color="grey--text text--darken-1"

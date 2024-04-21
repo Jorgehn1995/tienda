@@ -89,12 +89,7 @@
               <v-list-item-title>Productos</v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item
-            to="/tienda/productos/importar"
-            active-class="primary--text"
-          >
-            <v-list-item-title> Importar</v-list-item-title>
-          </v-list-item>
+
           <v-list-item
             to="/tienda/productos/inicio"
             active-class="primary--text"
@@ -106,6 +101,12 @@
           </v-list-item>
           <v-list-item link to="/tienda/productos/vencimientos">
             <v-list-item-title> Revisar Vencimientos </v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            to="/tienda/productos/importar"
+            active-class="primary--text"
+          >
+            <v-list-item-title> Importar</v-list-item-title>
           </v-list-item>
         </v-list-group>
         <v-list-item
