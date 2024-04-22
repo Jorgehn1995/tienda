@@ -12,7 +12,7 @@ export default {
     // product display information
     product: {
         name: "POS LERNIZ",
-        version: "1.0",
+        version: "1.1",
     },
 
     // google maps
