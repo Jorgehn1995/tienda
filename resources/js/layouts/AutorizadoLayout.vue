@@ -225,7 +225,7 @@
               </v-icon>
               <span v-if="$vuetify.breakpoint.mdAndUp"> Vender [F4] </span>
             </v-btn>
-            <v-spacer class="d-none d-lg-block"></v-spacer>
+            <v-spacer class="d-lg-block"></v-spacer>
 
             <v-btn to="/"> Salir </v-btn>
           </div>
