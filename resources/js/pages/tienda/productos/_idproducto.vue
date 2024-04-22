@@ -7,7 +7,13 @@
       <div v-else>
         <v-row dense>
           <v-col cols="12">
-            <v-card class="rounded-lg" color="teal" dark elevation="0" outlined>
+            <v-card
+              class="rounded-lg"
+              color="primary"
+              dark
+              elevation="0"
+              outlined
+            >
               <div
                 class="d-flex justify-center align-center"
                 style="font-size: 1.5em !important"
@@ -26,7 +32,7 @@
               </v-card-title>
             </v-card>
           </v-col>
-          <v-col cols="12" md="8" lg="9">
+          <v-col cols="12" md="12" lg="12">
             <v-row dense>
               <v-col cols="12" md="12">
                 <v-card outlined elevation="0" class="rounded-lg">
@@ -493,7 +499,7 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="12" md="4" lg="3">
+          <v-col cols="12" md="4" lg="3" v-if="false">
             <v-card elevation="0" outlined class="rounded-lg">
               <v-card-title> Vencimiento </v-card-title>
               <v-divider></v-divider>

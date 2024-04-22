@@ -4,68 +4,40 @@
       <v-row>
         <v-col cols="12" sm="8" md="4" offset-sm="2" offset-md="4">
           <v-form ref="form" disabled>
-            <v-card outlined elevation="3">
-              <v-card-title> Eliminar Usuario </v-card-title>
-                <v-card-text class="py-2">
-                <v-row>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle">
-                      Nombre <span class="red--text">*</span>
-                    </span>
-                    <v-text-field
-                      v-model="data.nombre"
-                      :rules="[rules.requerido, rules.min200]"
-                      dense
-                      outlined
-                      prepend-icon="mdi-account-circle-outline"
-                      placeholder="Nombre"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle"> Telefono </span>
-                    <v-text-field
-                      v-model="data.telefono"
-                      dense
-                      outlined
-                      prepend-icon="mdi-phone-outline"
-                      placeholder="Telefono"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle">
-                      Tipo <span class="red--text">*</span>
-                    </span>
-                    <v-select
-                      :items="[
-                        { value: 1, text: 'Administrador' },
-                        { value: 2, text: 'Vendedor' },
-                      ]"
-                      item-text="text"
-                      item-value="value"
-                      v-model="data.tipo"
-                      :rules="[rules.requerido]"
-                      dense
-                      outlined
-                      prepend-icon="mdi-store"
-                      placeholder="Usuario"
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" class="py-0">
-                    <span class="subtitle">
-                      Usuario <span class="red--text">*</span>
-                    </span>
-                    <v-text-field
-                      v-model="data.usuario"
-                      :rules="[rules.requerido, rules.min40]"
-                      dense
-                      outlined
-                      prepend-icon="mdi-account-circle-outline"
-                      placeholder="Usuario"
-                    ></v-text-field>
-                  </v-col>
-
-
-                </v-row>
+            <v-card outlined elevation="0" class="rounded-lg">
+              <v-card-title> Eliminar Producto </v-card-title>
+              <v-card-subtitle>
+                Elimina el producto seleccionado
+              </v-card-subtitle>
+              <v-card-text class="py-2 px-0">
+                <v-list dense>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-subtitle> Codigo </v-list-item-subtitle>
+                      <v-list-item-title> {{ data.codigo }} </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-subtitle> Nombre </v-list-item-subtitle>
+                      <v-list-item-title> {{ data.nombre }} </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-subtitle> Marca </v-list-item-subtitle>
+                      <v-list-item-title> {{ data.marca }} </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-subtitle> Dimension </v-list-item-subtitle>
+                      <v-list-item-title>
+                        {{ data.dimension }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
               </v-card-text>
               <v-card-actions>
                 <v-btn>
@@ -149,7 +121,7 @@ export default {
       this.isLoading = true;
 
       this.$axios
-        .get("/usuarios/" + this.id)
+        .get("/productos/" + this.id)
         .then((result) => {
           this.isLoading = false;
           this.data = result.data;
@@ -171,10 +143,9 @@ export default {
       this.isLoading = true;
 
       await this.$axios
-        .delete("/usuarios/" + this.id, { data: this.data })
+        .delete("/productos/" + this.id, { data: this.data })
         .then((result) => {
-          console.log(result.data);
-          this.saved = true;
+          this.$router.go(-1);
         })
         .catch((err) => {
           let errores = err.response.data.errors;

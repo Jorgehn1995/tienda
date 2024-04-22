@@ -71,7 +71,7 @@
             {{ error.msg }}
           </div>
           <p class="mt-2">Si no tienes acceso contacta con un administrador</p>
-          <v-chip label x-small> POS LERNIZ v1.1 </v-chip>
+          <v-chip label x-small> POS LERNIZ v0.1.2 </v-chip>
         </v-form>
         <v-alert
           v-if="!estado"

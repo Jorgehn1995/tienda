@@ -52,6 +52,24 @@ export default [
         beforeEnter: validarTipo,
     },
     {
+        path: "/tienda/productos/:idproducto",
+        name: "",
+        component: () => import("@/pages/tienda/productos/_idproducto.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+        beforeEnter: validarTipo,
+    },
+    {
+        path: "/tienda/productos/eliminar",
+        name: "",
+        component: () => import("@/pages/tienda/productos/eliminar.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+        beforeEnter: validarTipo,
+    },
+    {
         path: "/tienda/productos/existencias",
         name: "",
         component: () => import("@/pages/tienda/productos/existencias.vue"),

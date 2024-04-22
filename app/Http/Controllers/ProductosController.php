@@ -357,4 +357,12 @@ class ProductosController extends Controller
         $id = $producto->idproducto;
         return $this->ver($id);
     }
+    public function eliminar($idproducto, Request $request)
+    {
+        $producto = Producto::find($idproducto);
+        if ($producto) {
+            $producto->delete();
+        }
+        return "ok";
+    }
 }
