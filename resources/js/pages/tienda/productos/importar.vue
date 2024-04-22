@@ -12,7 +12,7 @@
         <v-card-subtitle>
           Importa tus productos desde un archivo de excel
         </v-card-subtitle>
-        <v-card-text>
+        <div class="px-2">
           <v-btn
             color="green"
             dark
@@ -28,7 +28,7 @@
             color="primary"
             class="ml-1"
             @click="onButtonClick"
-            :loading="isLoading"
+            :loading="subiendo || isLoading"
             outlined
           >
             <v-icon left>mdi-cloud-upload</v-icon>
@@ -44,6 +44,8 @@
             <v-icon left>mdi-content-save</v-icon>
             Guardar Productos
           </v-btn>
+        </div>
+        <v-card-text>
           <v-alert color="primary" text class="mt-2" v-if="isSaved">
             <strong>Productos Importados</strong>: Se han importado los
             productos con exito
@@ -274,7 +276,7 @@ export default {
     async guardar() {
       this.isSaving = true;
       await this.$axios
-        .post("/excel/guardar", this.importado)
+        .post("/excel/guardar", { importado: this.importado })
         .then((e) => {
           this.importado = [];
           this.isSaved = true;

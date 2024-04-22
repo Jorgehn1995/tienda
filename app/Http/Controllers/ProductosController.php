@@ -274,7 +274,7 @@ class ProductosController extends Controller
         try {
             DB::beginTransaction();
 
-            $producto = Producto::where("codigo", $request->codigo)->first();
+            $producto = Producto::where("idproducto", $request->idproducto)->first();
             if (!$producto) {
                 $producto = new Producto();
             }
@@ -282,6 +282,7 @@ class ProductosController extends Controller
             $producto->nombre = $request->nombre;
             $producto->marca = $request->marca;
             $producto->dimension = $request->dimension;
+            $producto->detalles = $request->detalles;
             $producto->save();
             $producto->precios()->delete();
             $existencia = 0;
