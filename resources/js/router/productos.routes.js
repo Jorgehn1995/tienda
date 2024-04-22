@@ -51,15 +51,7 @@ export default [
         },
         beforeEnter: validarTipo,
     },
-    {
-        path: "/tienda/productos/:idproducto",
-        name: "",
-        component: () => import("@/pages/tienda/productos/_idproducto.vue"),
-        meta: {
-            layout: "autorizado",
-        },
-        beforeEnter: validarTipo,
-    },
+
     {
         path: "/tienda/productos/eliminar",
         name: "",
@@ -124,5 +116,23 @@ export default [
                 },
             },
         ],
+    },
+    {
+        path: "/tienda/productos/revision2204",
+        name: "",
+        component: () => import("@/pages/tienda/productos/revision.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+        beforeEnter: validarTipo,
+    },
+    {
+        path: "/tienda/productos/:idproducto",
+        name: "",
+        component: () => import("@/pages/tienda/productos/_idproducto.vue"),
+        meta: {
+            layout: "autorizado",
+        },
+        beforeEnter: validarTipo,
     },
 ];

@@ -9,6 +9,7 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PresentacionesController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\RevisionesController;
 use App\Http\Controllers\TurnosController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\VencimientosController;
@@ -147,4 +148,9 @@ Route::group(['middleware' => ['auth:api']], function () {
      */
     Route::post('/excel/importar', [ImportacionesController::class, 'importarProductos'])->name('api.ventas.vender');
     Route::post('/excel/guardar', [ImportacionesController::class, 'guardarRegistros'])->name('api.ventas.vender');
+
+    /**
+     * REVISIONES PRODUCTOS  2024
+     */
+    Route::get('/revision/productos', [RevisionesController::class, 'productos'])->name('api.ventas.vender');
 });

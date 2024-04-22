@@ -30,7 +30,11 @@
                     <strong>Caja:</strong>
                 </td>
                 <td>
-                    {{$venta->turno->caja->nombre}}
+                    @if ($venta->turno)
+                        {{$venta->turno->caja->nombre}}
+                    @else
+                        No Registrado
+                    @endif
                 </td>
                 <td>
                     <strong>Atendió:</strong>
@@ -201,7 +205,12 @@
                     <strong>Referencia de Turno:</strong>
                 </td>
                 <td>
-                    {{$venta->turno->idturno}}
+                     @if ($venta->turno)
+                        {{$venta->turno->idturno}}
+                    @else
+                        00-00
+                    @endif
+
                 </td>
             </tr>
         </tbody>
