@@ -44,39 +44,15 @@
       <v-card elevation="0" class="rounded-lg" v-if="isLoading">
         <v-skeleton-loader type="list-item-avatar-two-line"></v-skeleton-loader>
       </v-card>
-      <div v-else-if="this.data.length > 0">
-        <v-item-group multiple v-if="card">
-          <v-row dense>
-            <v-col
-              cols="12"
-              :sm="sm"
-              :md="md"
-              :lg="lg"
-              v-for="(item, index) in data"
-              :key="'dt' + index"
-            >
-              <v-item :value="item[itemID]">
-                <v-hover v-slot="{ hover }">
-                  <v-card
-                    class="rounded-lg pa-0"
-                    outlined
-                    :elevation="isSelected(item[itemID]) || hover ? 3 : 0"
-                    height="100%"
-                  >
-                    <slot
-                      name="item"
-                      :item="item"
-                      :isSelected="isSelected"
-                      :toggle="toggle"
-                      :index="index"
-                    ></slot>
-                  </v-card>
-                </v-hover>
-              </v-item>
-            </v-col>
-          </v-row>
-        </v-item-group>
-        <slot name="items" :items="data"></slot>
+      <div v-else-if="data.length > 0">
+        <v-data-table
+          :headers="headers"
+          :items="data"
+          :options.sync="options"
+          :server-items-length="info.total"
+          :loading="isLoading"
+          class="elevation-1"
+        ></v-data-table>
       </div>
 
       <v-card elevation="0" class="rounded-lg" v-else>
@@ -227,6 +203,24 @@ export default {
       y: 0,
       item: {},
     },
+    options: {
+      page: 2,
+    },
+    headers: [
+      {
+        text: "Código",
+        align: "start",
+        sortable: false,
+        value: "name",
+      },
+      { text: "Nombre", value: "calories" },
+      { text: "Marca", value: "fat" },
+      { text: "Dimensión", value: "carbs" },
+      { text: "Detalles", value: "protein" },
+      { text: "Ubicación", value: "iron" },
+      { text: "Precios", value: "iron" },
+      { text: "Opc.", value: "iron" },
+    ],
     ajustes: {
       updates: 0,
     },
@@ -263,6 +257,9 @@ export default {
       //  });
 
       this.isLoading = false;
+    },
+    getDataFromApi() {
+      console.log(this.options);
     },
     actualizarRuta(parametro, nuevoValor, del = false) {
       let query = this.$route.query;
@@ -335,7 +332,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({ listado: "listar/listar" }),
+    ...mapGetters({ listado: "listar/listar", infoURL: "listar/ruta" }),
     data() {
       return (
         this.listado({
@@ -343,6 +340,9 @@ export default {
           tipo: "data",
         }) || []
       );
+    },
+    info() {
+      return this.infoURL(this.ruta);
     },
     paginas() {
       return (
@@ -446,6 +446,12 @@ export default {
     extraQuery() {
       this.page = 1;
       this.iniciar();
+    },
+    options: {
+      handler() {
+        this.getDataFromApi();
+      },
+      deep: true,
     },
   },
 };

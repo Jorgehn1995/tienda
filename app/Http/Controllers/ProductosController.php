@@ -37,15 +37,15 @@ class ProductosController extends Controller
                 $query->where("codigo", $querySearch);
             } else {
                 $search = $this->stringsBusqueda($querySearch);
-                $query->orWhereRaw("MATCH (codigo,nombre,marca,dimension) AGAINST ('$search->match' IN BOOLEAN MODE) > 0")
-
-                    ->orWhere("codigo", "LIKE", $search->like)
-                    ->orWhere("nombre", "LIKE", $search->like)
-                    ->orWhere("costo", "LIKE", $search->like)
-                    ->orWhere("existencia", "LIKE", $search->like);
+                $query->whereRaw("MATCH (codigo,nombre,marca,dimension) AGAINST ('$search->match' IN BOOLEAN MODE) > 0");
+                $query->where(function ($q) use ($search) {
+                    $q->where("nombre", "LIKE", $search->like);
+                });
             }
         }
+        $query->orderBy("nombre");
         $query->with(["precios" => function ($query) {
+            $query->orderBy("cantidad");
             $query->select("precios.*");
             $query->selectRaw("0 as costo_nuevo, 0 as stock_nuevo, '' as vencimiento");
         }]);

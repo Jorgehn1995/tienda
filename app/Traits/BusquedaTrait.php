@@ -77,7 +77,8 @@ trait BusquedaTrait
         }
 
         //$searchMatch = "+*" . str_replace(" ", "* +*", $searchString) . "*";
-        $searchMatchExact = "" . str_replace(" ", "*", $searchString) . "*"; //SE MUESTRA LA UNIDAD PERO NO EL PRODUCTO
+        $searchMatchExact = "" . str_replace(" ", "* ", $searchString) . "*"; //SE MUESTRA LA UNIDAD PERO NO EL PRODUCTO
+        $searchMatchExact2 = "+" . str_replace(" ", " +", $searchString) . "*"; //SE MUESTRA LA UNIDAD PERO NO EL PRODUCTO
         $searchMatch = "+" . str_replace(" ", "*", $searchString) . "*"; //SE MUESTRA el producto perono la presentacion
 
         $searchLike = "%" . str_replace(" ", "%", $searchString) . "%";
@@ -87,6 +88,7 @@ trait BusquedaTrait
 
         $r->match = $searchMatch;
         $r->matchExact = $searchMatchExact;
+        $r->matchExact2 = $searchMatchExact2;
         $r->presentacion = $serachPresentacion;
         $r->like = $searchLike;
         $r->string = $searchString;

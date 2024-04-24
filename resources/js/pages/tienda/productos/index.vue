@@ -43,11 +43,12 @@
               @update:seleccion="seleccion = $event"
               :truncate="true"
               :show_menu="true"
-              :pagination="50"
+              :pagination="10"
               :toolbar="false"
               :sm="12"
               :md="12"
               :lg="12"
+              :card="$vuetify.breakpoint.xsOnly"
             >
               <template v-slot:item="{ isSelected, toggle, item, index }">
                 <div
@@ -162,6 +163,118 @@
                   </div>
                 </div>
               </template>
+              <template v-slot:items="{ items }">
+                <v-simple-table class="rounded-lg">
+                  <thead>
+                    <tr>
+                      <th class="text-left">Código</th>
+                      <th class="text-left">Producto</th>
+                      <th class="text-left">Marca</th>
+                      <th class="text-left">Dimensión</th>
+                      <th class="text-left">Precios</th>
+                      <th class="text-right">Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item, i) in items">
+                      <td>
+                        {{ item.codigo }}
+                      </td>
+                      <td>
+                        {{ item.nombre }}
+                      </td>
+                      <td>
+                        {{ item.marca || "--" }}
+                      </td>
+                      <td>
+                        {{ item.dimension || "--" }}
+                      </td>
+                      <td>
+                        <v-chip small>
+                          {{ item.precios[0].nombre }}
+                        </v-chip>
+                        <v-chip small v-if="item.precios.length > 1">
+                          {{ item.precios.length + 1 }}+
+                        </v-chip>
+                      </td>
+                      <td>
+                        <v-btn
+                          color="green"
+                          :to="
+                            '/tienda/productos/existencias?productos_search=id:' +
+                            item.idproducto
+                          "
+                          icon
+                        >
+                          <v-icon>mdi-package-variant-closed-plus</v-icon>
+                        </v-btn>
+
+                        <v-btn
+                          icon
+                          :to="'/tienda/productos/editar?id=' + item.idproducto"
+                          class="ml-2"
+                        >
+                          <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+
+                        <v-options
+                          :title="item.nombre"
+                          icon="mdi-dots-horizontal"
+                        >
+                          <template v-slot:activator="{ open }">
+                            <v-btn outlined @click="open" icon class="ml-2">
+                              <v-icon> mdi-dots-horizontal </v-icon>
+                            </v-btn>
+                          </template>
+                          <template v-slot:options>
+                            <v-list-item>
+                              <v-list-item-title>
+                                Ver Producto
+                              </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                              <v-list-item-title> Imprimir </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item
+                              :to="
+                                '/tienda/productos/existencias?productos_search=idproducto:' +
+                                item.idproducto
+                              "
+                            >
+                              <v-list-item-title>
+                                Agregar Existencias
+                              </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                              <v-list-item-title>
+                                Revisar Vencimientos
+                              </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item
+                              :to="
+                                '/tienda/productos/editar?id=' + item.idproducto
+                              "
+                            >
+                              <v-list-item-title> Editar </v-list-item-title>
+                            </v-list-item>
+                            <v-divider></v-divider>
+                            <v-list-item
+                              :to="
+                                '/tienda/productos/eliminar?id=' +
+                                item.idproducto
+                              "
+                            >
+                              <v-list-item-title class="red--text">
+                                Eliminar
+                              </v-list-item-title>
+                            </v-list-item>
+                          </template>
+                        </v-options>
+                      </td>
+                    </tr>
+                  </tbody>
+                </v-simple-table>
+              </template>
             </t-listar>
           </v-col>
         </v-row>
@@ -171,6 +284,7 @@
 </template>
 
 <script>
+import TListarTabla from "../../../components/tienda/generales/t-listar-tabla.vue";
 import BusquedaTextField from "../../../components/busqueda/busquedaTextField.vue";
 import ProductosMostrarPrecio from "../../../components/tienda/productos/productosMostrarPrecio.vue";
 import VOptions from "../../../components/tienda/generales/v-options.vue";
@@ -183,6 +297,7 @@ export default {
     VOptions,
     ProductosMostrarPrecio,
     BusquedaTextField,
+    TListarTabla,
   },
 
   mounted() {

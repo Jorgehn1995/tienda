@@ -19,20 +19,32 @@ class PresentacionesController extends Controller
         $query->with("producto");
         //$query->select("productos.*");
         if ($request->query("search") != "") {
-            $search = $this->stringsBusqueda($request->query("search"));
+            if (is_numeric($request->query('search'))) {
+                $query->where("codigo", $request->query("search"));
+            } else {
+                $terminos = explode("-", $request->query("search"));
+                $busqueda = trim($terminos[0]);
+                if (isset($terminos[1])) {
+                    $precio = trim($terminos[1]);
+                } else {
+                    $precio = "";
+                }
+                $search = $this->stringsBusqueda($busqueda);
 
-            $query->whereRaw("MATCH (productos.codigo, productos.nombre, productos.marca, productos.dimension) AGAINST ('$search->matchExact' IN BOOLEAN MODE) > 0")
-                ->whereRaw("MATCH (precios.nombre) AGAINST ('$search->matchExact' IN BOOLEAN MODE) > 0");
-            $query->orWhere(function ($q) use ($search) {
-                $q->whereRaw("MATCH (productos.codigo, productos.nombre, productos.marca, productos.dimension) AGAINST ('$search->match' IN BOOLEAN MODE) > 0");
-                $q->whereNotExists(function ($query) use ($search) {
-                    $query->select(DB::raw(1))
-                        ->from("precios")
-                        ->join("productos", "productos.idproducto", "=", "precios.idproducto")
-                        ->whereRaw("MATCH (productos.codigo, productos.nombre, productos.marca, productos.dimension) AGAINST ('$search->matchExact' IN BOOLEAN MODE) > 0")
-                        ->whereRaw("MATCH (precios.nombre) AGAINST ('$search->matchExact' IN BOOLEAN MODE) > 0");
+                //return $search->matchExact2;
+
+                //$query->whereRaw("MATCH (productos.codigo, productos.nombre, productos.marca, productos.dimension) AGAINST ('$search->matchExact2' IN BOOLEAN MODE) > 0")
+                //->whereRaw("MATCH (precios.nombre) AGAINST ('$search->matchExact' IN BOOLEAN MODE) > 0");
+                $query->where(function ($q) use ($search) {
+                    $q->whereRaw("MATCH (productos.codigo, productos.nombre, productos.marca, productos.dimension) AGAINST ('$search->match' IN BOOLEAN MODE) > 0");
+                    $q->where("productos.nombre", "like", $search->like);
                 });
-            });
+                if ($precio != "") {
+                    $searchPrecio = $this->stringsBusqueda($precio);
+
+                    $query->where("precios.nombre", "like", $searchPrecio->like);
+                }
+            }
         }
 
         if ($request->query("limit")) {
