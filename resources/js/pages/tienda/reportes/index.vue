@@ -100,10 +100,30 @@
               </v-list>
             </v-card-text>
             <v-card-actions>
-              <v-btn color="primary" block text outlined @click="imprimir()">
-                <v-icon left>mdi-printer</v-icon>
-                Imprimir
-              </v-btn>
+              <venta-reporte-total
+                :value="{
+                  totales: totales,
+                  fechas: {
+                    inicio: formato_inicio,
+                    fin: formato_fin,
+                  },
+                }"
+                style="width: 100%"
+                class="px-2"
+              >
+                <template v-slot:default="{ open, loading }">
+                  <v-btn
+                    outlined
+                    block
+                    color="primary"
+                    @click="open"
+                    :loading="loading"
+                  >
+                    <v-icon left>mdi-printer</v-icon>
+                    Imprimir
+                  </v-btn>
+                </template>
+              </venta-reporte-total>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -233,6 +253,7 @@
 </template>
 
 <script>
+import VentaReporteTotal from "../../../components/venta/venta-reporte-total.vue";
 import WidgetSmall from "../../../components/common/widget-small.vue";
 import VentaDetalles from "../../../components/venta/venta-detalles.vue";
 import MostrarPrecio from "../../../components/productos/mostrarPrecio.vue";
@@ -240,7 +261,13 @@ import moment from "moment";
 import FormTextField from "../../../components/forms/form-text-field.vue";
 
 export default {
-  components: { FormTextField, MostrarPrecio, VentaDetalles, WidgetSmall },
+  components: {
+    FormTextField,
+    MostrarPrecio,
+    VentaDetalles,
+    WidgetSmall,
+    VentaReporteTotal,
+  },
   beforeMount() {
     this.inicio = moment().format("Y-MM-DD");
     this.fin = moment().format("Y-MM-DD");
@@ -293,6 +320,7 @@ export default {
           console.log("error");
         });
     },
+
     async recibo(id) {
       this.isProcesed = true;
       await this.$axios

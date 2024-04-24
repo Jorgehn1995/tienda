@@ -20,7 +20,7 @@ class PDFController extends Controller
 
         $copias = 1;
         $cm = 28.34645669;
-        $rutaImagen = public_path('images/LG_POS.png');
+        $rutaImagen = public_path(env("LOGO_POS"));
 
         // Verificar si el archivo existe antes de intentar leerlo
         if (file_exists($rutaImagen)) {
@@ -35,7 +35,7 @@ class PDFController extends Controller
 
         $cmExtra = ($cm * 0.7) * $cantidad;
 
-        $papel = [0, 0, ($cm * 5.8), (300 + $cmExtra)];
+        $papel = [0, 0, ($cm * 5.8), (320 + $cmExtra)];
         $orientacion = "portrait";
         $data = [
             'barcode' => $barcode,
@@ -45,6 +45,45 @@ class PDFController extends Controller
         ];
 
         $html = view("pdf.recibo", $data)->render();
+
+
+        $pdf = PDF::loadHtml($html)->setPaper($papel, $orientacion);
+        $pdf->getDomPDF()->set_option("enable_php", true)->set_option('isHtml5ParserEnabled', true);
+        return $pdf->download("factura.pdf");
+    }
+    public function totales(Request $request)
+    {
+
+
+
+
+
+
+        $copias = 1;
+        $cm = 28.34645669;
+        $rutaImagen = public_path(env("LOGO_POS"));
+
+        // Verificar si el archivo existe antes de intentar leerlo
+        if (file_exists($rutaImagen)) {
+            $contenidoImagen = file_get_contents($rutaImagen);
+            $imagen = 'data:image/jpg;base64,' . base64_encode($contenidoImagen);
+        } else {
+            // Manejar el caso en que la imagen no existe
+            $imagen = "";
+        }
+
+
+
+
+
+        $papel = [0, 0, ($cm * 5.8), 250];
+        $orientacion = "portrait";
+        $data = [
+            'logo' => $imagen,
+            'datos' => $request->totales
+        ];
+
+        $html = view("pdf.totales", $data)->render();
 
 
         $pdf = PDF::loadHtml($html)->setPaper($papel, $orientacion);

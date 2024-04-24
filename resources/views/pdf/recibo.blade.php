@@ -21,7 +21,11 @@
         <img width="50%" src="{{$logo}}" alt="">
     </div>
     <div class="text-center" style="margin-top:5px; margin-bottom:5px">
-        <h3>San Luis Jilotepeque</h3>
+        <span>{{env("municipio")}}, {{env("departamento")}}</span>
+        <br>
+        <span>{{env("barrio")}}</span>
+        <br>
+        <span>{{env("telefono")}}</span>
     </div>
     <table style="width: 100%">
         <tbody>

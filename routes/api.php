@@ -132,6 +132,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/ventas/vender', [VentasController::class, 'vender'])->name('api.ventas.vender');
     Route::delete('/venta/{idventa}/anular', [VentasController::class, 'anular'])->name('api.ventas.vender');
 
+
+
     /**
      * VENTAS
      */
@@ -141,6 +143,7 @@ Route::group(['middleware' => ['auth:api']], function () {
      * CONSULTA
      */
     Route::get('/reporte/{inicio}/{fin}', [ReportesController::class, 'index'])->name('api.ventas.vender');
+    Route::post('/reporte/pdf', [PDFController::class, 'totales'])->name('api.ventas.vender');
 
 
     /**
