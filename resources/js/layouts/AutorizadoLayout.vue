@@ -11,13 +11,13 @@
             <v-list-item to="/tienda/drawer">
               <v-list-item-content>
                 <v-list-item-subtitle>
-                  {{ moment().format("D/M/Y") }}
+                  {{ moment().format("D/M/Y - HH:m a") }}
                 </v-list-item-subtitle>
                 <v-list-item-title class="text-h6">
-                  Farmacias Oasis
+                  {{ tienda.nombre }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  San Luis Jilotepeque
+                  {{ tienda.direccion }}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -198,7 +198,7 @@
               <div class="white--text title font-weight-bold text-uppercase">
                 <v-img
                   v-if="$vuetify.breakpoint.mdAndUp"
-                  src="/images/lg_bar.png"
+                  :src="tienda.logos.md"
                   contain
                   width="100"
                   height="50"
@@ -206,7 +206,7 @@
 
                 <v-img
                   v-else
-                  src="/images/lg_bar_sm.png"
+                  :src="tienda.logos.sm"
                   contain
                   width="50"
                   height="50"
@@ -251,6 +251,7 @@ import ToolbarApps from "../components/toolbar/ToolbarApps";
 import ToolbarLanguage from "../components/toolbar/ToolbarLanguage";
 import ToolbarCurrency from "../components/toolbar/ToolbarCurrency";
 import ToolbarNotifications from "../components/toolbar/ToolbarNotifications";
+import tienda from "@/tienda";
 
 export default {
   components: {
@@ -282,6 +283,7 @@ export default {
       showSearch: false,
       navigation: config.navigation,
       moment,
+      tienda,
     };
   },
   computed: {
