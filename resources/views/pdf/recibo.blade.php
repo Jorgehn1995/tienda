@@ -19,7 +19,7 @@
 </head>
 <body>
     <div class="text-center">
-        <img width="50%" src="{{$logo}}" alt="">
+        <img width="100%" src="{{$logo}}" alt="">
     </div>
     <div class="text-center" style="margin-top:5px; margin-bottom:5px">
         <span>{{env("municipio")}}, {{env("departamento")}}</span>

@@ -35,7 +35,7 @@ class PDFController extends Controller
 
         $cmExtra = ($cm * 0.7) * $cantidad;
 
-        $papel = [0, 0, ($cm * 5.8), (320 + $cmExtra)];
+        $papel = [0, 0, ($cm * 5.8), (360 + $cmExtra)];
         $orientacion = "portrait";
         $data = [
             'barcode' => $barcode,
