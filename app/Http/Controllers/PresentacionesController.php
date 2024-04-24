@@ -22,7 +22,7 @@ class PresentacionesController extends Controller
             if (is_numeric($request->query('search'))) {
                 $query->where("codigo", $request->query("search"));
             } else {
-                $terminos = explode("-", $request->query("search"));
+                $terminos = explode(",", $request->query("search"));
                 $busqueda = trim($terminos[0]);
                 if (isset($terminos[1])) {
                     $precio = trim($terminos[1]);
