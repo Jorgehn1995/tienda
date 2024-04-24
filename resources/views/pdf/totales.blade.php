@@ -13,6 +13,7 @@
         }
         body {
             font-size: 9px; /* Establece el tamaño de fuente a 16px */
+            font-family: Arial, sans-serif;
         }
     </style>
 </head>
